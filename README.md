@@ -2,5 +2,5 @@
 Docker
 
 # Instruction
-After installing the container go to terminal and type
-``docker compose up -d`` if you want to stop the container, type ``docker compose down``
+After installing the container and running the docker engine go to **Git Bash** terminal and type
+``./build.sh``
