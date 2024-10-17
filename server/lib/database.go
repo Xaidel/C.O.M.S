@@ -2,7 +2,9 @@ package lib
 
 import (
 	"fmt"
-	"server/config"
+	"log"
+
+	"github.com/Xaidel/server/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -24,10 +26,8 @@ func ConnectDatabase() {
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
-		fmt.Printf("Failed to connect to the database: %v", err)
-	}
-
-	if Database != nil {
+		log.Fatalf("Failed to connect to the database: %v", err)
+	} else {
 		fmt.Println("Database connected successfully")
 	}
 }

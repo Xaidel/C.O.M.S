@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"server/config"
-	"server/lib"
-	"server/src/models"
+
+	"github.com/Xaidel/server/lib"
+
+	"github.com/Xaidel/server/config"
+	"github.com/Xaidel/server/src/models"
 )
 
 func init() {

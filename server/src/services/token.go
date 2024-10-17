@@ -1,9 +1,10 @@
 package services
 
 import (
-	"server/config"
-	"server/src/models"
 	"time"
+
+	"github.com/Xaidel/server/config"
+	"github.com/Xaidel/server/src/models"
 
 	"github.com/golang-jwt/jwt/v5"
 )

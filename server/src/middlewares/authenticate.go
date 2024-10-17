@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"server/config"
-	"server/lib"
-	"server/src/models"
 	"time"
+
+	"github.com/Xaidel/server/config"
+	"github.com/Xaidel/server/lib"
+	"github.com/Xaidel/server/src/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"

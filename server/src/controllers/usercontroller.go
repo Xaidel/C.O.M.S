@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"net/http"
-	"server/lib"
-	"server/src/models"
-	"server/src/services"
-	"server/src/types"
+
+	"github.com/Xaidel/server/lib"
+	"github.com/Xaidel/server/src/models"
+	"github.com/Xaidel/server/src/services"
+	"github.com/Xaidel/server/src/types"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,20 +34,21 @@ func (UserController) GET(ctx *gin.Context) {
 }
 
 func (UserController) POST(ctx *gin.Context) {
-	ctx.Bind(&types.LoginRequest)
-	hashedPassword, err := services.Encrypt(types.LoginRequest.Password)
+	loginReq := types.LoginRequest
+	lib.Database = lib.Database.Debug()
+	ctx.Bind(&loginReq)
+	hashedPassword, err := services.Encrypt(loginReq.Password)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to Hash the given password",
 		})
 		return
 	}
-	user := models.User{UserID: types.LoginRequest.UserID, Password: hashedPassword}
+	user := models.User{UserID: loginReq.UserID, Password: hashedPassword}
 	if result := lib.Database.Create(&user); result.Error != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": result.Error.Error(),
 		})
-		return
 	}
 	ctx.JSON(http.StatusCreated, user)
 }

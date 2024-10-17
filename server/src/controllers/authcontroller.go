@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"net/http"
-	"server/lib"
-	"server/src/models"
-	"server/src/services"
-	"server/src/types"
+
+	"github.com/Xaidel/server/lib"
+	"github.com/Xaidel/server/src/models"
+	"github.com/Xaidel/server/src/services"
+	"github.com/Xaidel/server/src/types"
 
 	"github.com/gin-gonic/gin"
 )
@@ -45,9 +46,8 @@ func (AuthController) Login(ctx *gin.Context) {
 	}
 
 	res := map[string]interface{}{
-		"id":       user.ID,
-		"userID":   user.UserID,
-		"acc_type": user.AccountType,
+		"id":     user.ID,
+		"userID": user.UserID,
 	}
 
 	ctx.SetSameSite(http.SameSiteStrictMode)
