@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-
+echo "Please Wait"
 cd server
 go run ./migrations/migrate.go
 
