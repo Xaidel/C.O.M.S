@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/Xaidel/server/config"
 	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/src/routes"
@@ -28,7 +30,9 @@ func main() {
 	router.StaticFile("/", "./static/index.html")
 	router.StaticFile("/vite.svg", "./static/vite.svg")
 	router.NoRoute(func(ctx *gin.Context) {
-		ctx.File("./client/dist/index.html")
+		if !strings.Contains(ctx.Request.URL.Path, "api/v1") {
+			ctx.File("./static/index.html")
+		}
 	})
 	routes.APIRoutes(router)
 	router.Run()
