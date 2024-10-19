@@ -24,19 +24,28 @@ module.exports = {
       },
     },
     extend: {
+      minWidth: {
+        31: "31rem",
+      },
+      minHeight: {
+        40: "40rem",
+      },
       colors: {
         white: {
           mainBG: "#FAFAFA",
-          loginBG: "#F8FAFC",
+          loginBG: "#F3F4F6",
         },
-        orange: {
-          100: "#F97316",
+        red: {
+          DEFAULT: "#DC2626",
+        },
+        gray: {
+          DEFAULT: "#2C2C2E",
         },
         boxShadow: {
           DEFAULT: "-5px 10px 16px 2px rgba(0,0,0,0.34)",
         },
         maxHeight: {
-          'md': "28rem",
+          md: "28rem",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
