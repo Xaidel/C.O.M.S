@@ -62,14 +62,14 @@ export default function LoginForm() {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="">
+          <CardContent>
             <div>
               <FormField
                 control={form.control}
                 name="userID"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="hidden md:block text-lg">
+                    <FormLabel className="hidden md:block font-light text-lg">
                       Username
                     </FormLabel>
                     <FormControl>
@@ -92,7 +92,7 @@ export default function LoginForm() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="hidden md:block text-lg">
+                    <FormLabel className="hidden md:block font-light text-lg">
                       Password
                     </FormLabel>
                     <FormControl>
@@ -118,13 +118,13 @@ export default function LoginForm() {
               />
             </div>
           </CardContent>
-          <CardContent className="pb-4 pt-3">
+          <CardContent className="pb-4 pt-3 ">
             {isPending ? (
               <Button disabled className="w-full p-6">
-                <Loader className="mr-2 h-5 w-5 animate-spin" />
+                <Loader className="mr-2 h-5 w-5 animate-spin text-lg" />
               </Button>
             ) : (
-              <Button type="submit" className="w-full font-sans p-6">
+              <Button type="submit" className="w-full font-sans p-6 text-lg">
                 Log in
               </Button>
             )}
