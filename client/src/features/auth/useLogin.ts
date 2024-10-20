@@ -21,7 +21,7 @@ export function useLogin() {
       const user = data?.user;
       if (user) {
         queryClient.setQueryData<User>(["current-user"], user);
-        navigate("/sample");
+        navigate("/dashboard");
       }
     },
   });

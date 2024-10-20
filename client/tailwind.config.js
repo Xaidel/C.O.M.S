@@ -15,7 +15,7 @@ module.exports = {
       sans: ["Poppins", "sans-serif"],
     },
     container: {
-      center: true,
+      center: "true",
       padding: "2rem",
       screens: {
         sm: "640px",
@@ -29,6 +29,7 @@ module.exports = {
       borderColor: {
         gray: {
           DEFAULT: "#2C2C2E",
+          main: "#F0F1F2",
         },
       },
       minWidth: {
@@ -41,12 +42,14 @@ module.exports = {
         white: {
           mainBG: "#FAFAFA",
           loginBG: "#F3F4F6",
+          iconBG: "#E5E7EB",
         },
         red: {
           DEFAULT: "#DC2626",
         },
         gray: {
           DEFAULT: "#2C2C2E",
+          main: "#F0F1F2",
         },
         boxShadow: {
           DEFAULT: "-5px 10px 16px 2px rgba(0,0,0,0.34)",
@@ -87,6 +90,16 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -95,12 +108,20 @@ module.exports = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
       },
       animation: {

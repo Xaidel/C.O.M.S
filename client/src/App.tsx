@@ -2,18 +2,14 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient } from "@tanstack/query-core";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Navigate,
-  Outlet,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./App.css";
 import Login from "./pages/Login";
-import Sample from "./pages/Sample";
-import ProtectedRoute from "./utils/ProtectedRoute";
+import Dashboard from "./pages/Dashboard";
+import TeachingAssignment from "./pages/TeachingAssignment";
+import AppLayout from "./utils/AppLayout";
+import Coaep from "./pages/Coaep";
 
 function App() {
   const queryClient: QueryClient = new QueryClient({
@@ -36,15 +32,14 @@ function App() {
       <ReactQueryDevtools initialIsOpen={false} />
       <BrowserRouter>
         <Routes>
-          <Route
-            element={
-              <ProtectedRoute>
-                <Outlet />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Navigate replace to="/sample" />} />
-            <Route path="sample" element={<Sample />} />
+          <Route element={<AppLayout />}>
+            <Route index element={<Navigate replace to="/dashboard" />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/teaching-assignment"
+              element={<TeachingAssignment />}
+            />
+            <Route path="/coaep" element={<Coaep />} />
           </Route>
           <Route path="login" element={<Login />} />
         </Routes>
