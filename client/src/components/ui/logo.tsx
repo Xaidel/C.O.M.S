@@ -1,4 +1,5 @@
 import logo from "../../assets/unc_logo.svg";
+
 function Logo() {
   return (
     <>

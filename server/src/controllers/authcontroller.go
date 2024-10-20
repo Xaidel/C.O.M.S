@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/Xaidel/server/config"
 	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/src/models"
 	"github.com/Xaidel/server/src/services"
@@ -28,13 +29,11 @@ func (AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Username",
 		})
-		return
 	}
 	if !services.Compare(types.LoginRequest.Password, user.Password) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Password",
 		})
-		return
 	}
 
 	tokenString, err := services.IssueJWT(&user)
@@ -42,16 +41,18 @@ func (AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Failed to generate a token",
 		})
-		return
 	}
 
 	res := map[string]interface{}{
-		"id":     user.ID,
-		"userID": user.UserID,
+		"userID":     user.UserID,
+		"firstname":  user.Firstname,
+		"middlename": user.Middlename,
+		"lastname":   user.Lastname,
 	}
 
-	ctx.SetSameSite(http.SameSiteStrictMode)
-	ctx.SetCookie("Authorization", tokenString, 3600*24*300, "/", "", false, true)
+	domain := config.Get("DOMAIN")
+	ctx.SetSameSite(http.SameSiteLaxMode)
+	ctx.SetCookie("Authorization", tokenString, 3600*24*300, "/", domain, false, true)
 	ctx.JSON(http.StatusOK, gin.H{"user": res})
 }
 
@@ -64,5 +65,4 @@ func (AuthController) Validate(ctx *gin.Context) {
 	if tokenString != "" {
 		ctx.JSON(http.StatusOK, gin.H{"message": "Valid Token"})
 	}
-
 }
