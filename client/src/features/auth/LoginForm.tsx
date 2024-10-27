@@ -19,7 +19,10 @@ import { useLogin } from "./useLogin";
 import { useState } from "react";
 
 const formSchema = z.object({
-  userID: z.string().min(2).max(10),
+  userID: z
+    .string()
+    .min(2, "Username must contain at least 2 characters(2)")
+    .max(10, "Why is your username too long?"),
   password: z.string().min(1, "Password is required").max(50),
 });
 
