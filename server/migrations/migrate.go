@@ -15,7 +15,7 @@ func init() {
 }
 
 func main() {
-	if err := lib.Database.AutoMigrate(&models.User{}); err != nil {
+	if err := lib.Database.AutoMigrate(&models.User{}, &models.Curriculum{}); err != nil {
 		fmt.Println("Error Migrating")
 		return
 	}
