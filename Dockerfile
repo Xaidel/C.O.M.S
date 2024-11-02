@@ -22,5 +22,5 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o server
 
 EXPOSE 3000
 
-cmd ["./server"]
+CMD ["./server"]
 
