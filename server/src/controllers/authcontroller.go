@@ -15,7 +15,8 @@ import (
 type AuthController struct{}
 
 func (AuthController) Login(ctx *gin.Context) {
-	if ctx.Bind(&types.LoginRequest) != nil {
+	var loginReq types.LoginRequest
+	if ctx.Bind(loginReq) != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Bad Request",
 		})
@@ -23,14 +24,14 @@ func (AuthController) Login(ctx *gin.Context) {
 	}
 	var user models.User
 
-	lib.Database.First(&user, "user_id = ?", types.LoginRequest.UserID)
+	lib.Database.First(&user, "user_id = ?", loginReq.UserID)
 
 	if user.ID == 0 {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Username",
 		})
 	}
-	if !services.Compare(types.LoginRequest.Password, user.Password) {
+	if !services.Compare(loginReq.Password, user.Password) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Password",
 		})
