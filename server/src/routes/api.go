@@ -28,5 +28,19 @@ func APIRoutes(router *gin.Engine) {
 			user.POST("", controllers.User.POST)
 			user.DELETE("/:id", controllers.User.DELETE)
 		}
+		department := api.Group("/departments")
+		{
+			department.GET("", controllers.Department.GET)
+			department.GET("/:id", controllers.Department.GET)
+			department.POST("", controllers.Department.POST)
+			department.DELETE("/:id", controllers.Department.DELETE)
+		}
+		program := api.Group("/programs")
+		{
+			program.GET("", controllers.Program.GET)
+			program.GET("/:id", controllers.Program.GET)
+			program.POST("", controllers.Program.POST)
+			program.DELETE("/:id", controllers.Program.DELETE)
+		}
 	}
 }

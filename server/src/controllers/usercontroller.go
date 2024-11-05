@@ -18,14 +18,14 @@ func (UserController) GET(ctx *gin.Context) {
 
 	if id != "" {
 		var user models.User
-		if err := lib.Database.First(&user, id).Error; err != nil {
+		if err := lib.Database.Preload("Department").First(&user, id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "User not Found"})
 			return
 		}
 		ctx.JSON(http.StatusOK, user)
 	} else {
 		var users []models.User
-		if result := lib.Database.Find(&users); result.Error != nil {
+		if result := lib.Database.Preload("Department").Find(&users); result.Error != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 			return
 		}
@@ -34,17 +34,21 @@ func (UserController) GET(ctx *gin.Context) {
 }
 
 func (UserController) POST(ctx *gin.Context) {
-	loginReq := types.LoginRequest
-	lib.Database = lib.Database.Debug()
-	ctx.Bind(&loginReq)
-	hashedPassword, err := services.Encrypt(loginReq.Password)
+	userRequest := types.CreateUserRequest
+
+	if err := ctx.ShouldBindJSON(&userRequest); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	hashedPassword, err := services.Encrypt(userRequest.Password)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to Hash the given password",
 		})
 		return
 	}
-	user := models.User{UserID: loginReq.UserID, Password: hashedPassword}
+	user := models.User{UserID: userRequest.UserID, Password: hashedPassword, DepartmentID: userRequest.DepartmentID}
 	if result := lib.Database.Create(&user); result.Error != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": result.Error.Error(),
