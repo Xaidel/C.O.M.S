@@ -29,11 +29,13 @@ func (AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Username",
 		})
+		return
 	}
 	if !services.Compare(loginReq.Password, user.Password) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Password",
 		})
+		return
 	}
 
 	tokenString, err := services.IssueJWT(&user)
@@ -41,6 +43,7 @@ func (AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Failed to generate a token",
 		})
+		return
 	}
 
 	res := map[string]interface{}{

@@ -25,6 +25,25 @@ services:
     networks:
       - coms-network
 
+  test:
+    build: .
+    command: ["go", "test", "./tests"]
+    volumes:
+      - ./server:/app
+      - ./tests:/app/tests
+    depends_on:
+      - coms
+      - db
+    environment:
+      - ENV=test
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    networks:
+      - coms-network
+
 networks:
   coms-network:
     name: coms-network
