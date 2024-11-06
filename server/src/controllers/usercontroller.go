@@ -49,9 +49,12 @@ func (UserController) POST(ctx *gin.Context) {
 		return
 	}
 	user := models.User{
-		UserID: userRequest.UserID, Password: hashedPassword, DepartmentID: userRequest.DepartmentID,
-		Firstname: userRequest.Firstname, Middlename: userRequest.Middlename,
-		Lastname: userRequest.Lastname,
+		UserID:       userRequest.UserID,
+		Password:     hashedPassword,
+		DepartmentID: userRequest.DepartmentID,
+		Firstname:    userRequest.Firstname,
+		Middlename:   userRequest.Middlename,
+		Lastname:     userRequest.Lastname,
 	}
 	if result := lib.Database.Create(&user); result.Error != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

@@ -1,7 +1,7 @@
 package types
 
 type LoginRequest struct {
-	UserID   string `json:"user_id" binding:"required"`
+	UserID   string `json:"userID" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
