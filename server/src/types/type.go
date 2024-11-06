@@ -7,7 +7,10 @@ type LoginRequest struct {
 
 var CreateUserRequest struct {
 	LoginRequest
-	DepartmentID uint `json:"dept_id" binding:"required"`
+	Firstname    string `json:"firstname" binding:"required"`
+	Middlename   string `json:"middlename" binding:"required"`
+	Lastname     string `json:"lastname" binding:"required"`
+	DepartmentID uint   `json:"dept_id" binding:"required"`
 }
 
 var DepartmentRequest struct {
