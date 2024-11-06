@@ -16,10 +16,9 @@ type AuthController struct{}
 
 func (AuthController) Login(ctx *gin.Context) {
 	var loginReq types.LoginRequest
-	if ctx.Bind(loginReq) != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": "Bad Request",
-		})
+
+	if err := ctx.ShouldBindJSON(&loginReq); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	var user models.User
