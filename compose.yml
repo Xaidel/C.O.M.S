@@ -27,7 +27,7 @@ services:
 
   test:
     build: .
-    command: ["go", "test", "./tests"]
+    command: ["go", "test", "./tests/..."]
     volumes:
       - ./server:/app
       - ./tests:/app/tests
@@ -36,11 +36,6 @@ services:
       - db
     environment:
       - ENV=test
-      - MYSQL_HOST=db
-      - MYSQL_PORT=3306
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
     networks:
       - coms-network
 
