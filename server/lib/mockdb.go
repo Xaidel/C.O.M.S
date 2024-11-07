@@ -13,3 +13,11 @@ func ConnectMockDatabase() (*gorm.DB, error) {
 	Database = db
 	return db, nil
 }
+
+func TearDownMockDatabase() error {
+	db, err := Database.DB()
+	if err != nil {
+		return err
+	}
+	return db.Close()
+}
