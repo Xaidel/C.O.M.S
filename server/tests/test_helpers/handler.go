@@ -8,7 +8,6 @@ import (
 var Router *gin.Engine
 
 func init() {
-	MockData()
 	Router = SetupRouter()
 }
 

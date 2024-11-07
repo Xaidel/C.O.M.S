@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/tests/test_helpers"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,6 +22,9 @@ func TestLogin_InvalidJSON(t *testing.T) {
 }
 
 func TestLogin_InvalidUsername(t *testing.T) {
+	test_helpers.MockData()
+	defer lib.TearDownMockDatabase()
+
 	req, _ := http.NewRequest("POST", "/api/v1/auth/login", bytes.NewBuffer([]byte(`{"userID": "1111", "password": "password123"}`)))
 	w := httptest.NewRecorder()
 
@@ -31,6 +35,9 @@ func TestLogin_InvalidUsername(t *testing.T) {
 }
 
 func TestLogin_InvalidPassword(t *testing.T) {
+	test_helpers.MockData()
+	defer lib.TearDownMockDatabase()
+
 	req, _ := http.NewRequest("POST", "/api/v1/auth/login", bytes.NewBuffer([]byte(`{"userID": "1034", "password": "password321"}`)))
 	w := httptest.NewRecorder()
 
@@ -40,6 +47,9 @@ func TestLogin_InvalidPassword(t *testing.T) {
 }
 
 func TestLogin_Success(t *testing.T) {
+	test_helpers.MockData()
+	defer lib.TearDownMockDatabase()
+
 	req, _ := http.NewRequest("POST", "/api/v1/auth/login", bytes.NewBuffer([]byte(`{"userID": "1034", "password": "password123"}`)))
 	w := httptest.NewRecorder()
 

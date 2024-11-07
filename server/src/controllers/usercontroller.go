@@ -22,14 +22,14 @@ func (UserController) GET(ctx *gin.Context) {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "User not Found"})
 			return
 		}
-		ctx.JSON(http.StatusOK, user)
+		ctx.JSON(http.StatusOK, gin.H{"user": user})
 	} else {
 		var users []models.User
 		if result := lib.Database.Preload("Department").Find(&users); result.Error != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 			return
 		}
-		ctx.JSON(http.StatusOK, users)
+		ctx.JSON(http.StatusOK, gin.H{"users": users})
 	}
 }
 
@@ -62,7 +62,7 @@ func (UserController) POST(ctx *gin.Context) {
 		})
 		return
 	}
-	ctx.JSON(http.StatusCreated, user)
+	ctx.JSON(http.StatusCreated, gin.H{"user": user})
 }
 
 func (UserController) DELETE(ctx *gin.Context) {
