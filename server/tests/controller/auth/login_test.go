@@ -22,7 +22,7 @@ func TestLogin_InvalidJSON(t *testing.T) {
 }
 
 func TestLogin_InvalidUsername(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("POST", "/api/v1/auth/login", bytes.NewBuffer([]byte(`{"userID": "1111", "password": "password123"}`)))
@@ -35,7 +35,7 @@ func TestLogin_InvalidUsername(t *testing.T) {
 }
 
 func TestLogin_InvalidPassword(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("POST", "/api/v1/auth/login", bytes.NewBuffer([]byte(`{"userID": "1034", "password": "password321"}`)))
@@ -47,7 +47,7 @@ func TestLogin_InvalidPassword(t *testing.T) {
 }
 
 func TestLogin_Success(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("POST", "/api/v1/auth/login", bytes.NewBuffer([]byte(`{"userID": "1034", "password": "password123"}`)))

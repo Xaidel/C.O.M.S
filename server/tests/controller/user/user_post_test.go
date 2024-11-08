@@ -13,7 +13,7 @@ import (
 )
 
 func Test_PostUser(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("POST", "/api/v1/users", bytes.NewBuffer([]byte(
@@ -47,7 +47,7 @@ func Test_PostUser(t *testing.T) {
 }
 
 func Test_InvalidJSON(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("POST", "/api/v1/users", bytes.NewBuffer([]byte(
@@ -64,7 +64,7 @@ func Test_InvalidJSON(t *testing.T) {
 }
 
 func Test_StoredAsHash(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("GET", "/api/v1/users/1", nil)

@@ -11,7 +11,7 @@ import (
 )
 
 func Test_GetUserByID(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("GET", "/api/v1/users/1", nil)
@@ -39,7 +39,7 @@ func Test_GetUserByID(t *testing.T) {
 }
 
 func Test_EndpointNotFound(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("GET", "/invalid_endpoint", nil)
@@ -51,7 +51,7 @@ func Test_EndpointNotFound(t *testing.T) {
 }
 
 func Test_UserNotFound(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("GET", "/api/v1/users/100", nil)
@@ -63,9 +63,8 @@ func Test_UserNotFound(t *testing.T) {
 }
 
 func Test_GetAllUser(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
-
 	req, _ := http.NewRequest("GET", "/api/v1/users", nil)
 	w := httptest.NewRecorder()
 	test_helpers.Router.ServeHTTP(w, req)
