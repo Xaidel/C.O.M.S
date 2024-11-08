@@ -43,14 +43,28 @@ func (DepartmentController) POST(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, department)
+	ctx.JSON(http.StatusCreated, gin.H{"department": department})
 }
 
 func (DepartmentController) DELETE(ctx *gin.Context) {
 	id := ctx.Param("id")
-	if err := lib.Database.Delete(&models.Department{}, id).Error; err != nil {
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide an department id on your request"})
+		return
+	}
+
+	var department models.Department
+
+	if err := lib.Database.First(&department, id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Department does not exist"})
 		return
 	}
+
+	if err := lib.Database.Delete(&department).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete department"})
+		return
+	}
+
 	ctx.JSON(http.StatusNoContent, gin.H{})
 }

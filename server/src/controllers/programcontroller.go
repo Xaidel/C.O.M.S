@@ -20,14 +20,14 @@ func (ProgramController) GET(ctx *gin.Context) {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Program not Found"})
 			return
 		}
-		ctx.JSON(http.StatusOK, program)
+		ctx.JSON(http.StatusOK, gin.H{"program": program})
 	} else {
 		var programs []models.Program
 		if result := lib.Database.Find(&programs); result.Error != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 			return
 		}
-		ctx.JSON(http.StatusOK, programs)
+		ctx.JSON(http.StatusOK, gin.H{"programs": programs})
 	}
 }
 
@@ -49,9 +49,23 @@ func (ProgramController) POST(ctx *gin.Context) {
 
 func (ProgramController) DELETE(ctx *gin.Context) {
 	id := ctx.Param("id")
-	if err := lib.Database.Delete(&models.Program{}, id).Error; err != nil {
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide an program id on your request"})
+		return
+	}
+
+	var program models.Program
+
+	if err := lib.Database.First(&program, id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Program does not exist"})
 		return
 	}
+
+	if err := lib.Database.Delete(&program).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete program"})
+		return
+	}
+
 	ctx.JSON(http.StatusNoContent, gin.H{})
 }
