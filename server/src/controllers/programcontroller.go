@@ -44,7 +44,7 @@ func (ProgramController) POST(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, program)
+	ctx.JSON(http.StatusCreated, gin.H{"program": program})
 }
 
 func (ProgramController) DELETE(ctx *gin.Context) {
