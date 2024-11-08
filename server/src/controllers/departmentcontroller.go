@@ -39,7 +39,7 @@ func (DepartmentController) POST(ctx *gin.Context) {
 		return
 	}
 	department := models.Department{Dept_Code: deptRequest.DeptCode, Dept_Name: deptRequest.DeptName}
-	if result := lib.Database.Create(&department); result.Error != nil {
+	if result := lib.Database.FirstOrCreate(&department, models.Department{Dept_Code: department.Dept_Code, Dept_Name: department.Dept_Name}); result.Error != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}

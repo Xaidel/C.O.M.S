@@ -40,7 +40,7 @@ func (ProgramController) POST(ctx *gin.Context) {
 	}
 
 	program := models.Program{Program_Code: progRequest.ProgramCode, Program_Name: progRequest.ProgramName, DepartmentID: progRequest.DepartmentID}
-	if result := lib.Database.Create(&program); result.Error != nil {
+	if result := lib.Database.FirstOrCreate(&program, models.Program{Program_Code: program.Program_Code, Program_Name: program.Program_Name}); result.Error != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
