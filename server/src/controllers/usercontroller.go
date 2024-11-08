@@ -67,11 +67,23 @@ func (UserController) POST(ctx *gin.Context) {
 
 func (UserController) DELETE(ctx *gin.Context) {
 	id := ctx.Param("id")
-	if err := lib.Database.Delete(&models.User{}, id).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"error": "User does not exist",
-		})
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide an user id on your request"})
 		return
 	}
+
+	var user models.User
+
+	if err := lib.Database.First(&user, id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User does not exist"})
+		return
+	}
+
+	if err := lib.Database.Delete(&user).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete user"})
+		return
+	}
+
 	ctx.JSON(http.StatusNoContent, gin.H{})
 }
