@@ -20,14 +20,15 @@ func (DepartmentController) GET(ctx *gin.Context) {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Department not Found"})
 			return
 		}
-		ctx.JSON(http.StatusOK, department)
+		ctx.JSON(http.StatusOK, gin.H{"department": department})
 	} else {
 		var departments []models.Department
 		if result := lib.Database.Preload("Programs").Find(&departments); result.Error != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 			return
 		}
-		ctx.JSON(http.StatusOK, departments)
+		ctx.JSON(http.StatusOK, gin.H{"departments": departments})
+		return
 	}
 }
 

@@ -11,7 +11,6 @@ func Unmarshal(w *httptest.ResponseRecorder, resource string) (interface{}, erro
 	if err := json.Unmarshal(w.Body.Bytes(), &res); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
 	}
-
 	data, ok := res[resource]
 
 	if !ok {
