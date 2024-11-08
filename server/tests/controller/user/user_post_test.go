@@ -2,7 +2,6 @@ package tests
 
 import (
 	"bytes"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -26,7 +25,6 @@ func Test_PostUser(t *testing.T) {
 	w := httptest.NewRecorder()
 	test_helpers.Router.ServeHTTP(w, req)
 
-	fmt.Println(w.Body)
 	assert.Equal(t, http.StatusCreated, w.Code)
 
 	data, err := test_helpers.Unmarshal(w, "user")
@@ -82,4 +80,38 @@ func Test_StoredAsHash(t *testing.T) {
 	}
 
 	assert.NotEqual(t, "password123", user["Password"])
+}
+
+func Test_AssertIdempotency(t *testing.T) {
+	test_helpers.MockUserData()
+	defer lib.TearDownMockDatabase()
+
+	req, _ := http.NewRequest("POST", "/api/v1/users", bytes.NewBuffer([]byte(
+		`{"userID": "1034", 
+		"password": "password123", 
+		"firstname": "Aliyah", 
+		"middlename": "Salvador", 
+		"lastname": "Ralota", 
+		"dept_id": 1}`)))
+	w := httptest.NewRecorder()
+
+	test_helpers.Router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusCreated, w.Code)
+
+	data, err := test_helpers.Unmarshal(w, "user")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	user, ok := data.(map[string]interface{})
+	if !ok {
+		t.Fatalf("expected user to be a map, got %T", data)
+	}
+
+	assert.Equal(t, "1034", user["UserID"])
+	assert.Equal(t, "John Mark", user["Firstname"])
+	assert.Equal(t, "Salvador", user["Middlename"])
+	assert.Equal(t, "Ralota", user["Lastname"])
+	assert.Equal(t, float64(1), user["DepartmentID"])
 }

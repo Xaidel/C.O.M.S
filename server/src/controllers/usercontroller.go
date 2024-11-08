@@ -56,7 +56,7 @@ func (UserController) POST(ctx *gin.Context) {
 		Middlename:   userRequest.Middlename,
 		Lastname:     userRequest.Lastname,
 	}
-	if result := lib.Database.Create(&user); result.Error != nil {
+	if result := lib.Database.FirstOrCreate(&user, models.User{UserID: user.UserID}); result.Error != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": result.Error.Error(),
 		})
