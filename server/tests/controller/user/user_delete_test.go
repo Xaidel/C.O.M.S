@@ -11,7 +11,7 @@ import (
 )
 
 func Test_DeleteUser(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("DELETE", "/api/v1/users/1", nil)
@@ -28,7 +28,7 @@ func Test_DeleteUser(t *testing.T) {
 }
 
 func Test_DeleteUserNotFound(t *testing.T) {
-	test_helpers.MockData()
+	test_helpers.MockUserData()
 	defer lib.TearDownMockDatabase()
 
 	req, _ := http.NewRequest("DELETE", "/api/v1/users/100", nil)

@@ -8,7 +8,7 @@ import (
 	"github.com/Xaidel/server/src/services"
 )
 
-func MockData() {
+func MockUserData() {
 	db, err := lib.ConnectMockDatabase()
 	if err != nil {
 		log.Panicf("Failed to connect the database: %v", err)
@@ -18,12 +18,6 @@ func MockData() {
 	db.Create(&models.Department{
 		Dept_Code: "SCIS",
 		Dept_Name: "School of Computer and Information Sciences",
-	})
-
-	db.Create(&models.Program{
-		Program_Code: "BSIT",
-		Program_Name: "Bachelor of Science in Information Technology",
-		DepartmentID: 1,
 	})
 
 	hash, _ := services.Encrypt("password123")
