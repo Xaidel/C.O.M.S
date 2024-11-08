@@ -13,8 +13,6 @@ func Unmarshal(w *httptest.ResponseRecorder, resource string) (interface{}, erro
 	}
 	data, ok := res[resource]
 
-	fmt.Println(data)
-
 	if !ok {
 		return nil, fmt.Errorf("expected '%s' wrapper in response", resource)
 	}
