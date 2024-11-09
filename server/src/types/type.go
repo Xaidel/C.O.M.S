@@ -23,3 +23,13 @@ var ProgramRequest struct {
 	ProgramName  string `json:"program_name" binding:"required"`
 	DepartmentID uint   `json:"dept_id" binding:"required"`
 }
+
+var CurriculumRequest struct {
+	Effectivity_SY  string `json:"effectivity_sy" binding:"required"`
+	CMO_Name        string `json:"cmo_name" binding:"required"`
+	CurrID          string `json:"curr_id" binding:"required"`
+	Effectivity_Sem uint   `json:"effectivity_sem" binding:"required"`
+	IsActive        uint   `json:"is_active" binding:"required"`
+	Revision_No     uint   `json:"revision_no" binding:"required"`
+	ProgramID       uint   `json:"program_id" binding:"required"`
+}
