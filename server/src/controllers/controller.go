@@ -5,4 +5,5 @@ type Controller struct {
 	User       UserController
 	Department DepartmentController
 	Program    ProgramController
+	Curriculum CurriculumController
 }

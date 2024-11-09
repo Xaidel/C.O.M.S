@@ -42,5 +42,11 @@ func APIRoutes(router *gin.Engine) {
 			program.POST("", controllers.Program.POST)
 			program.DELETE("/:id", controllers.Program.DELETE)
 		}
+		curriculum := api.Group("/curriculums")
+		{
+			curriculum.GET("", controllers.Curriculum.GET)
+			curriculum.GET("/:code", controllers.Curriculum.GET)
+			curriculum.POST("", controllers.Curriculum.POST)
+		}
 	}
 }

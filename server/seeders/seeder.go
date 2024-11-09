@@ -36,6 +36,16 @@ func seedProg() {
 	fmt.Println("Done Seeding Program")
 }
 
+func seedCurriculum() {
+	fmt.Println("Seeding Curriculum")
+	for _, curr := range seed.Curriculum {
+		if err := lib.Database.Create(&curr).Error; err != nil {
+			log.Printf("Error in Seeding Curriculum %s: %v", curr.CurrID, err)
+		}
+	}
+	fmt.Println("Done Seeding Curriculum")
+}
+
 func seedUser() {
 	fmt.Println("Seeding User")
 	for _, user := range seed.Users {
@@ -54,5 +64,6 @@ func seedUser() {
 func main() {
 	seedDept()
 	seedProg()
+	seedCurriculum()
 	seedUser()
 }
