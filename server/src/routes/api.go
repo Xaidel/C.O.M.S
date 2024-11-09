@@ -47,6 +47,7 @@ func APIRoutes(router *gin.Engine) {
 			curriculum.GET("", controllers.Curriculum.GET)
 			curriculum.GET("/:code", controllers.Curriculum.GET)
 			curriculum.POST("", controllers.Curriculum.POST)
+			curriculum.DELETE("/:code", controllers.Curriculum.DELETE)
 		}
 	}
 }
