@@ -1,9 +1,9 @@
 package models
 
 type Dean struct {
-	Department   Department
 	User         User
-	UserID       uint `gorm:"not null"`
-	DepartmentID uint `gorm:"not null"`
+	Department   Department
+	UserID       uint `gorm:"unique;not null"`
+	DepartmentID uint `gorm:"unique;not null"`
 	ID           uint
 }

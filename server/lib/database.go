@@ -23,8 +23,8 @@ func ConnectDatabase() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, db)
 	var err error
 	Database, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger:                                   logger.Default.LogMode(logger.Info),
-		DisableForeignKeyConstraintWhenMigrating: true,
+		Logger: logger.Default.LogMode(logger.Info),
+		// DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
 		log.Fatalf("Failed to connect to the database: %v", err)
