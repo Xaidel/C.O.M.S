@@ -55,10 +55,42 @@ func seedUser() {
 		}
 		user.Password = hashedPassword
 		if err := lib.Database.Create(&user).Error; err != nil {
-			log.Printf("Error in Seeding departments %s: %v", user.UserID, err)
+			log.Printf("Error in Seeding User %s: %v", user.UserID, err)
 		}
 	}
 	fmt.Println("Done Seeding Users")
+}
+
+func seedRoles() {
+	fmt.Println("Seeding Dean")
+	if err := lib.Database.Create(&seed.Dean).Error; err != nil {
+		log.Print("Error in Seeding Dean")
+	}
+	fmt.Println("Done Seeding Dean")
+
+	fmt.Println("Seeding Assistant Dean")
+	if err := lib.Database.Create(&seed.AssistantDean).Error; err != nil {
+		log.Print("Error in Seeding Assistant Dean")
+	}
+	fmt.Println("Done Seeding Assistant Dean")
+
+	fmt.Println("Seeding Program Head")
+	if err := lib.Database.Create(&seed.ProgramHead).Error; err != nil {
+		log.Print("Error in Seeding Program Head")
+	}
+	fmt.Println("Done Seeding Program Head")
+
+	fmt.Println("Seeding Faculty")
+	if err := lib.Database.Create(&seed.Faculty).Error; err != nil {
+		log.Print("Error in Seeding Faculty")
+	}
+	fmt.Println("Done Seeding Faculty")
+
+	fmt.Println("Seeding Student")
+	if err := lib.Database.Create(&seed.Student).Error; err != nil {
+		log.Print("Error in Seeding Student")
+	}
+	fmt.Println("Done Seeding Student")
 }
 
 func main() {
@@ -66,4 +98,5 @@ func main() {
 	seedProg()
 	seedCurriculum()
 	seedUser()
+	seedRoles()
 }
