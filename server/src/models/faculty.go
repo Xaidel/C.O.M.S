@@ -1,7 +1,7 @@
 package models
 
 type Faculty struct {
-	User
-	ID     uint
+	User   User
 	UserID uint `gorm:"not null"`
+	ID     uint
 }
