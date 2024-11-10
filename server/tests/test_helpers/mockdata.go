@@ -22,12 +22,11 @@ func MockUserData() {
 
 	hash, _ := services.Encrypt("password123")
 	db.Create(&models.User{
-		UserID:       "1034",
-		Password:     hash,
-		Firstname:    "John Mark",
-		Middlename:   "Salvador",
-		Lastname:     "Ralota",
-		DepartmentID: 1,
+		UserID:     "1034",
+		Password:   hash,
+		Firstname:  "John Mark",
+		Middlename: "Salvador",
+		Lastname:   "Ralota",
 	})
 }
 

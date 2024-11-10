@@ -70,6 +70,7 @@ func main() {
 		fmt.Println("Error Migrating")
 		return
 	}
-	setupForeignKeyConstraints()
+
+	// setupForeignKeyConstraints()
 	fmt.Println("Tables successfully migrated")
 }

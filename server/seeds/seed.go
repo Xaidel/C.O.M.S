@@ -17,21 +17,6 @@ var Programs = []models.Program{
 		Program_Name: "Bachelor of Science in Information Technology",
 		DepartmentID: 1,
 	},
-	{
-		Program_Code: "BSCS",
-		Program_Name: "Bachelor of Science in Computer Science",
-		DepartmentID: 1,
-	},
-	{
-		Program_Code: "BLIS",
-		Program_Name: "Bachelor of Library in INformation Science",
-		DepartmentID: 1,
-	},
-	{
-		Program_Code: "ACT",
-		Program_Name: "Associate in Computer Technology",
-		DepartmentID: 1,
-	},
 }
 
 var Curriculum = []models.Curriculum{
@@ -48,28 +33,25 @@ var Curriculum = []models.Curriculum{
 
 var Users = []models.User{
 	{
-		UserID:       "1034",
-		Password:     "password123",
-		Firstname:    "John Mark",
-		Middlename:   "Salvador",
-		Lastname:     "Ralota",
-		DepartmentID: 1,
+		UserID:     "1034",
+		Password:   "password123",
+		Firstname:  "John Mark",
+		Middlename: "Salvador",
+		Lastname:   "Ralota",
 	},
 	{
-		UserID:       "735",
-		Password:     "password123",
-		Firstname:    "Aliyah Patrice",
-		Middlename:   "Panis",
-		Lastname:     "Luntok",
-		DepartmentID: 1,
+		UserID:     "735",
+		Password:   "password123",
+		Firstname:  "Aliyah Patrice",
+		Middlename: "Panis",
+		Lastname:   "Luntok",
 	},
 	{
-		UserID:       "21-28238",
-		Password:     "password123",
-		Firstname:    "Karl Cydil Dwight",
-		Middlename:   "Paa",
-		Lastname:     "Abechuela",
-		DepartmentID: 1,
+		UserID:     "21-28238",
+		Password:   "password123",
+		Firstname:  "Karl Cydil Dwight",
+		Middlename: "Paa",
+		Lastname:   "Abechuela",
 	},
 }
 
@@ -79,7 +61,8 @@ var Dean = models.Dean{
 }
 
 var AssistantDean = models.AssistantDean{
-	UserID: 1,
+	UserID:       1,
+	DepartmentID: 1,
 }
 
 var ProgramHead = models.ProgramHead{
@@ -89,10 +72,12 @@ var ProgramHead = models.ProgramHead{
 
 var Faculty = []models.Faculty{
 	{
-		UserID: 1,
+		UserID:       1,
+		DepartmentID: 1,
 	},
 	{
-		UserID: 2,
+		UserID:       2,
+		DepartmentID: 1,
 	},
 }
 
