@@ -3,12 +3,20 @@
 FROM node:lts-slim as Client
 
 WORKDIR /client
-COPY ./client/. .
-RUN npm i
+
+#Copy package.json & package-lock.json for deps
+COPY ./client/package*.json ./
+
+#install deps
+RUN npm ci
+
+#Copy the rest of the files and build
+COPY ./client/. ./
 RUN npm run build
 
 #Server
 FROM golang:alpine as Server
+
 WORKDIR /server
 
 COPY  ./server/go.mod ./server/go.sum ./
