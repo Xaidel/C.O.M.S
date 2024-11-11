@@ -36,7 +36,7 @@ func (AuthController) Login(ctx *gin.Context) {
 		})
 		return
 	}
-	fmt.Println(role)
+	// var department models.Department
 
 	if user.UserID == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -67,8 +67,9 @@ func (AuthController) Login(ctx *gin.Context) {
 	}
 
 	res := map[string]interface{}{
-		"info":        userData,
-		loginReq.Role: role,
+		"role":      loginReq.Role,
+		"user_info": userData,
+		"role_info": role,
 	}
 
 	domain := config.Get("DOMAIN")
