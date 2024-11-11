@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export interface ProtectedRouteProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export type LoginCredentials = {
@@ -9,12 +9,18 @@ export type LoginCredentials = {
   password: string;
 };
 
-export interface User {
-  acc_type: number;
-  id: number;
-  name: string;
-}
+export type User = {
+  firstname: string;
+  middlename: string;
+  lastname: string;
+  role: string;
+};
 
 export type LoginResponse = {
   user?: User;
+};
+
+export type DepartmentData = {
+  dept_code: string;
+  dept_name: string;
 };

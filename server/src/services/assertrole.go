@@ -18,25 +18,3 @@ func AssertRoleStruct(role string) (interface{}, error) {
 		return nil, nil
 	}
 }
-
-func AssertRoleType(roleData interface{}, user *models.User) (interface{}, bool) {
-	switch v := roleData.(type) {
-	case *models.Dean:
-		*user = v.User
-		return v, true
-	case *models.AssistantDean:
-		*user = v.User
-		return v, true
-	case *models.ProgramHead:
-		*user = v.User
-		return v, true
-	case *models.Faculty:
-		*user = v.User
-		return v, true
-	case *models.Student:
-		*user = v.User
-		return v, true
-	default:
-		return nil, false
-	}
-}
