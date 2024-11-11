@@ -1,9 +1,9 @@
 package models
 
 type Faculty struct {
+	UserID       string `gorm:"unique;not null"`
 	User         User
 	Department   Department `gorm:"foreignKey:DepartmentID"`
-	UserID       uint       `gorm:"unique;not null"`
 	DepartmentID uint       `gorm:"not null"`
 	ID           uint
 }

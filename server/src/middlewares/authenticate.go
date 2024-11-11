@@ -34,7 +34,7 @@ func Authenticate(ctx *gin.Context) {
 		var user models.User
 		lib.Database.First(&user, claims["sub"])
 
-		if user.ID == 0 {
+		if user.UserID == "" {
 			ctx.AbortWithStatus(http.StatusUnauthorized)
 		}
 		ctx.Set("user", user)

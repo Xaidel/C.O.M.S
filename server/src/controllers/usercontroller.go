@@ -18,14 +18,14 @@ func (UserController) GET(ctx *gin.Context) {
 
 	if id != "" {
 		var user models.User
-		if err := lib.Database.Preload("Department").First(&user, id).Error; err != nil {
+		if err := lib.Database.First(&user, id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "User not Found"})
 			return
 		}
 		ctx.JSON(http.StatusOK, gin.H{"user": user})
 	} else {
 		var users []models.User
-		if result := lib.Database.Preload("Department").Find(&users); result.Error != nil {
+		if result := lib.Database.Find(&users); result.Error != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 			return
 		}

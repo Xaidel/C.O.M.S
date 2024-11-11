@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Xaidel/server/config"
@@ -22,10 +23,22 @@ func (AuthController) Login(ctx *gin.Context) {
 		return
 	}
 	var user models.User
-
 	lib.Database.First(&user, "user_id = ?", loginReq.UserID)
 
-	if user.ID == 0 {
+	role, err := services.AssertRoleStruct(loginReq.Role)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Role"})
+	}
+
+	if result := lib.Database.Omit("User").First(&role, "user_id", user.UserID).Error; result != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": fmt.Sprintf("There are no user %v, associated with %v role", user.UserID, loginReq.Role),
+		})
+		return
+	}
+	fmt.Println(role)
+
+	if user.UserID == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Username",
 		})
@@ -46,11 +59,16 @@ func (AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
+	userData := map[string]interface{}{
+		"UserID":     user.UserID,
+		"Firstname":  user.Firstname,
+		"MiddleName": user.Middlename,
+		"Lastname":   user.Lastname,
+	}
+
 	res := map[string]interface{}{
-		"userID":     user.UserID,
-		"firstname":  user.Firstname,
-		"middlename": user.Middlename,
-		"lastname":   user.Lastname,
+		"info":        userData,
+		loginReq.Role: role,
 	}
 
 	domain := config.Get("DOMAIN")
