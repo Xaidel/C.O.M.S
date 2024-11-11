@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { Eye, EyeOff, Loader } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown, Eye, EyeOff, Loader } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -12,13 +13,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLogin } from "./useLogin";
 import { useState } from "react";
 
 const formSchema = z.object({
+  role: z
+    .string({ required_error: "Please select a role" })
+    .min(2, "Please select a role"),
   userID: z
     .string()
     .min(2, "Username must contain at least 2 characters(2)")
@@ -26,18 +42,29 @@ const formSchema = z.object({
   password: z.string().min(1, "Password is required").max(50),
 });
 
+const roles = [
+  { label: "Dean", value: "dean" },
+  { label: "Assistant Dean", value: "assistant dean" },
+  { label: "Program Head", value: "program head" },
+  { label: "Faculty", value: "faculty" },
+  { label: "Student", value: "student" },
+];
+
 export default function LoginForm() {
   const { login, isPending } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
+  const [openRole, setOpenRole] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      role: "",
       userID: "",
       password: "",
     },
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
+    console.log(data);
     const loading = toast.loading("Logging in, Please wait...");
     login(
       { ...data },
@@ -57,14 +84,80 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="flex flex-col gap-4 justify-start min-w-[31rem] min-h-[37rem] text-gray shadow-2xl">
-      <CardHeader className="hidden md:inline-block mt-[3.5rem] ">
+    <Card className="flex flex-col gap-1 justify-start min-w-[31rem] min-h-[37rem] text-gray shadow-2xl">
+      <CardHeader className="hidden md:inline-block mt-[1rem] ">
         <CardTitle className="hidden md:block font-semibold text-[2.59rem]">
           Login your Account
         </CardTitle>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent>
+            <div>
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="hidden md:block font-light text-lg">
+                      Role
+                    </FormLabel>
+                    <Popover open={openRole} onOpenChange={setOpenRole}>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            {...field}
+                            className={cn(
+                              "min-w-full min-h-12 justify-between font-sans",
+                              !field.value && "text-muted-foreground",
+                            )}
+                          >
+                            {field.value
+                              ? roles.find((role) => role.value === field.value)
+                                  ?.label
+                              : "Select your role"}
+                            <ChevronsUpDown className="m1-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[27.6rem] p-0">
+                        <Command>
+                          <CommandList>
+                            <CommandEmpty>No selected role</CommandEmpty>
+                            <CommandGroup>
+                              {roles.map((role) => (
+                                <CommandItem
+                                  value={role.label}
+                                  key={role.value}
+                                  onSelect={() => {
+                                    form.setValue("role", role.value);
+                                    setOpenRole(false);
+                                  }}
+                                >
+                                  {role.label}
+                                  <Check
+                                    className={cn(
+                                      "m1-auto",
+                                      role.value === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0",
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </CardContent>
           <CardContent>
             <div>
               <FormField
@@ -127,7 +220,10 @@ export default function LoginForm() {
                 <Loader className="mr-2 h-5 w-5 animate-spin text-lg" />
               </Button>
             ) : (
-              <Button type="submit" className="w-full font-sans p-6 text-lg">
+              <Button
+                type="submit"
+                className="w-full font-sans p-6 text-lg mb-7"
+              >
                 Log in
               </Button>
             )}
