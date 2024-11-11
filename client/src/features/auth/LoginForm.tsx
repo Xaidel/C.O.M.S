@@ -43,11 +43,11 @@ const formSchema = z.object({
 });
 
 const roles = [
-  { label: "Dean", value: "dean" },
-  { label: "Assistant Dean", value: "assistant dean" },
-  { label: "Program Head", value: "program head" },
-  { label: "Faculty", value: "faculty" },
-  { label: "Student", value: "student" },
+  { label: "Dean", value: "Dean" },
+  { label: "Assistant Dean", value: "Assistant Dean" },
+  { label: "Program Head", value: "Program Head" },
+  { label: "Faculty", value: "Faculty" },
+  { label: "Student", value: "Student" },
 ];
 
 export default function LoginForm() {

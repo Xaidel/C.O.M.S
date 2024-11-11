@@ -1,9 +1,9 @@
 package models
 
 type Student struct {
+	UserID    string `gorm:"unique;not null"`
 	User      User
 	Program   Program
 	ProgramID uint `gorm:"not null"`
-	UserID    uint `gorm:"unique;not null"`
 	ID        uint
 }

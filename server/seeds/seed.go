@@ -56,32 +56,32 @@ var Users = []models.User{
 }
 
 var Dean = models.Dean{
-	UserID:       2,
+	UserID:       "735",
 	DepartmentID: 1,
 }
 
 var AssistantDean = models.AssistantDean{
-	UserID:       1,
+	UserID:       "1034",
 	DepartmentID: 1,
 }
 
 var ProgramHead = models.ProgramHead{
 	ProgramID: 1,
-	UserID:    1,
+	UserID:    "1034",
 }
 
 var Faculty = []models.Faculty{
 	{
-		UserID:       1,
+		UserID:       "735",
 		DepartmentID: 1,
 	},
 	{
-		UserID:       2,
+		UserID:       "1034",
 		DepartmentID: 1,
 	},
 }
 
 var Student = models.Student{
 	ProgramID: 1,
-	UserID:    3,
+	UserID:    "21-28238",
 }
