@@ -46,7 +46,7 @@ const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
   const { role, role_info } = currentUser;
   const { User } = role_info;
   let department;
-  if (role == "Student" || role == "Faculty") {
+  if (role == "Student" || role == "Program Head") {
     const { Program } = role_info;
     const { Department } = Program;
     department = Department;
