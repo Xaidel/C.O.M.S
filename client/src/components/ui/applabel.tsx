@@ -63,7 +63,7 @@ const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
             <p>{department.Dept_Name}</p>
           </div>
           <div className="flex flex-col items-end gap-1">
-            <p className="font-bold">{`${User.Lastname}, ${User.Firstname} ${User.Middlename}`}</p>
+            <p className="font-bold text-xl">{`${User.Lastname}, ${User.Firstname} ${User.Middlename}`}</p>
             <p>{role}</p>
           </div>
         </div>

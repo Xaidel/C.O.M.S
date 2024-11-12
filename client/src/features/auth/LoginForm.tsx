@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown, Eye, EyeOff, Loader } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 
 import {
   Form,
@@ -30,6 +29,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLogin } from "./useLogin";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   role: z
@@ -54,6 +54,7 @@ export default function LoginForm() {
   const { login, isPending } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
   const [openRole, setOpenRole] = useState(false);
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,17 +65,21 @@ export default function LoginForm() {
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
-    const loading = toast.loading("Logging in, Please wait...");
+    toast({
+      title: "Logging in",
+      description: "Please Wait",
+      duration: 3000,
+    });
     login(
       { ...data },
       {
         onSuccess: () => {
-          toast.dismiss(loading);
-          toast.success("Logged in successfully");
-        },
-        onError: () => {
-          toast.dismiss(loading);
+          toast({
+            variant: "success",
+            title: "Success!",
+            description: "Welcome to COMS",
+            duration: 3000,
+          });
         },
       },
     );
