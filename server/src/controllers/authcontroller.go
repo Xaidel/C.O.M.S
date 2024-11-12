@@ -25,25 +25,25 @@ func (AuthController) Login(ctx *gin.Context) {
 	var user models.User
 	lib.Database.First(&user, "user_id = ?", loginReq.UserID)
 
-	role, err := services.AssertRoleStruct(loginReq.Role)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Role"})
-	}
-
-	if result := lib.Database.Omit("User").First(&role, "user_id", user.UserID).Error; result != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": fmt.Sprintf("There are no user %v, associated with %v role", user.UserID, loginReq.Role),
-		})
-		return
-	}
-	// var department models.Department
-
 	if user.UserID == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Username",
 		})
 		return
 	}
+
+	role, err := services.PreloadLoginInfo(loginReq.Role, user.UserID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": fmt.Sprintf("There are no user %v, associated with %v role", user.UserID, loginReq.Role),
+		})
+		return
+	}
+
+	if role == nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error indentifying role"})
+	}
+
 	if !services.Compare(loginReq.Password, user.Password) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid Password",
@@ -59,16 +59,8 @@ func (AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	userData := map[string]interface{}{
-		"UserID":     user.UserID,
-		"Firstname":  user.Firstname,
-		"MiddleName": user.Middlename,
-		"Lastname":   user.Lastname,
-	}
-
 	res := map[string]interface{}{
 		"role":      loginReq.Role,
-		"user_info": userData,
 		"role_info": role,
 	}
 

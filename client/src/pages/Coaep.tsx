@@ -4,7 +4,7 @@ export default function Coaep() {
   return (
     <>
       <div>
-        <AppLabel currentPage="COAEP" />
+        <AppLabel currentPage="Assessment and Evaluation Plan" />
       </div>
     </>
   );

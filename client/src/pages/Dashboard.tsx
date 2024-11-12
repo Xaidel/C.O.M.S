@@ -3,7 +3,7 @@ import AppLabel from "@/components/ui/applabel";
 export default function Dashboard() {
   return (
     <>
-      <div>
+      <div className="">
         <AppLabel currentPage="Dashboard" />
       </div>
     </>

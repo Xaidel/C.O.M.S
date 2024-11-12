@@ -10,8 +10,17 @@ interface Department {
   ID: number;
 }
 
+interface Program {
+  Program_Code: string;
+  Program_Name: string;
+  Department: Department;
+  ID: number;
+}
+
 interface RoleInfo {
   Department: Department;
+  Program: Program;
+  User: UserInfo;
   DepartmentID: number;
   ID: number;
 }
@@ -19,7 +28,7 @@ interface RoleInfo {
 interface UserInfo {
   UserID: string;
   Firstname: string;
-  MiddleName: string;
+  Middlename: string;
   Lastname: string;
 }
 
@@ -34,17 +43,27 @@ const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
   const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
 
   if (!currentUser) return null;
-  const { role, role_info, user_info } = currentUser;
+  const { role, role_info } = currentUser;
+  const { User } = role_info;
+  let department;
+  if (role == "Student" || role == "Faculty") {
+    const { Program } = role_info;
+    const { Department } = Program;
+    department = Department;
+  } else {
+    const { Department } = role_info;
+    department = Department;
+  }
   return (
     <>
       <div className="flex flex-col gap-2 min-w-100">
         <div className="font-sans ml-[5rem] flex justify-between">
           <div className="flex flex-col items-start gap-1">
             <h1 className="text-4xl font-extrabold text-red">{currentPage}</h1>
-            <p>{role_info.Department.Dept_Name}</p>
+            <p>{department.Dept_Name}</p>
           </div>
           <div className="flex flex-col items-end gap-1">
-            <p className="font-bold">{`${user_info.Lastname}, ${user_info.Firstname} ${user_info.MiddleName}`}</p>
+            <p className="font-bold">{`${User.Lastname}, ${User.Firstname} ${User.Middlename}`}</p>
             <p>{role}</p>
           </div>
         </div>
@@ -58,4 +77,3 @@ const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
 };
 
 export default AppLabel;
-
