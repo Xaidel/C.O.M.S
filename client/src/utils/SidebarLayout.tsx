@@ -1,10 +1,5 @@
 import logo from "../assets/unc_logo.svg";
-import {
-  LayoutDashboard,
-  UserRoundPlus,
-  FileCheck2,
-  LogOut,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,11 +12,32 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { NavLink, useLocation } from "react-router-dom";
+import {
+  ASSISTANT_DEAN_NAV_ITEMS,
+  DEAN_NAV_ITEMS,
+  FACULTY_NAV_ITEMS,
+  PROGRAM_HEAD_NAV_ITEMS,
+  STUDENT_NAV_ITEMS,
+} from "@/types/NavItems";
+import { useQueryClient } from "@tanstack/react-query";
+import { currentUser } from "@/types/Interface";
 
 export function SidebarLayout() {
   const { state } = useSidebar();
+  const queryClient = useQueryClient();
   const location = useLocation();
   const currentPath = location.pathname;
+  let navItems = DEAN_NAV_ITEMS;
+
+  const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
+  if (!currentUser) return null;
+  const { role } = currentUser;
+  if (role === "Dean") navItems = DEAN_NAV_ITEMS;
+  else if (role === "Assistant Dean") navItems = ASSISTANT_DEAN_NAV_ITEMS;
+  else if (role === "Program Head") navItems = PROGRAM_HEAD_NAV_ITEMS;
+  else if (role === "Faculty") navItems = FACULTY_NAV_ITEMS;
+  else navItems = STUDENT_NAV_ITEMS;
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="py-4">
@@ -49,59 +65,30 @@ export function SidebarLayout() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            <SidebarMenuItem className="flex justify-center items-center p-0">
-              <SidebarMenuButton
-                asChild
-                className={`${state === "collapsed" ? "flex justify-center items-center" : "ml-3"} `}
-                size="lg"
-                isActive={currentPath === "/dashboard"}
+            {navItems.map((item) => (
+              <SidebarMenuItem
+                key={item.path}
+                className="flex justify-center items-center p-0"
               >
-                <NavLink to="dashboard">
-                  <div>
-                    <LayoutDashboard />
-                  </div>
-                  <span className="group-data-[collapsible=icon]:hidden ">
-                    Dashboard
-                  </span>
-                </NavLink>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem className="flex justify-center items-center p-0">
-              <SidebarMenuButton
-                asChild
-                className={`${state === "collapsed" ? "flex justify-center items-center" : "ml-3"} `}
-                size="lg"
-                isActive={currentPath === "/teaching-assignment"}
-              >
-                <NavLink to="teaching-assignment">
-                  <div>
-                    <UserRoundPlus />
-                  </div>
-                  <span className="group-data-[collapsible=icon]:hidden truncate">
-                    Teaching Assignment
-                  </span>
-                </NavLink>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem className="flex justify-center items-center p-0">
-              <SidebarMenuButton
-                asChild
-                className={`${state === "collapsed" ? "flex justify-center items-center" : "ml-3"}`}
-                size="lg"
-                isActive={currentPath === "/coaep"}
-              >
-                <NavLink to="coaep">
-                  <div>
-                    <FileCheck2 />
-                  </div>
-                  <span
-                    className={`transition-all duration-1 whitespace-normal ${state === "collapsed" && "hidden"}`}
-                  >
-                    Assessment and{"\n"}Evaluation Plan
-                  </span>
-                </NavLink>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  className={`${state === "collapsed" ? "flex justify-center items-center" : "ml-3"} `}
+                  size="lg"
+                  isActive={currentPath === item.path}
+                >
+                  <NavLink to={item.path}>
+                    <div>
+                      <item.icon />
+                    </div>
+                    <span
+                      className={`group-data-[collapsible=icon]:hidden ${item.label === "Assessment and Evaluation Plan" ? "whitespace-normal" : ""}`}
+                    >
+                      {item.label}
+                    </span>
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>

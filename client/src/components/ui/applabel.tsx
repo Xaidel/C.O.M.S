@@ -1,42 +1,9 @@
+import { currentUser } from "@/types/Interface";
 import { Separator } from "./separator";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface AppLabelProps {
   currentPage: string;
-}
-interface Department {
-  Dept_Name: string;
-  Dept_Code: string;
-  ID: number;
-}
-
-interface Program {
-  Program_Code: string;
-  Program_Name: string;
-  Department: Department;
-  ID: number;
-}
-
-interface RoleInfo {
-  Department: Department;
-  Program: Program;
-  User: UserInfo;
-  DepartmentID: number;
-  ID: number;
-}
-
-interface UserInfo {
-  UserID: string;
-  Firstname: string;
-  Middlename: string;
-  Lastname: string;
-}
-
-interface currentUser {
-  role: string;
-  role_info: RoleInfo;
-  user_info: UserInfo;
-  UserID: string;
 }
 const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
   const queryClient = useQueryClient();
