@@ -57,20 +57,17 @@ const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
   return (
     <>
       <div className="flex flex-col gap-2 min-w-100">
-        <div className="font-sans ml-[5rem] flex justify-between">
+        <div className="font-sans  flex justify-between">
           <div className="flex flex-col items-start gap-1">
             <h1 className="text-4xl font-extrabold text-red">{currentPage}</h1>
             <p>{department.Dept_Name}</p>
           </div>
           <div className="flex flex-col items-end gap-1">
-            <p className="font-bold">{`${User.Lastname}, ${User.Firstname} ${User.Middlename}`}</p>
+            <p className="font-bold text-xl">{`${User.Lastname}, ${User.Firstname} ${User.Middlename}`}</p>
             <p>{role}</p>
           </div>
         </div>
-        <Separator
-          orientation="horizontal"
-          className="mx-[5rem] h-0.5 w-[calc(100%-5rem)] bg-gray/50"
-        />
+        <Separator orientation="horizontal" className="h-0.5 bg-gray/50" />
       </div>
     </>
   );

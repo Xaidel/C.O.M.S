@@ -15,7 +15,7 @@ const AppLayout: React.FC = () => {
         <SidebarLayout />
       </div>
       <div
-        className={`h-screen w-screen p-8 bg-gray-main ${open ? "!bg-black/55" : ""}`}
+        className={`ml-[5rem] h-screen w-screen p-8 bg-gray-main ${open ? "!bg-black/55" : ""}`}
       >
         <Outlet />
       </div>
