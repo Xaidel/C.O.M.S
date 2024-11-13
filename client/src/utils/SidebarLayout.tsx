@@ -80,9 +80,7 @@ export function SidebarLayout() {
                     <div>
                       <item.icon />
                     </div>
-                    <span
-                      className={`group-data-[collapsible=icon]:hidden ${item.label === "Assessment and Evaluation Plan" ? "whitespace-normal" : ""}`}
-                    >
+                    <span className={"group-data-[collapsible=icon]:hidden "}>
                       {item.label}
                     </span>
                   </NavLink>
