@@ -3,6 +3,7 @@ import { QueryClient } from "@tanstack/query-core";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./App.css";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -28,6 +29,7 @@ function App() {
       client={queryClient}
       persistOptions={{ persister }}
     >
+      <ReactQueryDevtools initialIsOpen={false} />
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>

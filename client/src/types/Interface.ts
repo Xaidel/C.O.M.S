@@ -6,11 +6,9 @@ interface Department {
   ID: number;
 }
 
-interface Program {
+export interface Program {
   Program_Code: string;
   Program_Name: string;
-  Department: Department;
-  ID: number;
 }
 
 interface RoleInfo {
