@@ -17,6 +17,21 @@ var Programs = []models.Program{
 		Program_Name: "Bachelor of Science in Information Technology",
 		DepartmentID: 1,
 	},
+	{
+		Program_Code: "BSCS",
+		Program_Name: "Bachelor of Science in Computer Science",
+		DepartmentID: 1,
+	},
+	{
+		Program_Code: "BLIS",
+		Program_Name: "Bachelor of Library in Information Science",
+		DepartmentID: 1,
+	},
+	{
+		Program_Code: "ACT",
+		Program_Name: "Associate in Computer Technology",
+		DepartmentID: 1,
+	},
 }
 
 var Curriculum = []models.Curriculum{
