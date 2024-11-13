@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import TeachingAssignment from "./pages/TeachingAssignment";
+import CourseManagement from "./pages/CourseManagement";
 import AppLayout from "./utils/AppLayout";
 import Coaep from "./pages/Coaep";
 
@@ -33,10 +33,7 @@ function App() {
           <Route element={<AppLayout />}>
             <Route index element={<Navigate replace to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route
-              path="/teaching-assignment"
-              element={<TeachingAssignment />}
-            />
+            <Route path="/course-management" element={<CourseManagement />} />
             <Route path="/coaep" element={<Coaep />} />
           </Route>
           <Route path="login" element={<Login />} />

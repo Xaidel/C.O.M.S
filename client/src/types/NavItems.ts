@@ -1,16 +1,11 @@
-import { LayoutDashboard, UserRoundPlus, FileCheck2 } from "lucide-react";
+import { LayoutDashboard, UserRoundPlus } from "lucide-react";
 
 export const DEAN_NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   {
-    path: "/teaching-assignment",
-    label: "Teaching Assignment",
+    path: "/course-management",
+    label: "Course Management",
     icon: UserRoundPlus,
-  },
-  {
-    path: "/coaep",
-    label: "Assessment and Evaluation Plan",
-    icon: FileCheck2,
   },
 ];
 

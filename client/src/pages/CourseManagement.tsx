@@ -4,7 +4,7 @@ export default function TeachingAssignment() {
   return (
     <>
       <div>
-        <AppLabel currentPage="Teaching Assignment" />
+        <AppLabel currentPage="Course Management" />
       </div>
     </>
   );
