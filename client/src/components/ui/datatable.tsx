@@ -17,12 +17,13 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isHalf?: boolean;
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>(
+  { columns, data, isHalf = false }: DataTableProps<TData, TValue>,
+  
+) {
   const table = useReactTable({
     data,
     columns,
@@ -30,7 +31,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
+    <div className={`${isHalf ? "max-w-[calc(100%/2)]" : ""}`}>
       <Table>
         <TableHeader className="bg-[#CBD2DB] text-[#1F2937]">
           {table.getHeaderGroups().map((headerGroup) => (

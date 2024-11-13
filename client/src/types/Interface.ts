@@ -1,14 +1,17 @@
 import { ReactNode } from "react";
 
-interface Department {
-  Dept_Name: string;
-  Dept_Code: string;
-  ID: number;
-}
-
 export interface Program {
   Program_Code: string;
   Program_Name: string;
+  Department: Department;
+  ID: number;
+}
+
+export interface Department {
+  Dept_Code: string;
+  Dept_Name: string;
+  ID: number;
+  Programs: Program[];
 }
 
 interface RoleInfo {
@@ -51,9 +54,4 @@ export type User = {
 
 export type LoginResponse = {
   user?: User;
-};
-
-export type DepartmentData = {
-  dept_code: string;
-  dept_name: string;
 };
