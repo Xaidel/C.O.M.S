@@ -16,7 +16,7 @@ func (DepartmentController) GET(ctx *gin.Context) {
 
 	if id != "" {
 		var department models.Department
-		if err := lib.Database.Preload("Programs").First(&department, id).Error; err != nil {
+		if err := lib.Database.Preload("Programs.ProgramHead.User").First(&department, id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Department not Found"})
 			return
 		}
