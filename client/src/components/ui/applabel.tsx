@@ -23,7 +23,7 @@ const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
   }
   return (
     <>
-      <div className="flex flex-col gap-2 min-w-100">
+      <div className="flex flex-col gap-2 min-w-100 mb-9">
         <div className="font-sans  flex justify-between">
           <div className="flex flex-col items-start gap-1">
             <h1 className="text-4xl font-extrabold text-red">{currentPage}</h1>
