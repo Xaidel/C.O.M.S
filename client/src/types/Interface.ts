@@ -4,6 +4,7 @@ export interface Program {
   Program_Code: string;
   Program_Name: string;
   Department: Department;
+  ProgramHead: ProgramHead;
   ID: number;
 }
 
@@ -12,6 +13,10 @@ export interface Department {
   Dept_Name: string;
   ID: number;
   Programs: Program[];
+}
+
+export interface ProgramHead {
+  User: UserInfo;
 }
 
 interface RoleInfo {

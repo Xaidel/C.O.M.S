@@ -16,7 +16,7 @@ func (ProgramController) GET(ctx *gin.Context) {
 
 	if id != "" {
 		var program models.Program
-		if err := lib.Database.First(&program, id).Error; err != nil {
+		if err := lib.Database.Model(&models.Program{}).Preload("ProgramHead.User").First(&program, id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Program not Found"})
 			return
 		}
