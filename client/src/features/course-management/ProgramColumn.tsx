@@ -8,6 +8,9 @@ import {
 import { Program } from "@/types/Interface";
 import { ColumnDef } from "@tanstack/react-table";
 import { Book, UserRoundPen, UserRoundPlus } from "lucide-react";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import AssignProgramHead from "./AssignProgramHead";
+import EditProgramHead from "./EditProgramHead";
 
 export const ProgramColumn: ColumnDef<Program>[] = [
   {
@@ -42,11 +45,18 @@ export const ProgramColumn: ColumnDef<Program>[] = [
       const phIcon = !User ? (
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="outline">
-                <UserRoundPlus />
-              </Button>
-            </TooltipTrigger>
+            <Dialog>
+              <DialogTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Button variant="outline">
+                    <UserRoundPlus />
+                  </Button>
+                </TooltipTrigger>
+              </DialogTrigger>
+              <DialogContent>
+                <AssignProgramHead />
+              </DialogContent>
+            </Dialog>
             <TooltipContent>
               <p className="text-white">Add Program Head</p>
             </TooltipContent>
@@ -55,11 +65,18 @@ export const ProgramColumn: ColumnDef<Program>[] = [
       ) : (
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="outline">
-                <UserRoundPen />
-              </Button>
-            </TooltipTrigger>
+            <Dialog>
+              <DialogTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Button variant="outline">
+                    <UserRoundPen />
+                  </Button>
+                </TooltipTrigger>
+              </DialogTrigger>
+              <DialogContent>
+                <EditProgramHead />
+              </DialogContent>
+            </Dialog>
             <TooltipContent>
               <p className="text-white">Edit Program Head</p>
             </TooltipContent>
@@ -67,7 +84,7 @@ export const ProgramColumn: ColumnDef<Program>[] = [
         </TooltipProvider>
       );
       return (
-        <div className="flex justify-center gap-3 ">
+        <div className="flex justify-center gap-2 ">
           {phIcon}
           <TooltipProvider>
             <Tooltip>
