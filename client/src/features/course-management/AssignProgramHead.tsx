@@ -6,26 +6,7 @@ import {
 import { FacultyColumn, FacultyFullName } from "./FacultyColumn";
 import { DataTable } from "@/components/ui/datatable";
 
-const faculties: FacultyFullName[] = [
-  {
-    fullname: "John Mark Ralota",
-  },
-  {
-    fullname: "Aliyah Luntok",
-  },
-  {
-    fullname: "Aliyah Luntok",
-  },
-  {
-    fullname: "Aliyah Luntok",
-  },
-  {
-    fullname: "Aliyah Luntok",
-  },
-  {
-    fullname: "Aliyah Luntok",
-  },
-];
+const faculties: FacultyFullName[] = [];
 
 export default function AssignProgramHead() {
   return (
@@ -40,7 +21,11 @@ export default function AssignProgramHead() {
         </DialogDescription>
       </DialogHeader>
       <div className="min-w-full max-h-80 overflow-y-scroll flex flex-col gap-2">
-        <DataTable columns={FacultyColumn} data={faculties} />
+        <DataTable
+          resource="Faculty"
+          columns={FacultyColumn}
+          data={faculties}
+        />
       </div>
       <div className="mt-2" />
     </>

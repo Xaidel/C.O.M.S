@@ -20,7 +20,7 @@ export default function CourseManagement() {
         <AppLabel currentPage="Course Management" />
       </div>
       <h1 className="text-3xl font-bold text-[#1F2937] mb-3">Programs</h1>
-      <DataTable columns={ProgramColumn} data={programs} />
+      <DataTable resource="Programs" columns={ProgramColumn} data={programs} />
     </>
   );
 }

@@ -42,6 +42,20 @@ func APIRoutes(router *gin.Engine) {
 			program.POST("", controllers.Program.POST)
 			program.DELETE("/:id", controllers.Program.DELETE)
 		}
+		programHead := api.Group("/program-heads")
+		{
+			programHead.GET("", controllers.ProgramHead.GET)
+			programHead.GET("/:id", controllers.ProgramHead.GET)
+			programHead.POST("", controllers.ProgramHead.POST)
+			programHead.DELETE("/:id", controllers.ProgramHead.DELETE)
+		}
+		faculty := api.Group("/faculties")
+		{
+			faculty.GET("", controllers.Faculty.GET)
+			faculty.GET("/:id", controllers.Faculty.GET)
+			faculty.POST("", controllers.Faculty.POST)
+			faculty.DELETE("/:id", controllers.Faculty.DELETE)
+		}
 		curriculum := api.Group("/curriculums")
 		{
 			curriculum.GET("", controllers.Curriculum.GET)
