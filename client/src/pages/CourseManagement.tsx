@@ -12,7 +12,6 @@ export default function CourseManagement() {
   const { isLoading, response, error } = useDepartments(departmentID);
   if (isLoading) return;
   if (error) return;
-  console.log(response?.department?.Programs[0]);
 
   const programs = response?.department?.Programs || [];
   return (
