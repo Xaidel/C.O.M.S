@@ -25,6 +25,16 @@ var ProgramRequest struct {
 	DepartmentID uint   `json:"dept_id" binding:"required"`
 }
 
+var ProgramHeadRequest struct {
+	UserID    string `json:"userID" binding:"required"`
+	ProgramID uint   `json:"program_id" binding:"required"`
+}
+
+var FacultyRequest struct {
+	UserID  string `json:"userID" binding:"required"`
+	Dept_ID uint   `json:"userID" binding:"required"`
+}
+
 var CurriculumRequest struct {
 	Effectivity_SY  string `json:"effectivity_sy" binding:"required"`
 	CMO_Name        string `json:"cmo_name" binding:"required"`
