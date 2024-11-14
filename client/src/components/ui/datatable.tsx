@@ -32,7 +32,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <Table>
-        <TableHeader className="bg-[#CBD2DB] text-[#1F2937]">
+        <TableHeader className="bg-[#CBD2DB] ">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {

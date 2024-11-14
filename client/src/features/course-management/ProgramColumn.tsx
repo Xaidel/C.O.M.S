@@ -1,6 +1,13 @@
 import { Button } from "@/components/ui/button";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { Program } from "@/types/Interface";
 import { ColumnDef } from "@tanstack/react-table";
+import { Book, UserRoundPen, UserRoundPlus } from "lucide-react";
 
 export const ProgramColumn: ColumnDef<Program>[] = [
   {
@@ -30,14 +37,52 @@ export const ProgramColumn: ColumnDef<Program>[] = [
   },
   {
     id: "action",
-    cell: () => (
-      <div className="flex justify-center gap-2 ">
-        <Button variant="outline" size="sm">
-          View Courses
-        </Button>
-        <Button size="sm">Assign Program Head</Button>
-      </div>
-    ),
-    size: 100,
+    cell: ({ row }) => {
+      const { User } = row.original.ProgramHead || {};
+      const phIcon = !User ? (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline">
+                <UserRoundPlus />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white">Add Program Head</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline">
+                <UserRoundPen />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white">Edit Program Head</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+      return (
+        <div className="flex justify-center gap-3 ">
+          {phIcon}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button>
+                  <Book />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View Courses</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      );
+    },
   },
 ];

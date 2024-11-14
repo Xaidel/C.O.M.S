@@ -14,10 +14,11 @@ const AppLayout: React.FC = () => {
       >
         <SidebarLayout />
       </div>
-      <div
-        className={`ml-[5rem] h-screen w-screen p-8 bg-gray-main ${open ? "!bg-black/55" : ""}`}
-      >
+      <div className={`ml-[5rem] h-screen w-screen p-8 bg-gray-main`}>
         <Outlet />
+        {open && (
+          <div className="absolute inset-0 bg-black/30 pointer-events-none transition-opacity duration-300 ease-in-out" />
+        )}
       </div>
     </SidebarProvider>
   );
