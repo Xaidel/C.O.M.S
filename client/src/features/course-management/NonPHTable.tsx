@@ -1,12 +1,12 @@
-import { FacultyColumn, FacultyFullName } from "./FacultyColumn";
-import { DataTable } from "@/components/ui/datatable";
 import { Button } from "@/components/ui/button";
-import { useNonPHFaculty } from "./useNonPHFaculty";
-import { NonPHFaculty } from "@/types/Interface";
-import { useEffect, useState } from "react";
-import { useAddProgramHead } from "./useAddProgramHead";
+import { DataTable } from "@/components/ui/datatable";
 import { useToast } from "@/hooks/use-toast";
+import { NonPHFaculty } from "@/types/Interface";
 import { Loader } from "lucide-react";
+import { useEffect, useState } from "react";
+import { FacultyColumn, FacultyFullName } from "./FacultyColumn";
+import { useAddProgramHead } from "./useAddProgramHead";
+import { useNonPHFaculty } from "./useNonPHFaculty";
 
 interface NonPHTableProps {
   programID: number;
@@ -66,7 +66,7 @@ export default function NonPHTable({ programID }: NonPHTableProps) {
             ...FacultyColumn,
             {
               id: "select",
-              header: "",
+              header: "AsssA",
               cell: ({ row }) => (
                 <div className="flex justify-center">
                   {isCreating ? (
