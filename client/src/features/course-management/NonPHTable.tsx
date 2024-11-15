@@ -66,7 +66,7 @@ export default function NonPHTable({ programID }: NonPHTableProps) {
             ...FacultyColumn,
             {
               id: "select",
-              header: "AsssA",
+              header: "",
               cell: ({ row }) => (
                 <div className="flex justify-center">
                   {isCreating ? (
