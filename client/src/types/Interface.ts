@@ -8,6 +8,12 @@ export interface Program {
   ID: number;
 }
 
+export interface NonPHFaculty {
+  DepartmentID: number;
+  UserID: number;
+  User: UserInfo;
+}
+
 export interface Department {
   Dept_Code: string;
   Dept_Name: string;

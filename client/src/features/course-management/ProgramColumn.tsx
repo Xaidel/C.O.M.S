@@ -8,9 +8,15 @@ import {
 import { Program } from "@/types/Interface";
 import { ColumnDef } from "@tanstack/react-table";
 import { Book, UserRoundPen, UserRoundPlus } from "lucide-react";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
-import AssignProgramHead from "./AssignProgramHead";
-import EditProgramHead from "./EditProgramHead";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import NonPHTable from "./NonPHTable";
 
 export const ProgramColumn: ColumnDef<Program>[] = [
   {
@@ -54,7 +60,19 @@ export const ProgramColumn: ColumnDef<Program>[] = [
                 </TooltipTrigger>
               </DialogTrigger>
               <DialogContent>
-                <AssignProgramHead />
+                <DialogHeader>
+                  <DialogTitle className="text-2xl">
+                    Assign Program Head
+                  </DialogTitle>
+                  <DialogDescription>
+                    Choose a <span className="font-bold">Faculty</span> Member
+                    among the{" "}
+                    <span className="font-bold">
+                      School of Computer and Information Sciences
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+                <NonPHTable />
               </DialogContent>
             </Dialog>
             <TooltipContent>
@@ -74,7 +92,19 @@ export const ProgramColumn: ColumnDef<Program>[] = [
                 </TooltipTrigger>
               </DialogTrigger>
               <DialogContent>
-                <EditProgramHead />
+                <DialogHeader>
+                  <DialogTitle className="text-2xl">
+                    Edit Program Head
+                  </DialogTitle>
+                  <DialogDescription>
+                    Choose a <span className="font-bold">Faculty</span> Member
+                    among the{" "}
+                    <span className="font-bold">
+                      School of Computer and Information Sciences
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+                <NonPHTable />
               </DialogContent>
             </Dialog>
             <TooltipContent>
