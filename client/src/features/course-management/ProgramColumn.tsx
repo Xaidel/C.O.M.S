@@ -17,6 +17,7 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 import NonPHTable from "./NonPHTable";
+import { useState } from "react";
 
 export const ProgramColumn: ColumnDef<Program>[] = [
   {
@@ -48,6 +49,7 @@ export const ProgramColumn: ColumnDef<Program>[] = [
     id: "action",
     cell: ({ row }) => {
       const { User } = row.original.ProgramHead || {};
+      const ID = row.original.ID;
       const phIcon = !User ? (
         <TooltipProvider>
           <Tooltip>
@@ -72,7 +74,7 @@ export const ProgramColumn: ColumnDef<Program>[] = [
                     </span>
                   </DialogDescription>
                 </DialogHeader>
-                <NonPHTable />
+                <NonPHTable programID={ID} />
               </DialogContent>
             </Dialog>
             <TooltipContent>
@@ -104,7 +106,7 @@ export const ProgramColumn: ColumnDef<Program>[] = [
                     </span>
                   </DialogDescription>
                 </DialogHeader>
-                <NonPHTable />
+                <NonPHTable programID={ID} />
               </DialogContent>
             </Dialog>
             <TooltipContent>

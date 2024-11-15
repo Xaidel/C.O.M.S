@@ -10,7 +10,7 @@ export interface Program {
 
 export interface NonPHFaculty {
   DepartmentID: number;
-  UserID: number;
+  UserID: string;
   User: UserInfo;
 }
 
@@ -22,6 +22,8 @@ export interface Department {
 }
 
 export interface ProgramHead {
+  UserID: number;
+  ProgramID: number;
   User: UserInfo;
 }
 
