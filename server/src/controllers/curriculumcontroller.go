@@ -16,14 +16,14 @@ func (CurriculumController) GET(ctx *gin.Context) {
 	id := ctx.Param("code")
 	if id != "" {
 		var curriculum models.Curriculum
-		if err := lib.Database.Preload("Program").First(&curriculum, "curr_id = ?", id).Error; err != nil {
+		if err := lib.Database.First(&curriculum, "curr_id = ?", id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Curriculum not Found"})
 			return
 		}
 		ctx.JSON(http.StatusOK, gin.H{"curriculum": curriculum})
 	} else {
 		var curriculums []models.Curriculum
-		if result := lib.Database.Preload("Program").Find(&curriculums); result.Error != nil {
+		if result := lib.Database.Find(&curriculums); result.Error != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 			return
 		}
@@ -46,7 +46,6 @@ func (CurriculumController) POST(ctx *gin.Context) {
 		CurrID:          currRequest.CurrID,
 		Effectivity_Sem: currRequest.Effectivity_Sem,
 		IsActive:        currRequest.IsActive,
-		ProgramID:       currRequest.ProgramID,
 		Revision_No:     currRequest.Revision_No,
 	}
 

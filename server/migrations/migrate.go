@@ -66,7 +66,8 @@ func main() {
 		&models.AssistantDean{},
 		&models.ProgramHead{},
 		&models.Faculty{},
-		&models.Student{}); err != nil {
+		&models.Student{},
+		&models.Course{}); err != nil {
 		fmt.Println("Error Migrating")
 		return
 	}

@@ -41,7 +41,6 @@ var Curriculum = []models.Curriculum{
 		CMO_Name:        "CMO no.15, series of 2022",
 		Revision_No:     1,
 		IsActive:        1,
-		ProgramID:       1,
 		CurrID:          "PK",
 	},
 }
