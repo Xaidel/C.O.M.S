@@ -121,7 +121,9 @@ export default function ProgramManagement() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button onClick={() => navigate("/programs/courses")}>
+                        <Button
+                          onClick={() => navigate(`/programs/${ID}/courses`)}
+                        >
                           <Book />
                         </Button>
                       </TooltipTrigger>

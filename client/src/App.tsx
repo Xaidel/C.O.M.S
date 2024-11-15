@@ -37,7 +37,10 @@ function App() {
             <Route index element={<Navigate replace to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/programs" element={<ProgramManagement />} />
-            <Route path="/programs/courses" element={<CourseManagement />} />
+            <Route
+              path="/programs/:programID/courses"
+              element={<CourseManagement />}
+            />
             <Route path="/coaep" element={<Coaep />} />
           </Route>
           <Route path="login" element={<Login />} />
