@@ -32,7 +32,7 @@ var ProgramHeadRequest struct {
 
 var FacultyRequest struct {
 	UserID  string `json:"userID" binding:"required"`
-	Dept_ID uint   `json:"userID" binding:"required"`
+	Dept_ID uint   `json:"dept_id" binding:"required"`
 }
 
 var CurriculumRequest struct {

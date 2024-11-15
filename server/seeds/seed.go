@@ -68,6 +68,34 @@ var Users = []models.User{
 		Middlename: "Paa",
 		Lastname:   "Abechuela",
 	},
+	{
+		UserID:     "1000",
+		Password:   "password123",
+		Firstname:  "Camille",
+		Middlename: "Elevado",
+		Lastname:   "Abang",
+	},
+	{
+		UserID:     "1010",
+		Password:   "password123",
+		Firstname:  "Christine Joy",
+		Middlename: "Paja",
+		Lastname:   "Cleofe",
+	},
+	{
+		UserID:     "21-28239",
+		Password:   "password123",
+		Firstname:  "Jerico",
+		Middlename: "Reid",
+		Lastname:   "Nacion",
+	},
+	{
+		UserID:     "1001",
+		Password:   "password123",
+		Firstname:  "Philip Cesar",
+		Middlename: "Mota",
+		Lastname:   "Custodio",
+	},
 }
 
 var Dean = models.Dean{
@@ -94,9 +122,24 @@ var Faculty = []models.Faculty{
 		UserID:       "1034",
 		DepartmentID: 1,
 	},
+	{
+		UserID:       "1000",
+		DepartmentID: 1,
+	},
+	{
+		UserID:       "1010",
+		DepartmentID: 1,
+	},
+	{
+		UserID:       "1001",
+		DepartmentID: 1,
+	},
 }
 
-var Student = models.Student{
+var Student = []models.Student{{
 	ProgramID: 1,
 	UserID:    "21-28238",
-}
+}, {
+	ProgramID: 1,
+	UserID:    "21-28239",
+}}

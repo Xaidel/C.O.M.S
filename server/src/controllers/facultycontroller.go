@@ -30,6 +30,28 @@ func (FacultyController) GET(ctx *gin.Context) {
 	}
 }
 
+func (FacultyController) GetNonProgramHeadFaculties(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	if id != "" {
+		var faculty models.Faculty
+		if err := lib.Database.Joins("LEFT JOIN program_heads on program_heads.user_id = faculties.user_id").
+			Where("program_heads.user_id IS NULL").Preload("User").First(&faculty, id).Error; err != nil {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Faculty not Found"})
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"faculty": faculty})
+	} else {
+		var faculties []models.Faculty
+		if err := lib.Database.Joins("LEFT JOIN program_heads on program_heads.user_id = faculties.user_id").
+			Where("program_heads.user_id IS NULL").Preload("User").Find(&faculties).Error; err != nil {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"faculties": faculties})
+	}
+}
+
 func (FacultyController) POST(ctx *gin.Context) {
 	facultyRequest := types.FacultyRequest
 	if err := ctx.ShouldBindJSON(&facultyRequest); err != nil {
