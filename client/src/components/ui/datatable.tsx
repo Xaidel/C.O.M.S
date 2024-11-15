@@ -3,8 +3,9 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from "@tanstack/react-table"
 
+import { useState } from "react"
 import {
   Table,
   TableBody,
@@ -12,13 +13,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table";
-import { useState } from "react";
+} from "./table"
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  resource: string;
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  resource: string
 }
 
 export function DataTable<TData, TValue>({
@@ -26,7 +26,7 @@ export function DataTable<TData, TValue>({
   data,
   resource,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState({})
   const table = useReactTable({
     data,
     columns,
@@ -35,25 +35,25 @@ export function DataTable<TData, TValue>({
     state: {
       rowSelection,
     },
-  });
+  })
 
   return (
     <div>
       <Table>
-        <TableHeader className="bg-[#CBD2DB] ">
+        <TableHeader className="bg-[#CBD2DB]">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="text-[#1F2937] font-semibold">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext(),
+                          header.getContext()
                         )}
                   </TableHead>
-                );
+                )
               })}
             </TableRow>
           ))}
@@ -82,5 +82,5 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
     </div>
-  );
+  )
 }
