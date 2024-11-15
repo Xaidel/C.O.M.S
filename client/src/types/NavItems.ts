@@ -1,20 +1,20 @@
-import { LayoutDashboard, UserRoundPlus } from "lucide-react";
+import { LayoutDashboard, FileSpreadsheet } from "lucide-react";
 
 export const DEAN_NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   {
-    path: "/course-management",
+    path: "/programs",
     label: "Course Management",
-    icon: UserRoundPlus,
+    icon: FileSpreadsheet,
   },
 ];
 
 export const ASSISTANT_DEAN_NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   {
-    path: "/course-management",
+    path: "/programs",
     label: "Course Management",
-    icon: UserRoundPlus,
+    icon: FileSpreadsheet,
   },
 ];
 export const PROGRAM_HEAD_NAV_ITEMS = [

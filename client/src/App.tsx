@@ -7,9 +7,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./App.css";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import CourseManagement from "./pages/CourseManagement";
+import ProgramManagement from "./pages/ProgramManagement";
 import AppLayout from "./utils/AppLayout";
 import Coaep from "./pages/Coaep";
+import CourseManagement from "./pages/CourseManagement";
 
 function App() {
   const queryClient: QueryClient = new QueryClient({
@@ -35,7 +36,8 @@ function App() {
           <Route element={<AppLayout />}>
             <Route index element={<Navigate replace to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/course-management" element={<CourseManagement />} />
+            <Route path="/programs" element={<ProgramManagement />} />
+            <Route path="/programs/courses" element={<CourseManagement />} />
             <Route path="/coaep" element={<Coaep />} />
           </Route>
           <Route path="login" element={<Login />} />
