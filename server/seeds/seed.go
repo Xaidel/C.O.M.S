@@ -9,6 +9,10 @@ var Departments = []models.Department{
 		Dept_Code: "SCIS",
 		Dept_Name: "School of Computer and Information Sciences",
 	},
+	{
+		Dept_Code: "SSNS",
+		Dept_Name: "School of Social and Natural Sciences",
+	},
 }
 
 var Programs = []models.Program{
@@ -31,6 +35,16 @@ var Programs = []models.Program{
 		Program_Code: "ACT",
 		Program_Name: "Associate in Computer Technology",
 		DepartmentID: 1,
+	},
+	{
+		Program_Code: "BSP",
+		Program_Name: "Bachelor of Science in Psychology",
+		DepartmentID: 2,
+	},
+	{
+		Program_Code: "BSPS",
+		Program_Name: "Bachelor of Science in Political Science",
+		DepartmentID: 2,
 	},
 }
 
@@ -95,21 +109,60 @@ var Users = []models.User{
 		Middlename: "Mota",
 		Lastname:   "Custodio",
 	},
+	{
+		UserID:     "111",
+		Password:   "password123",
+		Firstname:  "Juan",
+		Middlename: "Rodriguez",
+		Lastname:   "Dela Cruz",
+	},
+	{
+		UserID:     "112",
+		Password:   "password123",
+		Firstname:  "Emilio",
+		Middlename: "Famy",
+		Lastname:   "Aguinaldo",
+	},
+	{
+		UserID:     "113",
+		Password:   "password123",
+		Firstname:  "Jose",
+		Middlename: "Protacio",
+		Lastname:   "Rizal",
+	},
 }
 
-var Dean = models.Dean{
-	UserID:       "735",
-	DepartmentID: 1,
+var Dean = []models.Dean{
+	{
+		UserID:       "735",
+		DepartmentID: 1,
+	},
+	{
+		UserID:       "113",
+		DepartmentID: 2,
+	},
 }
 
-var AssistantDean = models.AssistantDean{
-	UserID:       "1034",
-	DepartmentID: 1,
+var AssistantDean = []models.AssistantDean{
+	{
+		UserID:       "1034",
+		DepartmentID: 1,
+	},
+	{
+		UserID:       "112",
+		DepartmentID: 2,
+	},
 }
 
-var ProgramHead = models.ProgramHead{
-	ProgramID: 1,
-	UserID:    "1034",
+var ProgramHead = []models.ProgramHead{
+	{
+		ProgramID: 1,
+		UserID:    "1034",
+	},
+	{
+		ProgramID: 6,
+		UserID:    "112",
+	},
 }
 
 var Faculty = []models.Faculty{
