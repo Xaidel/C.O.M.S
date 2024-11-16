@@ -2,8 +2,6 @@ import AppLabel from "@/components/ui/applabel";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/datatable";
 import { Toggle } from "@/components/ui/toggle";
-import AddCourse from "@/features/course-management/AddCourse";
-import UploadCourse from "@/features/course-management/UploadCourse";
 import { ArrowUpDown, CircleArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -53,10 +51,6 @@ export default function CourseManagement() {
         ]}
         data={[]}
       />
-      <div className="flex gap-4 mt-4">
-        <UploadCourse />
-        <AddCourse />
-      </div>
     </>
   );
 }
