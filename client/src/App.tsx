@@ -11,6 +11,8 @@ import ProgramManagement from "./pages/ProgramManagement";
 import AppLayout from "./utils/AppLayout";
 import Coaep from "./pages/Coaep";
 import CourseManagement from "./pages/CourseManagement";
+import NotFound from "./pages/NotFound";
+import CurriculumMangement from "./pages/CurriculumMangement";
 
 function App() {
   const queryClient: QueryClient = new QueryClient({
@@ -41,9 +43,11 @@ function App() {
               path="/programs/:programID/courses"
               element={<CourseManagement />}
             />
+            <Route path="/curriculums" element={<CurriculumMangement />} />
             <Route path="/coaep" element={<Coaep />} />
           </Route>
           <Route path="login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
       <Toaster />
