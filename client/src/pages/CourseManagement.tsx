@@ -1,14 +1,14 @@
-import AppLabel from "@/components/ui/applabel";
-import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/datatable";
-import { Toggle } from "@/components/ui/toggle";
-import { ArrowUpDown, CircleArrowLeft } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import AppLabel from "@/components/ui/applabel"
+import { Button } from "@/components/ui/button"
+import { Toggle } from "@/components/ui/toggle"
+import CourseTable from "@/features/course-management/CourseTable"
+import { ArrowUpDown, CircleArrowLeft } from 'lucide-react'
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function CourseManagement() {
-  const navigate = useNavigate();
-  const [sortAscending, setSortAscending] = useState(true);
+  const navigate = useNavigate()
+  const [sortAscending, setSortAscending] = useState(true)
 
   return (
     <>
@@ -16,18 +16,19 @@ export default function CourseManagement() {
         <AppLabel currentPage="Course Management" />
       </div>
 
+      {/*Return Button with Table Name*/}
       <div className="flex justify-start gap-1 items-center text-3xl font-bold text-[#1F2937] ">
         <Button
           variant="ghost"
           onClick={() => {
-            navigate(-1);
-          }}
-        >
+            navigate(-1)
+          }}>
           <CircleArrowLeft className="text-2xl" />
         </Button>
         Courses
       </div>
 
+      {/*Filter Button*/}
       <div className="flex justify-end items-center mb-2 gap-2">
         <span className="text-sm">Sort by:</span>
         <Toggle
@@ -40,17 +41,9 @@ export default function CourseManagement() {
           Course Name {sortAscending ? "(A-Z)" : "(Z-A)"}
         </Toggle>
       </div>
-
-      <DataTable
-        resource="Courses"
-        columns={[
-          { header: "Code", accessorKey: "code" },
-          { header: "Course Name", accessorKey: "name" },
-          { header: "Faculty Assigned", accessorKey: "faculty" },
-          { header: "Action", accessorKey: "action" },
-        ]}
-        data={[]}
-      />
+      
+      {/*List of Course Table*/}
+      <CourseTable />
     </>
-  );
+  )
 }
