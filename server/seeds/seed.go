@@ -186,6 +186,18 @@ var Faculty = []models.Faculty{
 		UserID:       "1001",
 		DepartmentID: 1,
 	},
+	{
+		UserID:       "111",
+		DepartmentID: 2,
+	},
+	{
+		UserID:       "112",
+		DepartmentID: 2,
+	},
+	{
+		UserID:       "113",
+		DepartmentID: 2,
+	},
 }
 
 var Student = []models.Student{{
