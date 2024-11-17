@@ -1,10 +1,6 @@
 import client from "@/service/api";
 import { useQuery } from "@tanstack/react-query";
-import { Department } from "@/types/Interface";
-
-interface DepartmentResponse {
-  department?: Department;
-}
+import { DepartmentResponse } from "@/types/Interface";
 
 export function useDepartments(id?: number) {
   const {

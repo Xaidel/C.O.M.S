@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/datatable";
 import { useToast } from "@/hooks/use-toast";
-import { NonPHFaculty } from "@/types/Interface";
+import { DepartmentResponse, NonPHFaculty } from "@/types/Interface";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FacultyColumn, FacultyFullName } from "./FacultyColumn";
 import { useAddProgramHead } from "./useAddProgramHead";
 import { useNonPHFaculty } from "./useNonPHFaculty";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface NonPHTableProps {
   programID: number;
@@ -18,7 +19,12 @@ interface ProgramHead {
 }
 
 export default function NonPHTable({ programID }: NonPHTableProps) {
-  const { isLoading, response, error } = useNonPHFaculty();
+  const queryClient = useQueryClient();
+  const department = queryClient.getQueryData<DepartmentResponse>([
+    "department",
+  ]);
+  const departmentID = department?.department?.ID;
+  const { isLoading, response, error } = useNonPHFaculty(departmentID || 0);
   const { assignProgramHead, isCreating } = useAddProgramHead();
   const [faculties, setFaculties] = useState<FacultyFullName[]>([]);
   const { toast } = useToast();

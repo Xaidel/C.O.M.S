@@ -13,6 +13,9 @@ export interface NonPHFaculty {
   UserID: string;
   User: UserInfo;
 }
+export interface DepartmentResponse {
+  department?: Department;
+}
 
 export interface Department {
   Dept_Code: string;

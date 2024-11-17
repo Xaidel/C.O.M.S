@@ -6,7 +6,7 @@ interface NonPHFacultyResponse {
   faculties?: NonPHFaculty[];
 }
 
-export function useNonPHFaculty(id?: number) {
+export function useNonPHFaculty(id: number) {
   const {
     isLoading,
     data: response,
