@@ -48,6 +48,7 @@ var CurriculumRequest struct {
 var CourseRequest struct {
 	Course_Number string `json:"course_number" binding:"required"`
 	CurriculumID  string `json:"curr_id" binding:"required"`
+	Course_Name   string `json:"course_name" binding:"required"`
 	Lec_Unit      uint   `json:"lec_unit" binding:"required"`
 	Lab_Unit      uint   `json:"lab_unit" binding:"required"`
 	Sem           uint   `json:"sem" binding:"required"`

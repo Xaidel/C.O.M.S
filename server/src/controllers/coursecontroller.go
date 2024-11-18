@@ -42,6 +42,7 @@ func (CourseController) POST(ctx *gin.Context) {
 		Course_No:    courseRequest.Course_Number,
 		Lec_Unit:     courseRequest.Lec_Unit,
 		Lab_Unit:     courseRequest.Lab_Unit,
+		Course_Name:  courseRequest.Course_Name,
 		Sem:          courseRequest.Sem,
 		Year_Level:   courseRequest.Year_Level,
 		CurriculumID: courseRequest.CurriculumID,

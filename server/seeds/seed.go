@@ -59,6 +59,27 @@ var Curriculum = []models.Curriculum{
 	},
 }
 
+var Course = []models.Course{
+	{
+		Course_No:    "OOP1",
+		Course_Name:  "Object Oriented Programming 1",
+		Lec_Unit:     3,
+		Lab_Unit:     2,
+		Sem:          1,
+		Year_Level:   2122,
+		CurriculumID: "PK",
+	},
+	{
+		Course_No:    "OOP2",
+		Course_Name:  "Object Oriented Programming 2",
+		Lec_Unit:     3,
+		Lab_Unit:     2,
+		Sem:          2,
+		Year_Level:   2222,
+		CurriculumID: "PK",
+	},
+}
+
 var Users = []models.User{
 	{
 		UserID:     "1034",
