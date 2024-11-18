@@ -1,28 +1,23 @@
-import { Button } from "@/components/ui/button"
-import { DataTable } from "@/components/ui/datatable"
+import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/datatable";
 
-export default function CourseTable() {
+export default function CourseAssignment() {
   /* Column Header*/
   const columns = [
     { header: "Code", accessorKey: "code" },
     { header: "Course Name", accessorKey: "name" },
     { header: "Faculty Assigned", accessorKey: "faculty" },
-    { 
-      header: "Action", 
+    {
+      header: "Action",
       accessorKey: "action",
       cell: () => (
         <Button variant="outline" size="sm">
           View
         </Button>
-      )
+      ),
     },
-  ]
+  ];
   /* No Course data yet */
-  return (
-    <DataTable 
-      resource="Courses"
-      columns={columns}
-      data={[]}
-    />
-  )
+  return <DataTable resource="Courses" columns={columns} data={[]} />;
 }
+
