@@ -17,6 +17,36 @@ export interface DepartmentResponse {
   department?: Department;
 }
 
+export interface Curriculum {
+  CMO_Name: string;
+  Effectivity_SY: string;
+  CurrID: string;
+  Programs?: Program[];
+  Courses?: Course[];
+  Effectivity_Sem: number;
+  IsActive: number;
+  Revision_No: number;
+}
+
+export interface CurriculumResponse {
+  curriculum?: Curriculum;
+}
+
+export interface Course {
+  Course_No: string;
+  CurrID: string;
+  Course_Name: string;
+  Curriculum?: Curriculum;
+  Lec_Unit: number;
+  Lab_Unit: number;
+  Sem: number;
+  Year_Level: number;
+}
+
+export interface CourseResponse {
+  course?: Course;
+}
+
 export interface Department {
   Dept_Code: string;
   Dept_Name: string;

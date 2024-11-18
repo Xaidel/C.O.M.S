@@ -7,8 +7,8 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 export default function CourseManagement() {
-  const navigate = useNavigate()
-  const [sortAscending, setSortAscending] = useState(true)
+  const navigate = useNavigate();
+  const [sortAscending, setSortAscending] = useState(true);
 
   return (
     <>
@@ -21,8 +21,9 @@ export default function CourseManagement() {
         <Button
           variant="ghost"
           onClick={() => {
-            navigate(-1)
-          }}>
+            navigate(-1);
+          }}
+        >
           <CircleArrowLeft className="text-2xl" />
         </Button>
         Courses
@@ -41,9 +42,9 @@ export default function CourseManagement() {
           Course Name {sortAscending ? "(A-Z)" : "(Z-A)"}
         </Toggle>
       </div>
-      
+
       {/*List of Course Table*/}
       <CourseAssignment />
     </>
-  )
+  );
 }

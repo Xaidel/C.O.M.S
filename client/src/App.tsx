@@ -12,8 +12,8 @@ import AppLayout from "./utils/AppLayout";
 import Coaep from "./pages/Coaep";
 import CourseManagement from "./pages/CourseManagement";
 import NotFound from "./pages/NotFound";
+import CurriculumCourseManagement from "./pages/CurriculumCourseManagement";
 import CurriculumManagement from "./pages/CurriculumManagement";
-
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -44,6 +44,10 @@ function App() {
               element={<CourseManagement />}
             />
             <Route path="/curriculums" element={<CurriculumManagement />} />
+            <Route
+              path="/curriculums/:id/course"
+              element={<CurriculumCourseManagement />}
+            />
             <Route path="/coaep" element={<Coaep />} />
           </Route>
           <Route path="login" element={<Login />} />
