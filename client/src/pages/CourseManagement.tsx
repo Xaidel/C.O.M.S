@@ -1,7 +1,7 @@
 import AppLabel from "@/components/ui/applabel"
 import { Button } from "@/components/ui/button"
 import { Toggle } from "@/components/ui/toggle"
-import CourseTable from "@/features/course-management/CourseTable"
+import CourseAssignment from "@/features/course-management/CourseAssignment"
 import { ArrowUpDown, CircleArrowLeft } from 'lucide-react'
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -43,7 +43,7 @@ export default function CourseManagement() {
       </div>
       
       {/*List of Course Table*/}
-      <CourseTable />
+      <CourseAssignment />
     </>
   )
 }

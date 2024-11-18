@@ -9,7 +9,7 @@ export interface FacultyFullName {
 export const FacultyColumn: ColumnDef<FacultyFullName>[] = [
   {
     accessorKey: "fullname",
-    header: "Faculties",
+    header: "Faculty",
     cell: ({ row }) => <div>{row.original.fullname}</div>,
   },
 ];

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/datatable"
 
-export default function CourseTable() {
+export default function CourseAssignment() {
   /* Column Header*/
   const columns = [
     { header: "Code", accessorKey: "code" },
