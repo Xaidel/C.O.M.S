@@ -1,28 +1,28 @@
 import AppLabel from "@/components/ui/applabel";
 import { DataTable } from "@/components/ui/datatable";
-import { useDepartments } from "@/features/course-management/useDepartment";
-import { useQueryClient } from "@tanstack/react-query";
-import { currentUser } from "@/types/Interface";
 import { ProgramColumn } from "@/features/course-management/ProgramColumn";
+import { useDepartments } from "@/features/course-management/useDepartment";
+import { currentUser } from "@/types/Interface";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import {
-  TooltipProvider,
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
-import { Book, UserRoundPen, UserRoundPlus } from "lucide-react";
-import {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogTitle,
   DialogDescription,
   DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import NonPHTable from "../features/course-management/NonPHTable.tsx";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Book, UserRoundPen, UserRoundPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import NonPHTable from "../features/course-management/NonPHTable.tsx";
 
 export default function ProgramManagement() {
   const queryClient = useQueryClient();
