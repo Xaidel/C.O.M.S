@@ -8,4 +8,5 @@ type Controller struct {
 	Curriculum  CurriculumController
 	ProgramHead ProgramHeadController
 	Faculty     FacultyController
+	Course      CourseController
 }

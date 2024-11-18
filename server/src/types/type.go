@@ -44,3 +44,12 @@ var CurriculumRequest struct {
 	Revision_No     uint   `json:"revision_no" binding:"required"`
 	ProgramID       uint   `json:"program_id" binding:"required"`
 }
+
+var CourseRequest struct {
+	Course_Number string `json:"course_number" binding:"required"`
+	CurriculumID  string `json:"curr_id" binding:"required"`
+	Lec_Unit      uint   `json:"lec_unit" binding:"required"`
+	Lab_Unit      uint   `json:"lab_unit" binding:"required"`
+	Sem           uint   `json:"sem" binding:"required"`
+	Year_Level    uint   `json:"year_level" binding:"required"`
+}
