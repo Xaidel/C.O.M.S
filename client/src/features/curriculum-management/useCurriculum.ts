@@ -2,7 +2,7 @@ import client from "@/service/api";
 import { CurriculumResponse } from "@/types/Interface";
 import { useQuery } from "@tanstack/react-query";
 
-export function useCurriculum(id?: number) {
+export function useCurriculum(id?: string) {
   const {
     isLoading,
     data: response,

@@ -57,6 +57,14 @@ var Curriculum = []models.Curriculum{
 		IsActive:        1,
 		CurrID:          "PK",
 	},
+	{
+		Effectivity_Sem: 1,
+		Effectivity_SY:  "2324",
+		CMO_Name:        "CMO no.15, series of 2022",
+		Revision_No:     1,
+		IsActive:        0,
+		CurrID:          "SL",
+	},
 }
 
 var Course = []models.Course{
@@ -66,7 +74,7 @@ var Course = []models.Course{
 		Lec_Unit:     3,
 		Lab_Unit:     2,
 		Sem:          1,
-		Year_Level:   2122,
+		Year_Level:   1,
 		CurriculumID: "PK",
 	},
 	{
@@ -75,7 +83,7 @@ var Course = []models.Course{
 		Lec_Unit:     3,
 		Lab_Unit:     2,
 		Sem:          2,
-		Year_Level:   2222,
+		Year_Level:   2,
 		CurriculumID: "PK",
 	},
 }

@@ -25,5 +25,16 @@ export const CurriculumColumn: ColumnDef<Curriculum>[] = [
   {
     accessorKey: "IsActive",
     header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.IsActive > 0 ? "Active" : "Not Active";
+      return (
+        <div className="flex items-center gap-2">
+          <div
+            className={`size-[1rem] rounded ${status === "Active" ? "bg-green-400" : "bg-gray-500"}`}
+          ></div>
+          {status}
+        </div>
+      );
+    },
   },
 ];

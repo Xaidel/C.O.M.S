@@ -1,11 +1,13 @@
 import {
   ColumnDef,
   flexRender,
+  SortingState,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+  getSortedRowModel,
+} from "@tanstack/react-table";
 
-import { useState } from "react"
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,12 +15,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table"
+} from "./table";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  resource: string
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  resource: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -26,16 +28,20 @@ export function DataTable<TData, TValue>({
   data,
   resource,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
+      sorting,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div>
@@ -45,15 +51,18 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="text-[#1F2937] font-semibold">
+                  <TableHead
+                    key={header.id}
+                    className="text-[#1F2937] font-semibold"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -82,5 +91,6 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
+
