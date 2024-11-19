@@ -15,7 +15,7 @@ var Departments = []models.Department{
 	},
 }
 
-var Programs = []models.Program{
+var SCISPrograms = []*models.Program{
 	{
 		Program_Code: "BSIT",
 		Program_Name: "Bachelor of Science in Information Technology",
@@ -36,6 +36,9 @@ var Programs = []models.Program{
 		Program_Name: "Associate in Computer Technology",
 		DepartmentID: 1,
 	},
+}
+
+var SSNSProgram = []*models.Program{
 	{
 		Program_Code: "BSP",
 		Program_Name: "Bachelor of Science in Psychology",
@@ -56,6 +59,7 @@ var Curriculum = []models.Curriculum{
 		Revision_No:     1,
 		IsActive:        1,
 		CurrID:          "PK",
+		Programs:        SCISPrograms,
 	},
 	{
 		Effectivity_Sem: 1,
@@ -64,6 +68,7 @@ var Curriculum = []models.Curriculum{
 		Revision_No:     1,
 		IsActive:        0,
 		CurrID:          "SL",
+		Programs:        SSNSProgram,
 	},
 }
 

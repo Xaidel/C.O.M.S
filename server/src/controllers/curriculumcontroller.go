@@ -32,6 +32,21 @@ func (CurriculumController) GET(ctx *gin.Context) {
 	}
 }
 
+func (CurriculumController) GetByProgram(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide Program ID"})
+		return
+	}
+	var program models.Program
+	if err := lib.Database.Preload("Curriculums").First(&program, id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Program Not Found"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"curriculums": program.Curriculums})
+}
+
 func (CurriculumController) POST(ctx *gin.Context) {
 	currRequest := types.CurriculumRequest
 
