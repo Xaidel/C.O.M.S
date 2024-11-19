@@ -37,7 +37,6 @@ export default function CurriculumCourseManagement() {
   };
   if (isLoading) return;
   if (error) return;
-  console.log(courses);
   return (
     <>
       <div>
@@ -48,7 +47,7 @@ export default function CurriculumCourseManagement() {
         <Button
           variant="ghost"
           onClick={() => {
-            navigate(-1);
+            navigate("/curriculums");
           }}
         >
           <CircleArrowLeft className="text-2xl" />
