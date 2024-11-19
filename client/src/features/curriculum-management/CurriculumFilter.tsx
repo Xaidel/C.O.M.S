@@ -1,41 +1,29 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dispatch, SetStateAction } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface CurriculumFilterProps {
-  curriculum: string;
-  setCurriculum: Dispatch<SetStateAction<string>>;
   year: string;
-  setYear: Dispatch<SetStateAction<string>>;
+  setYear: (year: string) => void;
   semester: string;
-  setSemester: Dispatch<SetStateAction<string>>;
+  setSemester: (year: string) => void;
 }
 
 export default function CurriculumFilter({
-  curriculum,
-  setCurriculum,
   year,
   setYear,
   semester,
   setSemester,
 }: CurriculumFilterProps) {
   return (
-    <div className="flex flex-wrap gap-4 mb-6">
-      {/* Curriculum Select */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-medium">Curriculum:</span>
-        <Select value={curriculum} onValueChange={setCurriculum}>
-          <SelectTrigger className="w-[300px]">
-            <SelectValue placeholder="Select curriculum" />
-          </SelectTrigger>
-          <SelectContent>
-            {/* Curriculum Data */}
-          </SelectContent>
-        </Select>
-      </div>
-
+    <div className="flex justify-end flex-wrap gap-4 mb-6">
       {/* Year Select */}
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium">Year:</span>
+        <span className="text-sm font-medium">Select Year:</span>
         <Select value={year} onValueChange={setYear}>
           <SelectTrigger className="w-[100px]">
             <SelectValue placeholder="Select year" />
@@ -52,7 +40,7 @@ export default function CurriculumFilter({
 
       {/* Semester Select */}
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium">Sem:</span>
+        <span className="text-sm font-medium">Select Sem:</span>
         <Select value={semester} onValueChange={setSemester}>
           <SelectTrigger className="w-[100px]">
             <SelectValue placeholder="Select semester" />
