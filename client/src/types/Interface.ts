@@ -29,7 +29,7 @@ export interface Curriculum {
 }
 
 export interface CurriculumResponse {
-  curriculum?: Curriculum;
+  curriculums?: Curriculum[];
 }
 
 export interface Course {

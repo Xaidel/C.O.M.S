@@ -45,7 +45,7 @@ function App() {
             />
             <Route path="/curriculums" element={<CurriculumManagement />} />
             <Route
-              path="/curriculums/:id/course"
+              path="/curriculums/:id/courses"
               element={<CurriculumCourseManagement />}
             />
             <Route path="/coaep" element={<Coaep />} />
