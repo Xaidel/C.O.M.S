@@ -106,7 +106,7 @@ export default function ProgramManagement() {
                             </span>
                           </DialogDescription>
                         </DialogHeader>
-                        <NonPHTable programID={ID} />
+                        <NonPHTable programID={ID} userID={User.UserID} />
                       </DialogContent>
                     </Dialog>
                     <TooltipContent>
