@@ -58,15 +58,15 @@ func setupForeignKeyConstraints() {
 
 func main() {
 	if err := lib.Database.AutoMigrate(
-		&models.Department{},
 		&models.User{},
-		&models.Curriculum{},
-		&models.Program{},
 		&models.Dean{},
 		&models.AssistantDean{},
 		&models.ProgramHead{},
 		&models.Faculty{},
 		&models.Student{},
+		&models.Department{},
+		&models.Curriculum{},
+		&models.Program{},
 		&models.Course{}); err != nil {
 		fmt.Println("Error Migrating")
 		return

@@ -74,12 +74,6 @@ func seedRoles() {
 	}
 	fmt.Println("Done Seeding Assistant Dean")
 
-	fmt.Println("Seeding Program Head")
-	if err := lib.Database.Create(&seed.ProgramHead).Error; err != nil {
-		log.Print("Error in Seeding Program Head")
-	}
-	fmt.Println("Done Seeding Program Head")
-
 	fmt.Println("Seeding Faculty")
 	if err := lib.Database.Create(&seed.Faculty).Error; err != nil {
 		log.Print("Error in Seeding Faculty")
@@ -95,9 +89,9 @@ func seedRoles() {
 
 func main() {
 	seedDept()
-	// seedProg()
-	seedCurriculum()
-	seedCourse()
 	seedUser()
+	seedCurriculum()
 	seedRoles()
+	// seedProg()
+	seedCourse()
 }

@@ -1,9 +1,8 @@
 package models
 
 type ProgramHead struct {
-	UserID    string `gorm:"unique;not null"`
-	User      User
-	Program   Program `gorm:"foreignKey:ProgramID"`
-	ProgramID uint    `gorm:"unique;not null"`
-	ID        uint
+	UserID   string `gorm:"type:varchar(255); not null"`
+	User     User
+	Programs []Program `gorm:"foreignKey:ProgramHeadID"`
+	ID       uint
 }
