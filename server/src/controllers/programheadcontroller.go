@@ -38,8 +38,15 @@ func (ProgramHeadController) POST(ctx *gin.Context) {
 		return
 	}
 
-	programHead := models.ProgramHead{UserID: progHeadRequest.UserID, ProgramID: progHeadRequest.ProgramID}
-	if err := lib.Database.FirstOrCreate(&programHead, models.ProgramHead{UserID: programHead.UserID, ProgramID: programHead.ProgramID}).Error; err != nil {
+	var program models.Program
+	if err := lib.Database.First(&program, progHeadRequest.ProgramID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Program Not Found"})
+		return
+	}
+
+	programHead := models.ProgramHead{UserID: progHeadRequest.UserID, Programs: []models.Program{}}
+	programHead.Programs = append(programHead.Programs, program)
+	if err := lib.Database.Create(&programHead).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

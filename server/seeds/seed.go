@@ -4,95 +4,6 @@ import (
 	"github.com/Xaidel/server/src/models"
 )
 
-var Departments = []models.Department{
-	{
-		Dept_Code: "SCIS",
-		Dept_Name: "School of Computer and Information Sciences",
-	},
-	{
-		Dept_Code: "SSNS",
-		Dept_Name: "School of Social and Natural Sciences",
-	},
-}
-
-var SCISPrograms = []*models.Program{
-	{
-		Program_Code: "BSIT",
-		Program_Name: "Bachelor of Science in Information Technology",
-		DepartmentID: 1,
-	},
-	{
-		Program_Code: "BSCS",
-		Program_Name: "Bachelor of Science in Computer Science",
-		DepartmentID: 1,
-	},
-	{
-		Program_Code: "BLIS",
-		Program_Name: "Bachelor of Library in Information Science",
-		DepartmentID: 1,
-	},
-	{
-		Program_Code: "ACT",
-		Program_Name: "Associate in Computer Technology",
-		DepartmentID: 1,
-	},
-}
-
-var SSNSProgram = []*models.Program{
-	{
-		Program_Code: "BSP",
-		Program_Name: "Bachelor of Science in Psychology",
-		DepartmentID: 2,
-	},
-	{
-		Program_Code: "BSPS",
-		Program_Name: "Bachelor of Science in Political Science",
-		DepartmentID: 2,
-	},
-}
-
-var Curriculum = []models.Curriculum{
-	{
-		Effectivity_Sem: 1,
-		Effectivity_SY:  "2324",
-		CMO_Name:        "CMO no.15, series of 2022",
-		Revision_No:     1,
-		IsActive:        1,
-		CurrID:          "PK",
-		Programs:        SCISPrograms,
-	},
-	{
-		Effectivity_Sem: 1,
-		Effectivity_SY:  "2324",
-		CMO_Name:        "CMO no.15, series of 2022",
-		Revision_No:     1,
-		IsActive:        0,
-		CurrID:          "SL",
-		Programs:        SSNSProgram,
-	},
-}
-
-var Course = []models.Course{
-	{
-		Course_No:    "OOP1",
-		Course_Name:  "Object Oriented Programming 1",
-		Lec_Unit:     3,
-		Lab_Unit:     2,
-		Sem:          1,
-		Year_Level:   1,
-		CurriculumID: "PK",
-	},
-	{
-		Course_No:    "OOP2",
-		Course_Name:  "Object Oriented Programming 2",
-		Lec_Unit:     3,
-		Lab_Unit:     2,
-		Sem:          2,
-		Year_Level:   2,
-		CurriculumID: "PK",
-	},
-}
-
 var Users = []models.User{
 	{
 		UserID:     "1034",
@@ -188,17 +99,6 @@ var AssistantDean = []models.AssistantDean{
 	},
 }
 
-var ProgramHead = []models.ProgramHead{
-	{
-		ProgramID: 1,
-		UserID:    "1034",
-	},
-	{
-		ProgramID: 6,
-		UserID:    "112",
-	},
-}
-
 var Faculty = []models.Faculty{
 	{
 		UserID:       "735",
@@ -241,3 +141,92 @@ var Student = []models.Student{{
 	ProgramID: 1,
 	UserID:    "21-28239",
 }}
+
+var Departments = []models.Department{
+	{
+		Dept_Code: "SCIS",
+		Dept_Name: "School of Computer and Information Sciences",
+	},
+	{
+		Dept_Code: "SSNS",
+		Dept_Name: "School of Social and Natural Sciences",
+	},
+}
+
+var SCISPrograms = []*models.Program{
+	{
+		Program_Code: "BSIT",
+		Program_Name: "Bachelor of Science in Information Technology",
+		DepartmentID: 1,
+	},
+	{
+		Program_Code: "BSCS",
+		Program_Name: "Bachelor of Science in Computer Science",
+		DepartmentID: 1,
+	},
+	{
+		Program_Code: "BLIS",
+		Program_Name: "Bachelor of Library in Information Science",
+		DepartmentID: 1,
+	},
+	{
+		Program_Code: "ACT",
+		Program_Name: "Associate in Computer Technology",
+		DepartmentID: 1,
+	},
+}
+
+var SSNSProgram = []*models.Program{
+	{
+		Program_Code: "BSP",
+		Program_Name: "Bachelor of Science in Psychology",
+		DepartmentID: 2,
+	},
+	{
+		Program_Code: "BSPS",
+		Program_Name: "Bachelor of Science in Political Science",
+		DepartmentID: 2,
+	},
+}
+
+var Curriculum = []models.Curriculum{
+	{
+		Effectivity_Sem: 1,
+		Effectivity_SY:  "2324",
+		CMO_Name:        "CMO no.15, series of 2022",
+		Revision_No:     1,
+		IsActive:        1,
+		CurrID:          "PK",
+		Programs:        SCISPrograms,
+	},
+	{
+		Effectivity_Sem: 1,
+		Effectivity_SY:  "2324",
+		CMO_Name:        "CMO no.15, series of 2022",
+		Revision_No:     1,
+		IsActive:        0,
+		CurrID:          "SL",
+		Programs:        SSNSProgram,
+	},
+}
+
+var Course = []models.Course{
+	{
+		Course_No:    "OOP1",
+		Course_Name:  "Object Oriented Programming 1",
+		Lec_Unit:     3,
+		Lab_Unit:     2,
+		Sem:          1,
+		Year_Level:   1,
+		CurriculumID: "PK",
+	},
+	{
+		Course_No:    "OOP2",
+		Course_Name:  "Object Oriented Programming 2",
+		Lec_Unit:     3,
+		Lab_Unit:     2,
+		Sem:          2,
+		Year_Level:   2,
+		CurriculumID: "PK",
+	},
+}
