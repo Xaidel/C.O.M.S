@@ -53,6 +53,7 @@ func APIRoutes(router *gin.Engine) {
 		{
 			faculty.GET("", controllers.Faculty.GET)
 			faculty.GET("/:id", controllers.Faculty.GET)
+			faculty.GET("/departments/:deptID", controllers.Faculty.GetFacultyFromDepartment)
 			faculty.GET("/not-program-head", controllers.Faculty.GetNonProgramHeadFaculties)
 			faculty.GET("/not-program-head/:id", controllers.Faculty.GetNonProgramHeadFaculties)
 			faculty.POST("", controllers.Faculty.POST)

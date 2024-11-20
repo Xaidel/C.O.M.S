@@ -30,6 +30,20 @@ func (FacultyController) GET(ctx *gin.Context) {
 	}
 }
 
+func (FacultyController) GetFacultyFromDepartment(ctx *gin.Context) {
+	id := ctx.Param("deptID")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide a department id"})
+		return
+	}
+	var faculties []models.Faculty
+	if err := lib.Database.Preload("User").Find(&faculties, "department_id = ?", id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Faculty list not found"})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"faculties": faculties})
+}
+
 func (FacultyController) GetNonProgramHeadFaculties(ctx *gin.Context) {
 	id := ctx.Param("id")
 
