@@ -18,7 +18,7 @@ export default function CurriculumManagement() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
-  const programID = currentUser?.role_info.Program.ID || 0;
+  const programID = currentUser?.role_info.Programs?.[0].ID || 0; //temporary
   const { isLoading, response, error } = useCurriculumByProgram(programID);
 
   if (isLoading) return;

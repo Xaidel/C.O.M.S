@@ -62,7 +62,7 @@ export interface ProgramHead {
 
 interface RoleInfo {
   Department: Department;
-  Program: Program;
+  Programs: Program[];
   User: UserInfo;
   DepartmentID: number;
   ID: number;

@@ -21,7 +21,7 @@ export const ProgramColumn: ColumnDef<Program>[] = [
       const { Firstname, Middlename, Lastname } =
         row.original.ProgramHead?.User || {};
       const initialMiddlename =
-        Middlename !== undefined ? Middlename?.charAt(0) + "." : "";
+        Middlename !== "" || null ? Middlename?.charAt(0) + "." : "";
       const fullname =
         `${Firstname || ""} ${initialMiddlename || ""} ${Lastname || ""}`.trim();
       return <div className="w-60 truncate">{fullname}</div>;
