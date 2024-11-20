@@ -12,10 +12,11 @@ const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
   if (!currentUser) return null;
   const { role, role_info } = currentUser;
   const { User } = role_info;
+  console.log(role_info);
   let label;
   if (role == "Student" || role == "Program Head") {
-    const { Program } = role_info;
-    label = Program.Program_Name;
+    const { Programs } = role_info;
+    label = Programs?.[0].Program_Name; //temporary
   } else {
     const { Department } = role_info;
     label = Department.Dept_Name;
