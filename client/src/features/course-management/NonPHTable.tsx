@@ -6,11 +6,12 @@ import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FacultyColumn, FacultyFullName } from "./FacultyColumn";
 import { useAddProgramHead } from "./useAddProgramHead";
-import { useNonPHFaculty } from "./useNonPHFaculty";
 import { useQueryClient } from "@tanstack/react-query";
+import { useFacultyByDept } from "./useFacultyByDept";
 
 interface NonPHTableProps {
   programID: number;
+  userID?: string;
 }
 
 interface ProgramHead {
@@ -18,13 +19,13 @@ interface ProgramHead {
   userID: string;
 }
 
-export default function NonPHTable({ programID }: NonPHTableProps) {
+export default function NonPHTable({ programID, userID }: NonPHTableProps) {
   const queryClient = useQueryClient();
   const department = queryClient.getQueryData<DepartmentResponse>([
     "department",
   ]);
   const departmentID = department?.department?.ID;
-  const { isLoading, response, error } = useNonPHFaculty(departmentID || 0);
+  const { isLoading, response, error } = useFacultyByDept(departmentID || 0);
   const { assignProgramHead, isCreating } = useAddProgramHead();
   const [faculties, setFaculties] = useState<FacultyFullName[]>([]);
   const { toast } = useToast();
@@ -38,9 +39,13 @@ export default function NonPHTable({ programID }: NonPHTableProps) {
           fullname: `${faculty.User.Firstname} ${faculty.User.Middlename.charAt(0)}. ${faculty.User.Lastname}`,
         };
       });
-      setFaculties(fullname);
+      const filteredFullname =
+        userID === undefined
+          ? fullname
+          : fullname.filter((fac) => fac.userID !== userID);
+      setFaculties(filteredFullname);
     }
-  }, [response, programID]);
+  }, [response, programID, userID]);
   if (isLoading) return;
   if (error) return;
   const handlePHAssigning = (programHead: ProgramHead) => {
