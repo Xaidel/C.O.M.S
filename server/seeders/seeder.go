@@ -16,6 +16,14 @@ func init() {
 	lib.ConnectDatabase()
 }
 
+func seedPeriod() {
+	fmt.Println("Seeding Period")
+	period := seed.Period
+	if err := lib.Database.Create(&period).Error; err != nil {
+		log.Printf("Error in seeding period %s: %v", seed.Period.School_Year, err)
+	}
+}
+
 func seedDept() {
 	fmt.Println("Seeding Department")
 	for _, dept := range seed.Departments {
@@ -89,6 +97,7 @@ func seedRoles() {
 
 func main() {
 	seedDept()
+	seedPeriod()
 	seedUser()
 	seedCurriculum()
 	seedRoles()
