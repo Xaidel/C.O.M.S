@@ -92,6 +92,7 @@ export default function LoginForm() {
     <Card className="flex flex-col gap-1 justify-start min-w-[31rem] min-h-[37rem] text-gray shadow-2xl">
       <CardHeader className="hidden md:inline-block mt-[1rem] ">
         <CardTitle className="hidden md:block font-semibold text-[2.59rem]">
+          <p className="text-[1.5rem]">hello world</p>
           Login your Account
         </CardTitle>
       </CardHeader>

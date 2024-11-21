@@ -74,5 +74,11 @@ func APIRoutes(router *gin.Engine) {
 			course.POST("", controllers.Course.POST)
 			course.DELETE("/:id", controllers.Course.DELETE)
 		}
+		period := api.Group("/periods")
+		{
+			period.GET("", controllers.Period.GET)
+			period.GET("/:id", controllers.Period.GET)
+			period.GET("/current", controllers.Period.GetCurrent)
+		}
 	}
 }
