@@ -38,14 +38,26 @@ func (ProgramHeadController) POST(ctx *gin.Context) {
 		return
 	}
 
+	var period models.Period
+
+	if err := lib.Database.First(&period, "is_current = ?", 1).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Period not found"})
+		return
+	}
+
 	var program models.Program
 	if err := lib.Database.First(&program, progHeadRequest.ProgramID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Program Not Found"})
 		return
 	}
 
-	programHead := models.ProgramHead{UserID: progHeadRequest.UserID, Programs: []models.Program{}}
+	programHead := models.ProgramHead{
+		UserID:   progHeadRequest.UserID,
+		Programs: []models.Program{},
+		Periods:  []*models.Period{},
+	}
 	programHead.Programs = append(programHead.Programs, program)
+	programHead.Periods = append(programHead.Periods, &period)
 	if err := lib.Database.Create(&programHead).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

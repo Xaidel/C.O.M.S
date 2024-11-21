@@ -77,6 +77,12 @@ var Users = []models.User{
 	},
 }
 
+var Period = models.Period{
+	School_Year: "2223",
+	Semester:    1,
+	IsCurrent:   1,
+}
+
 var Dean = []models.Dean{
 	{
 		UserID:       "735",
