@@ -9,4 +9,5 @@ type Controller struct {
 	ProgramHead ProgramHeadController
 	Faculty     FacultyController
 	Course      CourseController
+	Period      PeriodController
 }
