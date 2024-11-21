@@ -64,6 +64,7 @@ func main() {
 		&models.ProgramHead{},
 		&models.Faculty{},
 		&models.Student{},
+		&models.Period{},
 		&models.Department{},
 		&models.Curriculum{},
 		&models.Program{},
