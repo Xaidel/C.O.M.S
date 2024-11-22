@@ -1,6 +1,13 @@
 import { z } from "zod";
 import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown, Eye, EyeOff, Loader } from "lucide-react";
+import {
+  CalendarRange,
+  Check,
+  ChevronsUpDown,
+  Eye,
+  EyeOff,
+  Loader,
+} from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -30,6 +37,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLogin } from "./useLogin";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useCurrentPeriod } from "./useCurrentPeriod";
+import { Period } from "@/types/Interface";
 
 const formSchema = z.object({
   role: z
@@ -88,12 +97,34 @@ export default function LoginForm() {
     setShowPassword(!showPassword);
   };
 
+  const formatPeriod = (current: Period) => {
+    let formattedPeriod;
+    if (current.Semester === 1) {
+      formattedPeriod = `${current.Semester}st Semester 20${current.School_Year.slice(0, 2)}-20${current.School_Year.slice(2)}`;
+    } else if (current.Semester === 2) {
+      formattedPeriod = `${current.Semester}nd Semester 20${current.School_Year.slice(0, 2)}-20${current.School_Year.slice(2)}`;
+    } else {
+      formattedPeriod = `${current.Semester}Semester 20${current.School_Year.slice(0, 2)}-20${current.School_Year.slice(2)}`;
+    }
+
+    return formattedPeriod;
+  };
+  const { isLoading, response, error } = useCurrentPeriod();
+  if (isLoading) return;
+  if (error) return;
+  let current;
+  if (response?.current_period) {
+    current = formatPeriod(response?.current_period);
+  }
   return (
     <Card className="flex flex-col gap-1 justify-start min-w-[31rem] min-h-[37rem] text-gray shadow-2xl">
       <CardHeader className="hidden md:inline-block mt-[1rem] ">
-        <CardTitle className="hidden md:block font-semibold text-[2.59rem]">
-          <p className="text-[1.5rem]">hello world</p>
+        <CardTitle className="hidden md:block font-semibold text-[2.59rem] ">
           Login your Account
+          <p className="text-[1rem] font-normal flex gap-2 mt-2">
+            <CalendarRange />
+            {current}
+          </p>
         </CardTitle>
       </CardHeader>
       <Form {...form}>
