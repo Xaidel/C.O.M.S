@@ -8,7 +8,7 @@ import CurriculumFilter from "@/features/curriculum-management/CurriculumFilter"
 import { useCurriculumByID } from "@/features/curriculum-management/useCurriculumByID";
 import { Course } from "@/types/Interface";
 import { CircleArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 export default function CurriculumCourseManagement() {
@@ -19,8 +19,6 @@ export default function CurriculumCourseManagement() {
 
   const { currID } = useParams<{ currID: string }>();
   const { isLoading, response, error } = useCurriculumByID(currID);
-  const initData: Course[] = response?.curriculum?.Courses || [];
-  const [courses, setCourses] = useState<Course[]>(initData);
 
   const handleFilterChange = (newYear: string, newSem: string) => {
     setSearchParams({ year: newYear, semester: newSem });
@@ -35,6 +33,13 @@ export default function CurriculumCourseManagement() {
     );
     setCourses(filteredCourse || []);
   };
+  const [courses, setCourses] = useState<Course[]>([]);
+  useEffect(() => {
+    if (response?.curriculum?.Courses) {
+      const initialCOurses = response.curriculum.Courses;
+      setCourses(initialCOurses);
+    }
+  }, [response?.curriculum?.Courses]);
   if (isLoading) return;
   if (error) return;
   return (
@@ -63,7 +68,6 @@ export default function CurriculumCourseManagement() {
       />
 
       <DataTable columns={CourseColumn} data={courses} resource="Courses" />
-      {/* Buttons */}
       <div className="flex gap-4 mt-4">
         <UploadCourse />
         <AddCourse />
