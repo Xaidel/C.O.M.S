@@ -101,3 +101,14 @@ export type User = {
 export type LoginResponse = {
   user?: User;
 };
+
+export interface Period {
+  School_Year: string;
+  Semester: number;
+  IsCurrent: number;
+  ID: number;
+}
+
+export interface CurrentPeriodResponse {
+  current_period?: Period;
+}
