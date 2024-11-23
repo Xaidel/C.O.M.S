@@ -41,7 +41,8 @@ func (AuthController) Login(ctx *gin.Context) {
 	}
 
 	if role == nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error indentifying role"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error Indentifying Role"})
+		return
 	}
 
 	if !services.Compare(loginReq.Password, user.Password) {
