@@ -50,71 +50,74 @@ export default function ProgramManagement() {
             cell: ({ row }) => {
               const { User } = row.original.ProgramHead || {};
               const ID = row.original.ID;
-              const phIcon = !User ? (
-                <TooltipProvider>
-                  <Tooltip>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <TooltipTrigger asChild>
-                          <Button variant="outline">
-                            <UserRoundPlus />
-                          </Button>
-                        </TooltipTrigger>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle className="text-2xl">
-                            Assign Program Head
-                          </DialogTitle>
-                          <DialogDescription>
-                            Choose a <span className="font-bold">Faculty</span>{" "}
-                            Member among the{" "}
-                            <span className="font-bold">
-                              School of Computer and Information Sciences
-                            </span>
-                          </DialogDescription>
-                        </DialogHeader>
-                        <NonPHTable programID={ID} />
-                      </DialogContent>
-                    </Dialog>
-                    <TooltipContent>
-                      <p className="text-white">Add Program Head</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ) : (
-                <TooltipProvider>
-                  <Tooltip>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <TooltipTrigger asChild>
-                          <Button variant="outline">
-                            <UserRoundPen />
-                          </Button>
-                        </TooltipTrigger>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle className="text-2xl">
-                            Edit Program Head
-                          </DialogTitle>
-                          <DialogDescription>
-                            Choose a <span className="font-bold">Faculty</span>{" "}
-                            Member among the{" "}
-                            <span className="font-bold">
-                              School of Computer and Information Sciences
-                            </span>
-                          </DialogDescription>
-                        </DialogHeader>
-                        <NonPHTable programID={ID} userID={User.UserID} />
-                      </DialogContent>
-                    </Dialog>
-                    <TooltipContent>
-                      <p className="text-white">Edit Program Head</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
+              const phIcon =
+                User.UserID === "" ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <TooltipTrigger asChild>
+                            <Button variant="outline">
+                              <UserRoundPlus />
+                            </Button>
+                          </TooltipTrigger>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle className="text-2xl">
+                              Assign Program Head
+                            </DialogTitle>
+                            <DialogDescription>
+                              Choose a{" "}
+                              <span className="font-bold">Faculty</span> Member
+                              among the{" "}
+                              <span className="font-bold">
+                                School of Computer and Information Sciences
+                              </span>
+                            </DialogDescription>
+                          </DialogHeader>
+                          <NonPHTable programID={ID} />
+                        </DialogContent>
+                      </Dialog>
+                      <TooltipContent>
+                        <p className="text-white">Add Program Head</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <TooltipTrigger asChild>
+                            <Button variant="outline">
+                              <UserRoundPen />
+                            </Button>
+                          </TooltipTrigger>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle className="text-2xl">
+                              Edit Program Head
+                            </DialogTitle>
+                            <DialogDescription>
+                              Choose a{" "}
+                              <span className="font-bold">Faculty</span> Member
+                              among the{" "}
+                              <span className="font-bold">
+                                School of Computer and Information Sciences
+                              </span>
+                            </DialogDescription>
+                          </DialogHeader>
+                          <NonPHTable programID={ID} userID={User.UserID} />
+                        </DialogContent>
+                      </Dialog>
+                      <TooltipContent>
+                        <p className="text-white">Edit Program Head</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                );
               return (
                 <div className="flex justify-center gap-2 ">
                   {phIcon}
