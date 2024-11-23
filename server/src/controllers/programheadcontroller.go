@@ -77,45 +77,6 @@ func (ProgramHeadController) POST(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{"program_head": programHead})
 }
 
-func (ProgramHeadController) EditPHAssignment(ctx *gin.Context) {
-	id := ctx.Param("programID")
-
-	if id == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please specify a Program Head ID to reassign"})
-		return
-	}
-
-	var program models.Program
-
-	if err := lib.Database.Preload("ProgramHead").First(&program, id).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Program Head not found"})
-		return
-	}
-
-	var request struct {
-		UserID string `json:"userID" binding:"required"`
-	}
-
-	if err := ctx.ShouldBindJSON(&request); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide User ID to be assigned"})
-		return
-	}
-
-	var newProgramHead models.User
-
-	if err := lib.Database.First(&newProgramHead, "user_id = ?", request.UserID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not Found"})
-		return
-	}
-
-	if err := lib.Database.Model(&program).Update("program_head_id", request.UserID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Failed to reassign Program Head"})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"program": program})
-}
-
 func (ProgramHeadController) DELETE(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
