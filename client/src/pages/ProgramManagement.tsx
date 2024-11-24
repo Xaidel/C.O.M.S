@@ -20,15 +20,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Book, UserRoundPen, UserRoundPlus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { UserRoundPen, UserRoundPlus } from "lucide-react";
 import NonPHTable from "../features/course-management/NonPHTable.tsx";
 
 export default function ProgramManagement() {
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
   const departmentID = currentUser?.role_info?.DepartmentID;
-  const navigate = useNavigate();
   const { isLoading, response, error } = useDepartments(departmentID);
   if (isLoading) return;
   if (error) return;
@@ -118,25 +116,7 @@ export default function ProgramManagement() {
                     </Tooltip>
                   </TooltipProvider>
                 );
-              return (
-                <div className="flex justify-center gap-2 ">
-                  {phIcon}
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          onClick={() => navigate(`/programs/${ID}/courses`)}
-                        >
-                          <Book />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>View Courses</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              );
+              return <div>{phIcon}</div>;
             },
           },
         ]}
