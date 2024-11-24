@@ -46,7 +46,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <Table>
-        <TableHeader className="bg-[#CBD2DB]">
+        <TableHeader className="bg-[#CBD2DB] ">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -93,4 +93,3 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
-
