@@ -30,7 +30,13 @@ function App() {
   return (
     <PersistQueryClientProvider
       client={queryClient}
-      persistOptions={{ persister }}
+      persistOptions={{
+        persister,
+        dehydrateOptions: {
+          shouldDehydrateQuery: () => true,
+        },
+      }}
+      onSuccess={() => console.log("Cache Restored")}
     >
       <ReactQueryDevtools initialIsOpen={false} />
       <BrowserRouter>
