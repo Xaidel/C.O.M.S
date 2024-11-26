@@ -19,7 +19,7 @@ import {
   PROGRAM_HEAD_NAV_ITEMS,
   STUDENT_NAV_ITEMS,
 } from "@/types/NavItems";
-import { useQueryClient } from "@tanstack/react-query";
+import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { currentUser } from "@/types/Interface";
 
 export function SidebarLayout() {
@@ -30,6 +30,8 @@ export function SidebarLayout() {
   let navItems = DEAN_NAV_ITEMS;
 
   const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
+  const isFetching = useIsFetching();
+  if (isFetching) console.log("is Fetching");
   if (!currentUser) return null;
   const { role } = currentUser;
   if (role === "Dean") navItems = DEAN_NAV_ITEMS;
@@ -37,7 +39,7 @@ export function SidebarLayout() {
   else if (role === "Program Head") navItems = PROGRAM_HEAD_NAV_ITEMS;
   else if (role === "Faculty") navItems = FACULTY_NAV_ITEMS;
   else navItems = STUDENT_NAV_ITEMS;
-
+  console.log(role);
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="py-4">
