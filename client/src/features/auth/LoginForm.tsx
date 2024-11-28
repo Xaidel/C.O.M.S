@@ -121,7 +121,7 @@ export default function LoginForm() {
       <CardHeader className="hidden md:inline-block mt-[1rem] ">
         <CardTitle className="hidden md:block font-semibold text-[2.59rem] ">
           Login your Account
-          <p className="text-[1rem] font-normal flex gap-2 mt-2">
+          <p className="text-[1rem] font-normal flex gap-2 mt-2 tracking-tight">
             <CalendarRange />
             {current}
           </p>
