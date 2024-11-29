@@ -39,7 +39,7 @@ func (CourseController) AssignFaculty(ctx *gin.Context) {
 	}
 
 	var request struct {
-		user_id string
+		UserID string `json:"userID" binding:"required"`
 	}
 
 	if err := ctx.ShouldBindJSON(&request); err != nil {
@@ -49,7 +49,7 @@ func (CourseController) AssignFaculty(ctx *gin.Context) {
 
 	var faculty models.Faculty
 
-	if err := lib.Database.First(&faculty, request.user_id).Error; err != nil {
+	if err := lib.Database.First(&faculty, "user_id = ?", request.UserID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Faculty not found"})
 		return
 	}
