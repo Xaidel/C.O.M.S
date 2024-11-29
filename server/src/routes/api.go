@@ -71,6 +71,7 @@ func APIRoutes(router *gin.Engine) {
 		{
 			course.GET("", controllers.Course.GET)
 			course.GET("/:id", controllers.Course.GET)
+			course.POST("/:id", controllers.Course.AssignFaculty)
 			course.POST("", controllers.Course.POST)
 			course.DELETE("/:id", controllers.Course.DELETE)
 		}
