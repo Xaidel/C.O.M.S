@@ -16,14 +16,14 @@ func (CurriculumController) GET(ctx *gin.Context) {
 	id := ctx.Param("code")
 	if id != "" {
 		var curriculum models.Curriculum
-		if err := lib.Database.Preload("Courses").First(&curriculum, "curr_id = ?", id).Error; err != nil {
+		if err := lib.Database.Preload("Courses.Faculty.User").First(&curriculum, "curr_id = ?", id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Curriculum not Found"})
 			return
 		}
 		ctx.JSON(http.StatusOK, gin.H{"curriculum": curriculum})
 	} else {
 		var curriculums []models.Curriculum
-		if result := lib.Database.Preload("Courses").Find(&curriculums); result.Error != nil {
+		if result := lib.Database.Preload("Courses.Faculty").Find(&curriculums); result.Error != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 			return
 		}
