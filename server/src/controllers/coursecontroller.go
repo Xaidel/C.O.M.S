@@ -31,6 +31,45 @@ func (CourseController) GET(ctx *gin.Context) {
 	}
 }
 
+func (CourseController) AssignFaculty(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide a course id on your request"})
+		return
+	}
+
+	var request struct {
+		user_id string
+	}
+
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var faculty models.Faculty
+
+	if err := lib.Database.First(&faculty, request.user_id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Faculty not found"})
+		return
+	}
+
+	var course models.Course
+
+	if err := lib.Database.First(&course, id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not Found"})
+		return
+	}
+
+	course.FacultyID = &faculty.ID
+	if err := lib.Database.Save(&course).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"success": "successfully assigned"})
+}
+
 func (CourseController) POST(ctx *gin.Context) {
 	courseRequest := types.CourseRequest
 	if err := ctx.ShouldBindJSON(&courseRequest); err != nil {

@@ -225,7 +225,6 @@ var Course = []models.Course{
 		Sem:          1,
 		Year_Level:   1,
 		CurriculumID: "PK",
-		FacultyID:    1,
 	},
 	{
 		Course_No:    "OOP2",
@@ -235,6 +234,5 @@ var Course = []models.Course{
 		Sem:          2,
 		Year_Level:   2,
 		CurriculumID: "PK",
-		FacultyID:    1,
 	},
 }
