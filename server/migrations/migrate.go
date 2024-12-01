@@ -68,7 +68,11 @@ func main() {
 		&models.Department{},
 		&models.Curriculum{},
 		&models.Program{},
-		&models.Course{}); err != nil {
+		&models.Course{},
+		&models.Coeap{},
+		&models.CourseOutcome{},
+		&models.IntendedLearningOutcome{},
+	); err != nil {
 		fmt.Println("Error Migrating")
 		return
 	}
