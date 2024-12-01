@@ -69,6 +69,7 @@ export interface ProgramHead {
 interface RoleInfo {
   Department: Department;
   Programs: Program[];
+  Courses: Course[];
   User: UserInfo;
   DepartmentID: number;
   ID: number;

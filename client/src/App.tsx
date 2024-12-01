@@ -36,7 +36,6 @@ function App() {
           shouldDehydrateQuery: () => true,
         },
       }}
-      onSuccess={() => console.log("Cache Restored")}
     >
       <ReactQueryDevtools initialIsOpen={false} />
       <BrowserRouter>

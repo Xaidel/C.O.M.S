@@ -26,6 +26,8 @@ export function SidebarLayout() {
   const { state } = useSidebar();
   const queryClient = useQueryClient();
   const location = useLocation();
+  const pathname = useLocation();
+  console.log(pathname);
   const currentPath = location.pathname;
   let navItems = DEAN_NAV_ITEMS;
 
@@ -39,7 +41,13 @@ export function SidebarLayout() {
   else if (role === "Program Head") navItems = PROGRAM_HEAD_NAV_ITEMS;
   else if (role === "Faculty") navItems = FACULTY_NAV_ITEMS;
   else navItems = STUDENT_NAV_ITEMS;
-  console.log(role);
+
+  const isActive = (currentPath: string, targetPath: string): boolean => {
+    if (currentPath === targetPath) return true;
+    if (targetPath !== "/" && currentPath.startsWith(targetPath)) return true;
+    return false;
+  };
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="py-4">
@@ -76,7 +84,7 @@ export function SidebarLayout() {
                   asChild
                   className={`${state === "collapsed" ? "flex justify-center items-center" : "ml-3"} `}
                   size="lg"
-                  isActive={currentPath === item.path}
+                  isActive={isActive(currentPath, item.path)}
                 >
                   <NavLink to={item.path}>
                     <div>

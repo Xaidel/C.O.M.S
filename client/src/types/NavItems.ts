@@ -21,6 +21,7 @@ export const PROGRAM_HEAD_NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   {
     path: "/curriculums",
+    subpath: "curriculums/:currID/courses",
     label: "Curriculum Management",
     icon: FileSpreadsheet,
   },
