@@ -37,10 +37,16 @@ export interface Course {
   CurrID: string;
   Course_Name: string;
   Curriculum?: Curriculum;
+  Faculty?: Faculty;
   Lec_Unit: number;
   Lab_Unit: number;
   Sem: number;
   Year_Level: number;
+}
+
+export interface Faculty {
+  ID: number;
+  User?: UserInfo;
 }
 
 export interface CourseResponse {
