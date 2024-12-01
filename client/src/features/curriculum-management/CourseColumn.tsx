@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
+import {
+  TooltipProvider,
+  TooltipContent,
+  Tooltip,
+} from "@/components/ui/tooltip";
 import { Course } from "@/types/Interface";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ColumnDef } from "@tanstack/react-table";
 import { UserPen } from "lucide-react";
 
@@ -18,15 +24,24 @@ export const CourseColumn: ColumnDef<Course>[] = [
       const user = row.original.Faculty?.User;
       const facultyFullName = `${user?.Firstname} ${user?.Middlename?.charAt(0)}. ${user?.Lastname}`;
       return (
-        <div className="flex">
+        <div className="flex ">
           {facultyFullName === " . " ? (
             <Button>Assign Faculty</Button>
           ) : (
             <div className="gap-2 flex items-center">
               <span className="text-gray-500">{facultyFullName}</span>{" "}
-              <Button variant="ghost">
-                <UserPen />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost">
+                      <UserPen />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Reassign Teacher</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           )}
         </div>
