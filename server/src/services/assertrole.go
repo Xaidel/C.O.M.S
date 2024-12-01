@@ -41,7 +41,7 @@ func PreloadLoginInfo(role string, userID string) (interface{}, error) {
 		return model, err
 	case "Faculty":
 		var model models.Faculty
-		err := lib.Database.Preload("User").Preload("Department").First(&model, "user_id = ?", userID).Error
+		err := lib.Database.Preload("User").Preload("Department").Preload("Courses").First(&model, "user_id = ?", userID).Error
 		return model, err
 	case "Student":
 		var model models.Student
