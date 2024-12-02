@@ -54,3 +54,10 @@ var CourseRequest struct {
 	Sem           uint   `json:"sem" binding:"required"`
 	Year_Level    uint   `json:"year_level" binding:"required"`
 }
+
+var CourseOutcomeRequest struct {
+	Statement string `json:"statement" binding:"required"`
+}
+var IntendedLearningOutcomeRequest struct {
+	Statement string `json:"statement" binding:"required"`
+}
