@@ -32,9 +32,21 @@ func (CourseOutcomeController) GET(ctx *gin.Context) {
 }
 
 func (CourseOutcomeController) POST(ctx *gin.Context) {
+	id := ctx.Param("planID")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide the Course Outcome Assessment and Evaluation Plan"})
+		return
+	}
 	coRequest := types.CourseOutcomeRequest
 	if err := ctx.ShouldBindJSON(&coRequest); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var coaep models.Coeap
+
+	if err := lib.Database.First(&coaep, id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
 		return
 	}
 
@@ -42,7 +54,7 @@ func (CourseOutcomeController) POST(ctx *gin.Context) {
 		Statement: coRequest.Statement,
 	}
 
-	if err := lib.Database.FirstOrCreate(&co, models.CourseOutcome{Statement: co.Statement}).Error; err != nil {
+	if err := lib.Database.FirstOrCreate(&co, models.CourseOutcome{Statement: co.Statement, CoeapID: &coaep.ID}).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

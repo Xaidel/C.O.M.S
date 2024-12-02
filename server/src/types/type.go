@@ -55,6 +55,11 @@ var CourseRequest struct {
 	Year_Level    uint   `json:"year_level" binding:"required"`
 }
 
+var CoaepRequest struct {
+	PeriodID uint `json:"period_id" binding:"required"`
+	CourseID uint `json:"course_id" binding:"required"`
+}
+
 var CourseOutcomeRequest struct {
 	Statement string `json:"statement" binding:"required"`
 }
