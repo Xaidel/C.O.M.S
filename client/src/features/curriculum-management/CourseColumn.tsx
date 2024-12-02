@@ -9,6 +9,10 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { ColumnDef } from "@tanstack/react-table";
 import { UserPen } from "lucide-react";
 
+const handleClick = () => {
+  console.log("Hello World");
+};
+
 export const CourseColumn: ColumnDef<Course>[] = [
   { header: "Year", accessorKey: "Year_Level" },
   { header: "Sem", accessorKey: "Sem" },
@@ -26,7 +30,7 @@ export const CourseColumn: ColumnDef<Course>[] = [
       return (
         <div className="flex ">
           {facultyFullName === " . " ? (
-            <Button>Assign Faculty</Button>
+            <Button onClick={handleClick}>Assign Faculty</Button>
           ) : (
             <div className="gap-2 flex items-center">
               <span className="text-gray-500">{facultyFullName}</span>{" "}

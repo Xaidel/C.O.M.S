@@ -26,14 +26,12 @@ export function SidebarLayout() {
   const { state } = useSidebar();
   const queryClient = useQueryClient();
   const location = useLocation();
-  const pathname = useLocation();
-  console.log(pathname);
   const currentPath = location.pathname;
   let navItems = DEAN_NAV_ITEMS;
 
   const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
   const isFetching = useIsFetching();
-  if (isFetching) console.log("is Fetching");
+  if (isFetching) return;
   if (!currentUser) return null;
   const { role } = currentUser;
   if (role === "Dean") navItems = DEAN_NAV_ITEMS;
