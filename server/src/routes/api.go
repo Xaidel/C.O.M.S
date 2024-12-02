@@ -88,5 +88,12 @@ func APIRoutes(router *gin.Engine) {
 			courseOutcome.POST("/", controllers.CourseOutcome.POST)
 			courseOutcome.DELETE("/:id", controllers.CourseOutcome.DELETE)
 		}
+		ilo := api.Group("/intended-learning-outcomes")
+		{
+			ilo.GET("", controllers.IntendedLearningOutcome.GET)
+			ilo.GET("/:id", controllers.IntendedLearningOutcome.GET)
+			ilo.POST("/:coID", controllers.IntendedLearningOutcome.POST)
+			ilo.DELETE("/:id", controllers.IntendedLearningOutcome.DELETE)
+		}
 	}
 }
