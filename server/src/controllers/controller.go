@@ -10,6 +10,7 @@ type Controller struct {
 	Faculty                 FacultyController
 	Course                  CourseController
 	Period                  PeriodController
+	Coaep                   COAEPController
 	CourseOutcome           CourseOutcomeController
 	IntendedLearningOutcome ILOController
 }

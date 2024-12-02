@@ -81,11 +81,19 @@ func APIRoutes(router *gin.Engine) {
 			period.GET("/:id", controllers.Period.GET)
 			period.GET("/current", controllers.Period.GetCurrent)
 		}
+		coaep := api.Group("coaep")
+		{
+			coaep.GET("", controllers.Coaep.GET)
+			coaep.GET("/:id", controllers.Coaep.GET)
+			coaep.POST("", controllers.Coaep.POST)
+			coaep.DELETE("/:id", controllers.Coaep.DELETE)
+		}
+
 		courseOutcome := api.Group("/course-outcomes")
 		{
 			courseOutcome.GET("", controllers.CourseOutcome.GET)
 			courseOutcome.GET("/:id", controllers.CourseOutcome.GET)
-			courseOutcome.POST("/", controllers.CourseOutcome.POST)
+			courseOutcome.POST("/:planID", controllers.CourseOutcome.POST)
 			courseOutcome.DELETE("/:id", controllers.CourseOutcome.DELETE)
 		}
 		ilo := api.Group("/intended-learning-outcomes")
