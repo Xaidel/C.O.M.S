@@ -10,7 +10,7 @@ interface AssignFacultyProps {
 
 export function useAssignFaculty() {
   const { toast } = useToast();
-  const currID = useParams();
+  const { currID } = useParams();
   const queryClient = useQueryClient();
   const { mutate: assignFaculty, isPending: isCreating } = useMutation({
     mutationFn: async (props: AssignFacultyProps) => {

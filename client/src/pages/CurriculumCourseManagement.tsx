@@ -155,7 +155,10 @@ export default function CurriculumCourseManagement() {
                             </span>
                           </DialogDescription>
                         </DialogHeader>
-                        <FacultyTable courseID={courseID} />
+                        <FacultyTable
+                          courseID={courseID}
+                          userID={user?.UserID}
+                        />
                       </DialogContent>
                     </Dialog>
                     <TooltipContent>
