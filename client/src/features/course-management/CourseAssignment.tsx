@@ -17,7 +17,5 @@ export default function CourseAssignment() {
       ),
     },
   ];
-  /* No Course data yet */
   return <DataTable resource="Courses" columns={columns} data={[]} />;
 }
-

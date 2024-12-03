@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 export interface FacultyFullName {
-  programID: number;
+  courseOrProgramID: number;
   userID: string;
   fullname: string;
 }

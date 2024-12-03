@@ -42,6 +42,7 @@ export interface Course {
   Lab_Unit: number;
   Sem: number;
   Year_Level: number;
+  ID: number;
 }
 
 export interface Faculty {
