@@ -15,7 +15,7 @@ func (FacultyController) GET(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id != "" {
 		var faculty models.Faculty
-		if err := lib.Database.Preload("User").First(&faculty, id).Error; err != nil {
+		if err := lib.Database.Preload("User").Preload("Courses").First(&faculty, id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Faculty not Found"})
 			return
 		}

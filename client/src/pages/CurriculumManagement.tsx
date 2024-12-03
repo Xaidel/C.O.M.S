@@ -24,7 +24,6 @@ export default function CurriculumManagement() {
   if (isLoading) return;
   if (error) return;
   const currs: Curriculum[] = response?.curriculums || [];
-  console.log(currs);
   return (
     <>
       <div>

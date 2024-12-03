@@ -34,7 +34,7 @@ export default function NonPHTable({ programID, userID }: NonPHTableProps) {
     if (response?.faculties) {
       const fullname = response.faculties.map((faculty: NonPHFaculty) => {
         return {
-          programID: programID,
+          courseOrProgramID: programID,
           userID: faculty.UserID,
           fullname: `${faculty.User.Firstname} ${faculty.User.Middlename.charAt(0)}. ${faculty.User.Lastname}`,
         };
@@ -88,7 +88,7 @@ export default function NonPHTable({ programID, userID }: NonPHTableProps) {
                     <Button
                       onClick={() => {
                         handlePHAssigning({
-                          programID: row.original.programID,
+                          programID: row.original.courseOrProgramID,
                           userID: row.original.userID,
                         });
                       }}
