@@ -16,10 +16,6 @@ const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
   if (role === "Student" || role === "Program Head") {
     const { Programs } = role_info;
     label = Programs?.[0].Program_Name; //temporary
-  } else if (role === "Faculty") {
-    const { Courses } = role_info;
-    console.log(role_info);
-    label = Courses?.[0].Course_Name;
   } else {
     const { Department } = role_info;
     label = Department.Dept_Name;
