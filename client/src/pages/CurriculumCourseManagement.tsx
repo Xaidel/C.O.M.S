@@ -6,16 +6,38 @@ import UploadCourse from "@/features/course-management/UploadCourse";
 import { CourseColumn } from "@/features/curriculum-management/CourseColumn";
 import CurriculumFilter from "@/features/curriculum-management/CurriculumFilter";
 import { useCurriculumByID } from "@/features/curriculum-management/useCurriculumByID";
-import { Course } from "@/types/Interface";
+import { Course, currentUser } from "@/types/Interface";
 import { CircleArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+
+import { UserPen, UserPlus } from "lucide-react";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  TooltipProvider,
+  TooltipContent,
+  Tooltip,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useQueryClient } from "@tanstack/react-query";
+import FacultyTable from "@/features/curriculum-management/FacultyTable";
 
 export default function CurriculumCourseManagement() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const year = searchParams.get("year") || "all";
   const semester = searchParams.get("semester") || "all";
+  const queryClient = useQueryClient();
+  const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
+  console.log(currentUser);
 
   const { currID } = useParams<{ currID: string }>();
   const { isLoading, response, error } = useCurriculumByID(currID);
@@ -67,7 +89,87 @@ export default function CurriculumCourseManagement() {
         setSemester={(newSem) => handleFilterChange(year, newSem)}
       />
 
-      <DataTable columns={CourseColumn} data={courses} resource="Courses" />
+      <DataTable
+        columns={[
+          ...CourseColumn,
+
+          {
+            id: "action",
+            header: "",
+            cell: ({ row }) => {
+              const user = row.original.Faculty?.User;
+              const courseID = row.original.ID;
+              return user?.Firstname === "" ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <TooltipTrigger asChild>
+                          <Button variant="outline">
+                            <UserPlus />
+                          </Button>
+                        </TooltipTrigger>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle className="text-2xl">
+                            Assign Faculty
+                          </DialogTitle>
+                          <DialogDescription>
+                            Choose a <span className="font-bold">Faculty</span>{" "}
+                            Member among the{" "}
+                            <span className="font-bold">
+                              School of Computer and Information Sciences
+                            </span>
+                          </DialogDescription>
+                        </DialogHeader>
+                        <FacultyTable courseID={courseID} />
+                      </DialogContent>
+                    </Dialog>
+                    <TooltipContent>
+                      <p>Assign Faculty</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                <TooltipProvider>
+                  <Tooltip>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <TooltipTrigger asChild>
+                          <Button variant="outline">
+                            <UserPen />
+                          </Button>
+                        </TooltipTrigger>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle className="text-2xl">
+                            Assign Faculty
+                          </DialogTitle>
+                          <DialogDescription>
+                            Choose a <span className="font-bold">Faculty</span>{" "}
+                            Member among the{" "}
+                            <span className="font-bold">
+                              School of Computer and Information Sciences
+                            </span>
+                          </DialogDescription>
+                        </DialogHeader>
+                        <FacultyTable courseID={courseID} />
+                      </DialogContent>
+                    </Dialog>
+                    <TooltipContent>
+                      <p>Reassign Faculty</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            },
+          },
+        ]}
+        data={courses}
+        resource="Courses"
+      />
       <div className="flex gap-4 mt-4">
         <UploadCourse />
         <AddCourse />
