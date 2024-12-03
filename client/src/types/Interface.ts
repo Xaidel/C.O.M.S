@@ -38,6 +38,7 @@ export interface Course {
   Course_Name: string;
   Curriculum?: Curriculum;
   Faculty?: Faculty;
+  FacultyID: number;
   Lec_Unit: number;
   Lab_Unit: number;
   Sem: number;
@@ -48,6 +49,11 @@ export interface Course {
 export interface Faculty {
   ID: number;
   User?: UserInfo;
+  Courses: Course[];
+}
+
+export interface FacultyResponse {
+  faculty?: Faculty;
 }
 
 export interface CourseResponse {
