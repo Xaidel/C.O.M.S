@@ -1,43 +1,38 @@
 import AppLabel from "@/components/ui/applabel";
-import { Button } from "@/components/ui/button";
-import { FacultyResponse } from "@/types/Interface";
-import { useQueryClient } from "@tanstack/react-query";
-import { CircleArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useSidebar } from "@/components/ui/sidebar";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CoaepTabContent from "@/features/faculty/CoaepTabContent";
 
 export default function Coaep() {
-  const navigate = useNavigate();
-  const { courseID } = useParams<{ courseID: string }>();
-  const queryClient = useQueryClient();
-  const faculty = queryClient.getQueryData<FacultyResponse>(["courses"]);
-  const courses = faculty?.faculty?.Courses;
-  const [courseName, setCourseName] = useState("");
-  useEffect(() => {
-    const parsedCourseID = parseInt(courseID || "", 10);
-    const selectedCourse = courses?.find(
-      (course) => course.ID === parsedCourseID,
-    );
-    setCourseName(selectedCourse?.Course_Name || "");
-  }, [courseID, courses]);
-
+  const { state } = useSidebar();
+  console.log(state);
   return (
     <>
       <div>
         <AppLabel currentPage="Course Outcome Assessment and Evaluation Plan" />
       </div>
-      <div className="flex justify-center">Tab Placeholder</div>
-      <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1F2937] mb-6">
-        <Button
-          variant="ghost"
-          onClick={() => {
-            navigate("/courses");
-          }}
-        >
-          <CircleArrowLeft className="text-2xl" />
-        </Button>
-        {courseName}
-      </div>
+      <Tabs defaultValue="co" className="w-full flex flex-col justify-center">
+        <TabsList className="h-auto p-0 bg-transparent gap-8">
+          {[
+            { value: "co", label: "Course Outcome" },
+            { value: "ilo", label: "Intended Learning Outcome" },
+            { value: "at", label: "Assessment Tool" },
+            { value: "pt", label: "Performance Target" },
+            { value: "final", label: "Assessment Plan" },
+          ].map((tab) => (
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              className={`relative h-auto px-0 pb-4 pt-10 data-[state=active]:bg-transparent font-normal text-muted-foreground data-[state=active]:text-foreground data-[state=active]:shadow-none 
+                after:absolute after:z-20 ${state === "expanded" && "after:z-1"} after:border-2 after:left-1/2 after:top-0 after:h-[25px] after:w-[25px] after:-translate-x-1/2 after:rounded-full after:bg-[#F8F8F8] after:border-[#CBD2DB] data-[state=active]:after:border-4 data-[state=active]:after:border-[#40454E]
+                before:absolute before:z-10 ${state === "expanded" && "before:z-0"} before:top-[0.35rem] before:left-[-40%] before:right-[-40%] before:h-[13px] before:min-w-full before:rounded-md before:bg-[#CBD2DB]`}
+            >
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        <CoaepTabContent />
+      </Tabs>
     </>
   );
 }
