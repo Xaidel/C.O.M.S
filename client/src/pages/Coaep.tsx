@@ -26,7 +26,8 @@ export default function Coaep() {
       <div>
         <AppLabel currentPage="Course Outcome Assessment and Evaluation Plan" />
       </div>
-      <div className="flex justify-start gap-1 items-center text-3xl font-bold text-[#1F2937] mb-6">
+      <div className="flex justify-center">Tab Placeholder</div>
+      <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1F2937] mb-6">
         <Button
           variant="ghost"
           onClick={() => {
