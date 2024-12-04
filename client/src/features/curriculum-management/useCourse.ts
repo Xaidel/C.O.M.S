@@ -8,7 +8,7 @@ export function useCourse(id?: number) {
     data: response,
     error,
   } = useQuery<FacultyResponse>({
-    queryKey: ["course"],
+    queryKey: ["courses"],
     queryFn: async (): Promise<FacultyResponse> => {
       const res =
         id === undefined ? client.Faculty().read() : client.Faculty().read(id);
