@@ -5,6 +5,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CircleArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { CoaepBaseColumn } from "./CoaepBaseColumn";
+import { DataTable } from "@/components/ui/datatable";
 
 export default function CoaepTabContent() {
   const navigate = useNavigate();
@@ -31,6 +33,11 @@ export default function CoaepTabContent() {
           </Button>
           {courseName}
         </div>
+        <DataTable
+          resource="Course Outcomes"
+          columns={CoaepBaseColumn}
+          data={[]}
+        />
       </TabsContent>
       <TabsContent value="ilo">
         <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
@@ -39,6 +46,11 @@ export default function CoaepTabContent() {
           </Button>
           {courseName}
         </div>
+        <DataTable
+          resource="Course Outcomes"
+          columns={CoaepBaseColumn}
+          data={[]}
+        />
       </TabsContent>
       <TabsContent value="at">
         <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
@@ -47,6 +59,11 @@ export default function CoaepTabContent() {
           </Button>
           {courseName}
         </div>
+        <DataTable
+          resource="Course Outcomes"
+          columns={CoaepBaseColumn}
+          data={[]}
+        />
       </TabsContent>
       <TabsContent value="pt">
         <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
@@ -55,6 +72,11 @@ export default function CoaepTabContent() {
           </Button>
           {courseName}
         </div>
+        <DataTable
+          resource="Course Outcomes"
+          columns={CoaepBaseColumn}
+          data={[]}
+        />
       </TabsContent>
       <TabsContent value="final">
         <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
@@ -63,6 +85,11 @@ export default function CoaepTabContent() {
           </Button>
           {courseName}
         </div>
+        <DataTable
+          resource="Course Outcomes"
+          columns={CoaepBaseColumn}
+          data={[]}
+        />
       </TabsContent>
     </>
   );

@@ -46,6 +46,16 @@ export interface Course {
   ID: number;
 }
 
+export interface Coaep {
+  CourseOutcomes: CourseOutcome[];
+  ID: number;
+}
+
+export interface CourseOutcome {
+  Statement: string;
+  ID: number;
+}
+
 export interface Faculty {
   ID: number;
   User?: UserInfo;
