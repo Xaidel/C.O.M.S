@@ -6,5 +6,5 @@ export const CoaepBaseColumn: ColumnDef<CourseOutcome>[] = [
     header: "CO#",
     accessorKey: "ID",
   },
-  { header: "Statement", accessorKey: "Statement" },
+  { header: "CO Statement", accessorKey: "Statement" },
 ];

@@ -5,7 +5,6 @@ import CoaepTabContent from "@/features/faculty/CoaepTabContent";
 
 export default function Coaep() {
   const { state } = useSidebar();
-  console.log(state);
   return (
     <>
       <div>
@@ -18,7 +17,7 @@ export default function Coaep() {
             { value: "ilo", label: "Intended Learning Outcome" },
             { value: "at", label: "Assessment Tool" },
             { value: "pt", label: "Performance Target" },
-            { value: "final", label: "Assessment Plan" },
+            { value: "final", label: "COAEP Preview" },
           ].map((tab) => (
             <TabsTrigger
               key={tab.value}
