@@ -6,7 +6,7 @@ import UploadCourse from "@/features/course-management/UploadCourse";
 import { CourseColumn } from "@/features/curriculum-management/CourseColumn";
 import CurriculumFilter from "@/features/curriculum-management/CurriculumFilter";
 import { useCurriculumByID } from "@/features/curriculum-management/useCurriculumByID";
-import { Course, currentUser } from "@/types/Interface";
+import { Course } from "@/types/Interface";
 import { CircleArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -27,7 +27,6 @@ import {
   Tooltip,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useQueryClient } from "@tanstack/react-query";
 import FacultyTable from "@/features/curriculum-management/FacultyTable";
 
 export default function CurriculumCourseManagement() {
@@ -35,9 +34,6 @@ export default function CurriculumCourseManagement() {
   const [searchParams, setSearchParams] = useSearchParams();
   const year = searchParams.get("year") || "all";
   const semester = searchParams.get("semester") || "all";
-  const queryClient = useQueryClient();
-  const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
-  console.log(currentUser);
 
   const { currID } = useParams<{ currID: string }>();
   const { isLoading, response, error } = useCurriculumByID(currID);

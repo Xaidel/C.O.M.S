@@ -27,6 +27,7 @@ export function useLogin() {
       const user = data?.user;
       if (user) {
         queryClient.setQueryData<User>(["current-user"], user);
+        sessionStorage.setItem("user_info", JSON.stringify(user));
         navigate("/dashboard");
       }
     },

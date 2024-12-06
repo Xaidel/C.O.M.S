@@ -19,17 +19,16 @@ import {
   PROGRAM_HEAD_NAV_ITEMS,
   STUDENT_NAV_ITEMS,
 } from "@/types/NavItems";
-import { useIsFetching, useQueryClient } from "@tanstack/react-query";
-import { currentUser } from "@/types/Interface";
+import { useIsFetching } from "@tanstack/react-query";
+import { useUser } from "@/features/auth/useUser";
 
 export function SidebarLayout() {
   const { state } = useSidebar();
-  const queryClient = useQueryClient();
   const location = useLocation();
   const currentPath = location.pathname;
   let navItems = DEAN_NAV_ITEMS;
 
-  const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
+  const { currentUser } = useUser();
   const isFetching = useIsFetching();
   if (isFetching) return;
   if (!currentUser) return null;
