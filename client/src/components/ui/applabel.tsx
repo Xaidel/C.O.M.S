@@ -1,13 +1,11 @@
-import { currentUser } from "@/types/Interface";
 import { Separator } from "./separator";
-import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@/features/auth/useUser";
 
 interface AppLabelProps {
   currentPage: string;
 }
 const AppLabel: React.FC<AppLabelProps> = ({ currentPage }) => {
-  const queryClient = useQueryClient();
-  const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
+  const { currentUser } = useUser();
 
   if (!currentUser) return null;
   const { role, role_info } = currentUser;

@@ -15,6 +15,7 @@ import CurriculumCourseManagement from "./pages/CurriculumCourseManagement";
 import CurriculumManagement from "./pages/CurriculumManagement";
 import CourseSelection from "./pages/CourseSelection";
 import Coaep from "./pages/Coaep";
+import ProtectedRoute from "./utils/ProtectedRoute";
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -41,7 +42,13 @@ function App() {
       <ReactQueryDevtools initialIsOpen={false} />
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate replace to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/programs" element={<ProgramManagement />} />
