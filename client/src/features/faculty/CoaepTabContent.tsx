@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CoaepBaseColumn } from "./CoaepBaseColumn";
 import { DataTable } from "@/components/ui/datatable";
+import COTab from "./COTab";
 
 export default function CoaepTabContent() {
   const navigate = useNavigate();
@@ -27,17 +28,7 @@ export default function CoaepTabContent() {
   return (
     <>
       <TabsContent value="co">
-        <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
-          <Button variant="ghost" onClick={() => navigate("/courses")}>
-            <CircleArrowLeft />
-          </Button>
-          {courseName}
-        </div>
-        <DataTable
-          resource="Course Outcomes"
-          columns={CoaepBaseColumn}
-          data={[]}
-        />
+        <COTab courseName={courseName} navigate={navigate} />
       </TabsContent>
       <TabsContent value="ilo">
         <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
@@ -48,7 +39,15 @@ export default function CoaepTabContent() {
         </div>
         <DataTable
           resource="Course Outcomes"
-          columns={CoaepBaseColumn}
+          columns={[
+            ...CoaepBaseColumn,
+            {
+              header: "Blooms Taxonomy Level",
+            },
+            {
+              header: "Intended Learning Outcomes",
+            },
+          ]}
           data={[]}
         />
       </TabsContent>
@@ -61,7 +60,15 @@ export default function CoaepTabContent() {
         </div>
         <DataTable
           resource="Course Outcomes"
-          columns={CoaepBaseColumn}
+          columns={[
+            ...CoaepBaseColumn,
+            {
+              header: "Intended Learning Outcomes",
+            },
+            {
+              header: "Assessment Tool",
+            },
+          ]}
           data={[]}
         />
       </TabsContent>
@@ -74,7 +81,18 @@ export default function CoaepTabContent() {
         </div>
         <DataTable
           resource="Course Outcomes"
-          columns={CoaepBaseColumn}
+          columns={[
+            ...CoaepBaseColumn,
+            {
+              header: "Intended Learning Outcomes",
+            },
+            {
+              header: "Assessment Tool",
+            },
+            {
+              header: "Performance Target",
+            },
+          ]}
           data={[]}
         />
       </TabsContent>
@@ -87,7 +105,18 @@ export default function CoaepTabContent() {
         </div>
         <DataTable
           resource="Course Outcomes"
-          columns={CoaepBaseColumn}
+          columns={[
+            ...CoaepBaseColumn,
+            {
+              header: "Intended Learning Outcomes",
+            },
+            {
+              header: "Assessment Tool",
+            },
+            {
+              header: "Performance Target",
+            },
+          ]}
           data={[]}
         />
       </TabsContent>
