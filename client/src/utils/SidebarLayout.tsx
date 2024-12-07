@@ -19,15 +19,15 @@ import {
   PROGRAM_HEAD_NAV_ITEMS,
   STUDENT_NAV_ITEMS,
 } from "@/types/NavItems";
-import { useIsFetching } from "@tanstack/react-query";
+import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "@/features/auth/useUser";
 
 export function SidebarLayout() {
   const { state } = useSidebar();
   const location = useLocation();
   const currentPath = location.pathname;
-  let navItems = DEAN_NAV_ITEMS;
-
+  let navItems;
+  const queryClient = useQueryClient();
   const { currentUser } = useUser();
   const isFetching = useIsFetching();
   if (isFetching) return;
@@ -106,12 +106,20 @@ export function SidebarLayout() {
               size="lg"
             >
               <NavLink to="/login">
-                <div className="text-red">
-                  <LogOut />
+                <div
+                  onClick={() => {
+                    queryClient.clear();
+                    sessionStorage.clear();
+                  }}
+                  className="flex gap-2 justify-center items-center"
+                >
+                  <div className="text-red">
+                    <LogOut />
+                  </div>
+                  <span className="group-data-[collapsible=icon]:hidden text-red">
+                    Logout Account
+                  </span>
                 </div>
-                <span className="group-data-[collapsible=icon]:hidden text-red">
-                  Logout Account
-                </span>
               </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
