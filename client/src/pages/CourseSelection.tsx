@@ -49,9 +49,6 @@ export default function CourseSelection() {
                     <TooltipTrigger asChild>
                       <Button
                         variant="ghost"
-                        onClick={() => {
-                          navigate(`/courses/${courseID}/assessment-plan`);
-                        }}
                       >
                         <ChevronRight />
                       </Button>
