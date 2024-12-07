@@ -62,10 +62,6 @@ function App() {
               element={<CurriculumCourseManagement />}
             />
             <Route path="/courses" element={<CourseSelection />} />
-            <Route
-              path="/courses/:courseID/assessment-plan"
-              element={<Coaep />}
-            />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
