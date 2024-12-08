@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import ProgramManagement from "./pages/ProgramManagement";
 import AppLayout from "./utils/AppLayout";
 import CourseManagement from "./pages/CourseManagement";
+import AssessmentPlan from "./pages/AssessmentPlan.tsx"
 import NotFound from "./pages/NotFound";
 import CurriculumCourseManagement from "./pages/CurriculumCourseManagement";
 import CurriculumManagement from "./pages/CurriculumManagement";
@@ -62,6 +63,7 @@ function App() {
               element={<CurriculumCourseManagement />}
             />
             <Route path="/courses" element={<CourseSelection />} />
+            <Route path="/courses/:courseID/assessment-plan" element={<AssessmentPlan/>}/>
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
