@@ -1,7 +1,6 @@
 import AppLabel from "@/components/ui/applabel";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/datatable";
-import AddCourse from "@/features/course-management/AddCourse";
 import UploadCourse from "@/features/course-management/UploadCourse";
 import { CourseColumn } from "@/features/curriculum-management/CourseColumn";
 import CurriculumFilter from "@/features/curriculum-management/CurriculumFilter";
@@ -169,9 +168,8 @@ export default function CurriculumCourseManagement() {
         data={courses}
         resource="Courses"
       />
-      <div className="flex gap-4 mt-4">
+      <div className="mt-4">
         <UploadCourse />
-        <AddCourse />
       </div>
     </>
   );
