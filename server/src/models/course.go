@@ -6,7 +6,7 @@ type Course struct {
 	Course_Name  string
 	FacultyID    *uint
 	Curriculum   Curriculum `gorm:"references:CurrID"`
-  Students     []*Student `gorm:"many2many:enrolled_courses"`
+	Students     []*Student `gorm:"many2many:enrolled_courses"`
 	Faculty      Faculty
 	Lec_Unit     uint
 	Lab_Unit     uint

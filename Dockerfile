@@ -1,6 +1,6 @@
 #Client
 
-FROM node:lts-slim as Client
+FROM node:lts-slim as client
 
 WORKDIR /client
 
