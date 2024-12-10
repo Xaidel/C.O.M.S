@@ -99,6 +99,7 @@ func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid CSV format"})
 		return
 	}
+  ctx.JSON(http.StatusOK, gin.H{"message": courses})
 }
 
 func (CourseController) POST(ctx *gin.Context) {

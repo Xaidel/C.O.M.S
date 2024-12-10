@@ -11,7 +11,7 @@ export function useCourse(id?: number) {
     queryKey: ["courses"],
     queryFn: async (): Promise<FacultyResponse> => {
       const res =
-        id === undefined ? client.Faculty().read() : client.Faculty().read(id);
+        id === undefined ? client.Faculty().readNonPH() : client.Faculty().readNonPH();
       return res;
     },
   });
