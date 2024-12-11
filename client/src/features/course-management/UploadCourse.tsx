@@ -3,12 +3,14 @@ import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTr
 import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { useUploadCourse } from "./useUploadCourse";
+import { toast } from "@/hooks/use-toast";
 
 export default function UploadCourse() {
   const [fileName, setFileName] = useState<string>("No File Selected")
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { mutate: uploadCourse } = useUploadCourse()
+  const [modalOpen, setModalOpen] = useState(false)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
@@ -31,9 +33,23 @@ export default function UploadCourse() {
     if (file) {
       uploadCourse(file, {
         onSuccess: (data) => {
-          console.log(data)
+          toast({
+            variant: "success",
+            duration: 3000,
+            title: "Success",
+            description: data?.message
+          })
+          setModalOpen(false)
         },
-        onError: (err) => { console.log(err) }
+        onError: (err) => {
+          toast({
+            variant: "destructive",
+            duration: 3000,
+            title: "Error",
+            description: err.message
+          })
+          setModalOpen(false)
+        }
       })
     } else {
       console.log("No File Selected")
@@ -48,7 +64,7 @@ export default function UploadCourse() {
     setFileName("No File Selected")
   }
   return (
-    <Dialog>
+    <Dialog open={modalOpen} onOpenChange={() => { setModalOpen(!modalOpen) }}>
       <DialogTrigger asChild>
         <Button variant="outline" className="border-[#3C444E] hover:bg-gray-50">
           <Upload className="mr-2 h-4 w-4" />
