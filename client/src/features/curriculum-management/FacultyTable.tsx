@@ -9,7 +9,7 @@ import {
 } from "../course-management/FacultyColumn";
 import { Button } from "@/components/ui/button";
 import { useAssignFaculty } from "./useAssignFaculty";
-import { toast } from "@/hooks/use-toast";
+//import { toast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
 
 interface FacultyTableProps {
@@ -24,7 +24,7 @@ export default function FacultyTable({ courseID, userID }: FacultyTableProps) {
   const { isLoading, response, error } = useFacultyByDept(departmentID || 0);
   const [faculties, setFaculties] = useState<FacultyFullName[]>([]);
 
-  const { assignFaculty, isCreating } = useAssignFaculty();
+  const { isCreating } = useAssignFaculty();
   useEffect(() => {
     if (response?.faculties) {
       const fullname = response.faculties?.map((faculty: NonPHFaculty) => {
@@ -43,26 +43,26 @@ export default function FacultyTable({ courseID, userID }: FacultyTableProps) {
   }, [response, courseID, userID]);
   if (isLoading) return;
   if (error) return;
-  const handleFacultyAssigning = (courseID: number, userID: string) => {
-    const faculty = faculties.find((fac) => fac.userID === userID);
-    if (faculty) {
-      assignFaculty(
-        { courseID, userID },
-        {
-          onSuccess: () => {
-            setFaculties((prevList) =>
-              prevList.filter((fac) => fac.userID !== userID),
-            );
-            toast({
-              variant: "success",
-              title: "Success!",
-              description: `${faculty.fullname} successfully assign as Teacher`,
-            });
+  /*  const handleFacultyAssigning = (courseID: number, userID: string) => {
+      const faculty = faculties.find((fac) => fac.userID === userID);
+      if (faculty) {
+        assignFaculty(
+          { courseID, userID },
+          {
+            onSuccess: () => {
+              setFaculties((prevList) =>
+                prevList.filter((fac) => fac.userID !== userID),
+              );
+              toast({
+                variant: "success",
+                title: "Success!",
+                description: `${faculty.fullname} successfully assign as Teacher`,
+              });
+            },
           },
-        },
-      );
-    }
-  };
+        );
+      }
+    }; */
 
   return (
     <>
@@ -74,8 +74,8 @@ export default function FacultyTable({ courseID, userID }: FacultyTableProps) {
             {
               id: "action",
               header: "",
-              cell: ({ row }) => {
-                const userID = row.original.userID;
+              cell: () => {
+                //const userID = row.original.userID;
                 return (
                   <div className="flex justify-center">
                     {isCreating ? (
@@ -83,11 +83,7 @@ export default function FacultyTable({ courseID, userID }: FacultyTableProps) {
                         <Loader className="mr-2 h-5 w-5 animate-spin text-lg" />
                       </Button>
                     ) : (
-                      <Button
-                        onClick={() => {
-                          handleFacultyAssigning(courseID, userID);
-                        }}
-                      >
+                      <Button>
                         Assign
                       </Button>
                     )}

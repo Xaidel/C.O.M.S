@@ -10,7 +10,7 @@ export function useCurrentPeriod() {
   } = useQuery<CurrentPeriodResponse>({
     queryKey: ["current-period"],
     queryFn: async (): Promise<CurrentPeriodResponse> => {
-      const res = await client.Period().readCurrent();
+      const res = await client.Period().current()
       return res;
     },
   });

@@ -1,5 +1,6 @@
 import APIClient from "probeclient";
 
-const client = new APIClient(import.meta.env.VITE_API);
+export const api = import.meta.env.VITE_API
+const client = new APIClient(api);
 
 export default client;

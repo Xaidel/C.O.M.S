@@ -2,11 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
+import { useUploadCourse } from "./useUploadCourse";
 
 export default function UploadCourse() {
   const [fileName, setFileName] = useState<string>("No File Selected")
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const { mutate: uploadCourse } = useUploadCourse()
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
@@ -27,7 +29,12 @@ export default function UploadCourse() {
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (file) {
-      console.log(file)
+      uploadCourse(file, {
+        onSuccess: (data) => {
+          console.log(data)
+        },
+        onError: (err) => { console.log(err) }
+      })
     } else {
       console.log("No File Selected")
     }
