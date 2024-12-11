@@ -1,9 +1,7 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/src/models"
@@ -76,30 +74,22 @@ func (CourseController) AssignFaculty(ctx *gin.Context) {
 func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 	file, err := ctx.FormFile("file")
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File upload failed"})
 		return
 	}
-
-	tempFile := fmt.Sprintf("../../%s", file.Filename)
-	if err := ctx.SaveUploadedFile(file, tempFile); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to save csv file"})
+	uploadedFile, err := file.Open()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot open file"})
 		return
 	}
-	defer os.Remove(tempFile)
+	defer uploadedFile.Close()
 
 	var courses []*models.Course
-	csvFile, err := os.Open(tempFile)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open csv file"})
+	if err := gocsv.Unmarshal(uploadedFile, &courses); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse CSV", "details": err.Error()})
 		return
 	}
-	defer csvFile.Close()
-
-	if err := gocsv.UnmarshalFile(csvFile, &courses); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid CSV format"})
-		return
-	}
-  ctx.JSON(http.StatusOK, gin.H{"message": courses})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Courses uploaded successfully"})
 }
 
 func (CourseController) POST(ctx *gin.Context) {
