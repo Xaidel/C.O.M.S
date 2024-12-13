@@ -1,4 +1,4 @@
-import { uploadCourse } from "@/service/api/uploadCourse";
+import { uploadCourse } from "@/service/api/course/uploadCourse";
 import { useMutation } from "@tanstack/react-query";
 
 interface uploadCourseParams {
