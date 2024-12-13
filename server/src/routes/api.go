@@ -71,9 +71,9 @@ func APIRoutes(router *gin.Engine) {
 		{
 			course.GET("", controllers.Course.GET)
 			course.GET("/:id", controllers.Course.GET)
-			course.POST("/:id", controllers.Course.AssignFaculty)
-      course.POST("", controllers.Course.BatchProcessCourse)
-		//	course.POST("", controllers.Course.POST)
+			course.POST("/faculty/:id", controllers.Course.AssignFaculty)
+			course.POST("/:currID", controllers.Course.BatchProcessCourse)
+			//	course.POST("", controllers.Course.POST)
 			course.DELETE("/:id", controllers.Course.DELETE)
 		}
 		period := api.Group("/periods")

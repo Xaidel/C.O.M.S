@@ -2,7 +2,7 @@ package models
 
 type Course struct {
 	Course_No    string
-	CurriculumID string `gorm:"size:2; not null"`
+	CurriculumID string `csv:"-" gorm:"size:2; not null"`
 	Course_Name  string
 	FacultyID    *uint      `csv:"-"`
 	Curriculum   Curriculum `csv:"-" gorm:"references:CurrID"`

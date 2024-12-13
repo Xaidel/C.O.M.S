@@ -1,11 +1,11 @@
-import { api } from "../api"
+import { api } from "../../api"
 
-export const uploadCourse = async (csv: File) => {
+export const uploadCourse = async (csv: File, currID: string) => {
   try {
     const formData = new FormData()
     formData.append("file", csv)
 
-    const res = await fetch(`${api}/courses`, {
+    const res = await fetch(`${api}/courses/${currID}`, {
       method: "POST",
       body: formData
     })
