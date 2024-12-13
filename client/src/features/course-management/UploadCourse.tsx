@@ -4,6 +4,8 @@ import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { useUploadCourse } from "./useUploadCourse";
 import { toast } from "@/hooks/use-toast";
+import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function UploadCourse() {
   const [fileName, setFileName] = useState<string>("No File Selected")
@@ -11,7 +13,9 @@ export default function UploadCourse() {
   const inputRef = useRef<HTMLInputElement>(null)
   const { mutate: uploadCourse } = useUploadCourse()
   const [modalOpen, setModalOpen] = useState(false)
-
+  const { currID } = useParams<{ currID: string }>()
+  const curr = currID || ""
+  const queryClient = useQueryClient()
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
     if (selectedFile) {
@@ -31,7 +35,7 @@ export default function UploadCourse() {
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (file) {
-      uploadCourse(file, {
+      uploadCourse({ file, currID: curr }, {
         onSuccess: (data) => {
           toast({
             variant: "success",
@@ -40,6 +44,9 @@ export default function UploadCourse() {
             description: data?.message
           })
           setModalOpen(false)
+          setFile(null)
+          setFileName("No File Selected")
+          queryClient.invalidateQueries({ queryKey: [`curriculum-${currID}`] })
         },
         onError: (err) => {
           toast({
@@ -49,6 +56,8 @@ export default function UploadCourse() {
             description: err.message
           })
           setModalOpen(false)
+          setFile(null)
+          setFileName("No File Selected")
         }
       })
     } else {

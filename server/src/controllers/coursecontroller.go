@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Xaidel/server/lib"
@@ -73,6 +74,8 @@ func (CourseController) AssignFaculty(ctx *gin.Context) {
 
 func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 	file, err := ctx.FormFile("file")
+	currID := ctx.Param("currID")
+
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File upload failed"})
 		return
@@ -89,7 +92,19 @@ func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse CSV", "details": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"message": "Courses uploaded successfully"})
+
+	for _, course := range courses {
+		course.CurriculumID = currID
+	}
+
+	if err := lib.Database.Create(&courses).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save courses"})
+		return
+	}
+
+	message := fmt.Sprintf("%v course(s) uploaded successfully", len(courses))
+
+	ctx.JSON(http.StatusOK, gin.H{"message": message})
 }
 
 func (CourseController) POST(ctx *gin.Context) {

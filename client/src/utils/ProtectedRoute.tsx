@@ -6,9 +6,8 @@ import { useUser } from "@/features/auth/useUser";
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const navigate = useNavigate();
   const { currentUser } = useUser();
-
   useEffect(() => {
-    if (currentUser === undefined) navigate("/login");
+    if (currentUser === null) navigate("/login");
   }, [currentUser, navigate]);
   if (currentUser) return <>{children}</>;
   return null;
