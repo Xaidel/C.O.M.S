@@ -14,6 +14,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+
+/*
+ * TODO: Fix api call 
+ * */
 export default function CourseSelection() {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<currentUser>(["current-user"]);
@@ -49,7 +53,7 @@ export default function CourseSelection() {
                     <TooltipTrigger asChild>
                       <Button
                         variant="ghost"
-                        onClick={() => {navigate(`/courses/${courseID}/assessment-plan`)}}
+                        onClick={() => { navigate(`/courses/${courseID}/assessment-plan`) }}
                       >
                         <ChevronRight />
                       </Button>
