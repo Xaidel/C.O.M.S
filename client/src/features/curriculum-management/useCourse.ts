@@ -2,7 +2,7 @@ import client from "@/service/api";
 import { FacultyResponse } from "@/types/Interface";
 import { useQuery } from "@tanstack/react-query";
 
-export function useCourse(id?: number) {
+export function useCourse(id: number) {
   const {
     isLoading,
     data: response,
@@ -10,8 +10,7 @@ export function useCourse(id?: number) {
   } = useQuery<FacultyResponse>({
     queryKey: ["courses"],
     queryFn: async (): Promise<FacultyResponse> => {
-      const res =
-        id === undefined ? client.Faculty().readNonPH() : client.Faculty().readNonPH();
+      const res = client.Faculty().read(id)
       return res;
     },
   });

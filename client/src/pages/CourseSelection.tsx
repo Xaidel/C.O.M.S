@@ -26,10 +26,11 @@ export default function CourseSelection() {
   if (user?.role_info.Courses.length !== 0) {
     facultyID = user?.role_info?.Courses?.[0]?.FacultyID;
   }
-  const { response, isLoading, error } = useCourse(facultyID);
+  const { response, isLoading, error } = useCourse(facultyID || 0);
   if (isLoading) return;
   if (error) return;
   const courses = response?.faculty?.Courses || [];
+  console.log(facultyID)
   return (
     <>
       <div>
