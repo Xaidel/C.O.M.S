@@ -16,7 +16,6 @@ export default function CourseManagement() {
         <AppLabel currentPage="Course Management" />
       </div>
 
-      {/*Return Button with Table Name*/}
       <div className="flex justify-start gap-1 items-center text-3xl font-bold text-[#1F2937] ">
         <Button
           variant="ghost"
@@ -29,7 +28,6 @@ export default function CourseManagement() {
         Courses
       </div>
 
-      {/*Filter Button*/}
       <div className="flex justify-end items-center mb-2 gap-2">
         <span className="text-sm">Sort by:</span>
         <Toggle
