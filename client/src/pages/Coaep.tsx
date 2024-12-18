@@ -3,6 +3,10 @@ import { useSidebar } from "@/components/ui/sidebar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CoaepTabContent from "@/features/faculty/CoaepTabContent";
 
+
+/*
+ * TODO: Classlist ui (uploading, adding, deleting) & COAEP ui
+ * */
 export default function Coaep() {
   const { state } = useSidebar();
   return (
