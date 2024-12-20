@@ -1,7 +1,7 @@
 package types
 
 type LoginRequest struct {
-	Role     string `json:role binding:required`
+	Role     string `json:"role binding:required"`
 	UserID   string `json:"userID" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
@@ -65,4 +65,8 @@ var CourseOutcomeRequest struct {
 }
 var IntendedLearningOutcomeRequest struct {
 	Statement string `json:"statement" binding:"required"`
+}
+
+var StudentRequest struct {
+	UserID string `json:"userID" binding:"required"`
 }
