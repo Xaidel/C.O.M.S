@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/src/models"
 	"github.com/Xaidel/server/src/types"
 	"github.com/gin-gonic/gin"
+	"github.com/gocarina/gocsv"
 )
 
 type StudentController struct{}
@@ -28,6 +30,33 @@ func (StudentController) GET(ctx *gin.Context) {
 		}
 		ctx.JSON(http.StatusOK, gin.H{"students": students})
 	}
+}
+
+func (StudentController) BatchProcessStudent(ctx *gin.Context) {
+	file, err := ctx.FormFile("file")
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File upload failed"})
+		return
+	}
+	uploadedFile, err := file.Open()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot open file"})
+		return
+	}
+	defer uploadedFile.Close()
+
+	var students []*models.Student
+	if err := gocsv.Unmarshal(uploadedFile, &students); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse CSV"})
+		return
+	}
+
+	if err := lib.Database.Create(&students).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save courses"})
+		return
+	}
+	message := fmt.Sprintf("%v student(s) uploaded successfully", len(students))
+	ctx.JSON(http.StatusOK, gin.H{"message": message})
 }
 
 func (StudentController) POST(ctx *gin.Context) {
