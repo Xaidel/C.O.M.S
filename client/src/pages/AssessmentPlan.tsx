@@ -1,5 +1,6 @@
 import AppLabel from "@/components/ui/applabel";
 import { Button } from "@/components/ui/button";
+import FacultyTabs from "@/features/faculty/FacultyTabs";
 import { FacultyResponse } from "@/types/Interface";
 import { useQueryClient } from "@tanstack/react-query";
 import { CircleArrowLeft } from "lucide-react";
@@ -30,7 +31,7 @@ export default function AssessmentPlan() {
         </Button>
         {courseName}
       </div>
-      {/*TODO: Tab for classlist and COAEP*/}
+      <FacultyTabs />
     </>
   );
 }
