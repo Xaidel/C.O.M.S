@@ -7,30 +7,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useCourse } from "@/features/curriculum-management/useCourse";
+import { useUser } from "@/features/auth/useUser";
 import { CourseColumn } from "@/features/faculty/CourseColumn";
-import { currentUser } from "@/types/Interface";
-import { useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 
-/*
- * TODO: Fix api call 
- * */
 export default function CourseSelection() {
-  const queryClient = useQueryClient();
-  const user = queryClient.getQueryData<currentUser>(["current-user"]);
+  const { currentUser } = useUser()
   const navigate = useNavigate();
   let facultyID;
-  if (user?.role_info.Courses.length !== 0) {
-    facultyID = user?.role_info?.Courses?.[0]?.FacultyID;
+  if (currentUser?.role_info.Courses.length !== 0) {
+    facultyID = currentUser?.role_info?.Courses?.[0]?.FacultyID;
   }
-  const { response, isLoading, error } = useCourse(facultyID || 0);
-  if (isLoading) return;
-  if (error) return;
-  const courses = response?.faculty?.Courses || [];
-  console.log(facultyID)
+  const courses = currentUser?.role_info?.Courses || [];
   return (
     <>
       <div>
