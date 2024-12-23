@@ -34,6 +34,20 @@ func (StudentController) GET(ctx *gin.Context) {
 
 func (StudentController) BatchProcessStudent(ctx *gin.Context) {
 	file, err := ctx.FormFile("file")
+	courseID := ctx.Param("courseID")
+
+	if courseID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the course id"})
+		return
+	}
+
+	var course models.Course
+
+	if err := lib.Database.First(&course, courseID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course does not exist"})
+		return
+	}
+
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File upload failed"})
 		return
@@ -45,17 +59,51 @@ func (StudentController) BatchProcessStudent(ctx *gin.Context) {
 	}
 	defer uploadedFile.Close()
 
-	var students []*models.Student
-	if err := gocsv.Unmarshal(uploadedFile, &students); err != nil {
+	var csvStudents []*models.Student
+	if err := gocsv.Unmarshal(uploadedFile, &csvStudents); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse CSV"})
 		return
 	}
 
-	if err := lib.Database.Create(&students).Error; err != nil {
+	userIDs := make([]string, len(csvStudents))
+	for i, student := range csvStudents {
+		userIDs[i] = student.UserID
+	}
+
+	var enrolledStudents []*models.Student
+
+	if err := lib.Database.Where("user_id IN ?", userIDs).Find(&enrolledStudents).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save courses"})
 		return
 	}
-	message := fmt.Sprintf("%v student(s) uploaded successfully", len(students))
+
+	enrolledStudentMapLookup := make(map[string]*models.Student)
+	for _, student := range enrolledStudents {
+		enrolledStudentMapLookup[student.UserID] = student
+	}
+
+	var missingStudent []string
+	for _, student := range csvStudents {
+		if _, exists := enrolledStudentMapLookup[student.UserID]; !exists {
+			missingStudent = append(missingStudent, student.UserID)
+		}
+	}
+
+	if len(missingStudent) > 0 {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Some students do not exist in the database",
+			"missing": missingStudent,
+		})
+		return
+	}
+
+	for _, student := range enrolledStudents {
+		if err := lib.Database.Model(student).Association("Courses").Append(&course); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to associate student with course"})
+			return
+		}
+	}
+	message := fmt.Sprintf("%d student(s) enrolled in %v successfully", len(enrolledStudents), course.Course_No)
 	ctx.JSON(http.StatusOK, gin.H{"message": message})
 }
 

@@ -6,9 +6,9 @@ export default function FacultyTabs() {
   return (
     <>
       <Tabs defaultValue="classlist" className="w-full">
-        <TabsList className="grid w-[50rem] grid-cols-2">
+        <TabsList className="grid w-[20rem] grid-cols-2">
           <TabsTrigger value="classlist">Class List</TabsTrigger>
-          <TabsTrigger value="coaep">CO Assessment and Evaluation Plan</TabsTrigger>
+          <TabsTrigger value="coaep">COAEP</TabsTrigger>
         </TabsList>
         <TabsContent value="classlist">
           <ClassList />
