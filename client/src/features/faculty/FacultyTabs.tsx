@@ -1,5 +1,6 @@
-import { DataTable } from "@/components/ui/datatable"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import ClassList from "./ClassList"
+import Coaep from "./Coaep"
 
 export default function FacultyTabs() {
   return (
@@ -10,7 +11,10 @@ export default function FacultyTabs() {
           <TabsTrigger value="coaep">CO Assessment and Evaluation Plan</TabsTrigger>
         </TabsList>
         <TabsContent value="classlist">
-          <DataTable columns={[{ header: "Student Number" }, { header: "Student Name" }]} data={[]} resource="Student" />
+          <ClassList />
+        </TabsContent>
+        <TabsContent value="coaep">
+          <Coaep />
         </TabsContent>
       </Tabs>
     </>
