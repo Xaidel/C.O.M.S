@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Xaidel/server/config"
@@ -33,6 +34,7 @@ func (AuthController) Login(ctx *gin.Context) {
 	}
 
 	role, err := services.PreloadLoginInfo(loginReq.Role, user.UserID)
+	log.Println(loginReq.Role)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": fmt.Sprintf("There are no user %v, associated with %v role", user.UserID, loginReq.Role),
