@@ -32,6 +32,20 @@ func (StudentController) GET(ctx *gin.Context) {
 	}
 }
 
+func (StudentController) GetByCourse(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the Course ID"})
+		return
+	}
+	var course models.Course
+	if err := lib.Database.Preload("Students").First(&course, id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"classlist": course.Students})
+}
+
 func (StudentController) BatchProcessStudent(ctx *gin.Context) {
 	file, err := ctx.FormFile("file")
 	courseID := ctx.Param("courseID")

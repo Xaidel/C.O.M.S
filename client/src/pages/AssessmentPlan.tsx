@@ -18,7 +18,6 @@ export default function AssessmentPlan() {
     const selectedCourse = courses?.find((course) => course.ID === parsedCourseID)
     setCourseName(selectedCourse?.Course_Name.toUpperCase() || "")
   }, [courseID, courses])
-  console.log(courses)
   return (
     <>
       <div>

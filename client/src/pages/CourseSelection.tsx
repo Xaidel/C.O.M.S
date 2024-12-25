@@ -16,10 +16,6 @@ import { useNavigate } from "react-router-dom";
 export default function CourseSelection() {
   const { currentUser } = useUser()
   const navigate = useNavigate();
-  let facultyID;
-  if (currentUser?.role_info.Courses.length !== 0) {
-    facultyID = currentUser?.role_info?.Courses?.[0]?.FacultyID;
-  }
   const courses = currentUser?.role_info?.Courses || [];
   return (
     <>

@@ -1,10 +1,10 @@
 package models
 
 type Student struct {
-  Courses []*Course`gorm:"many2many:enrolled_courses"`
-	UserID    string `gorm:"unique;not null"`
+	Courses   []*Course `csv:"-" gorm:"many2many:enrolled_courses"`
+	UserID    string    `gorm:"unique;not null"`
 	User      User
 	Program   Program
-	ProgramID uint `gorm:"not null"`
-	ID        uint
+	ProgramID uint `csv:"-" gorm:"not null"`
+	ID        uint `csv:"-"`
 }
