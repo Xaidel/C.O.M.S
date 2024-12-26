@@ -39,7 +39,7 @@ func (StudentController) GetByCourse(ctx *gin.Context) {
 		return
 	}
 	var course models.Course
-	if err := lib.Database.Preload("Students").First(&course, id).Error; err != nil {
+	if err := lib.Database.Preload("Students.User").First(&course, id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
 		return
 	}

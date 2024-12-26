@@ -6,8 +6,10 @@ import { useRef, useState } from "react";
 import { useUploadClassList } from "./useUploadClassList";
 import { useParams } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function UploadClassList() {
+  const queryClient = useQueryClient()
   const { courseID } = useParams<{ courseID: string }>()
   const [modalOpen, setModalOpen] = useState(false)
   const [fileName, setFileName] = useState<String>("No file selected")
@@ -44,6 +46,7 @@ export default function UploadClassList() {
           setModalOpen(false)
           setFile(null)
           setFileName("No file selected")
+          queryClient.invalidateQueries({ queryKey: [`${parsedCourseID}-students`] })
         },
         onError: (err) => {
           console.log(err)
