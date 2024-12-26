@@ -136,3 +136,23 @@ export interface Period {
 export interface CurrentPeriodResponse {
   current_period?: Period;
 }
+
+export interface StudentResponse {
+  Courses: Course[]
+  UserID: string
+  User: RawUserResponse
+}
+
+export interface RawUserResponse {
+  Firstname: string,
+  Middlename: string,
+  Lastname: string
+}
+export interface ClassList {
+  classlist: StudentResponse[]
+}
+
+export interface Student {
+  UserID: string
+  Fullname: string
+}
