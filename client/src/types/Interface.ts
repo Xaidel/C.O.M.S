@@ -156,3 +156,9 @@ export interface Student {
   UserID: string
   Fullname: string
 }
+
+export interface UploadErrorResponse {
+  code: number,
+  error: string,
+  missing: string
+}

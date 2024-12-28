@@ -7,6 +7,7 @@ import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUploadClassList } from "./useUploadClassList";
+import { UploadErrorResponse } from "@/types/Interface";
 
 export default function UploadClassList() {
   const queryClient = useQueryClient()
@@ -48,17 +49,25 @@ export default function UploadClassList() {
           setFileName("No file selected")
           queryClient.invalidateQueries({ queryKey: [`${parsedCourseID}-students`] })
         },
-        onError: (err) => {
-          console.log(err)
-          toast({
-            variant: "destructive",
-            duration: 3000,
-            title: "Error",
-            description: err.message
-          })
-          setModalOpen(false)
-          setFile(null)
-          setFileName("No file selected")
+        onError: (err: unknown) => {
+          if (err instanceof Error) {
+            try {
+              const parsedError: UploadErrorResponse = JSON.parse(err.message)
+              toast({
+                variant: "destructive",
+                duration: 3000,
+                title: `Error ${parsedError.code}`,
+                description: `${parsedError.error}. Unknown Student:${parsedError.missing}`
+              })
+              setModalOpen(false)
+              setFile(null)
+              setFileName("No file selected")
+            } catch (e) {
+              console.error("Failed to parse", err.message)
+            }
+          } else {
+            console.error("Internal Error", err)
+          }
         }
       })
     }

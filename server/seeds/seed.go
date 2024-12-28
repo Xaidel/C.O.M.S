@@ -48,6 +48,20 @@ var Users = []models.User{
 		Lastname:   "Nacion",
 	},
 	{
+		UserID:     "21-28230",
+		Password:   "password123",
+		Firstname:  "Zues",
+		Middlename: "Asico",
+		Lastname:   "Tenerife",
+	},
+	{
+		UserID:     "21-28231",
+		Password:   "password123",
+		Firstname:  "Mark Joseph",
+		Middlename: "Middlename",
+		Lastname:   "Pardinas",
+	},
+	{
 		UserID:     "1001",
 		Password:   "password123",
 		Firstname:  "Philip Cesar",
@@ -146,6 +160,12 @@ var Student = []models.Student{{
 }, {
 	ProgramID: 1,
 	UserID:    "21-28239",
+}, {
+	ProgramID: 2,
+	UserID:    "21-28230",
+}, {
+	ProgramID: 2,
+	UserID:    "21-28231",
 }}
 
 var Departments = []models.Department{

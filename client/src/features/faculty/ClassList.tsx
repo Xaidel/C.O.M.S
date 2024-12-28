@@ -9,6 +9,7 @@ import { useClassList } from "./useClassList";
 import { useDeleteStudent } from "./useDeleteStudent";
 import { toast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function ClassList() {
   const { courseID } = useParams<{ courseID: string }>();
@@ -68,8 +69,18 @@ export default function ClassList() {
               cell: ({ row }) => {
                 const student = row.original
                 return (
-
-                  <Button variant="ghost" className="text-gray-400" onClick={() => handleDelete(student.UserID, student.Fullname)}><Trash2 className="w-5 h-5" /></Button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" className="text-gray-400" onClick={() => handleDelete(student.UserID, student.Fullname)}>
+                          <Trash2 className="w-5 h-5" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Delete Student</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )
               }
             },
