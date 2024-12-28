@@ -6,12 +6,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UploadClassList from "./UploadClassList";
 import { useClassList } from "./useClassList";
+import { useDeleteStudent } from "./useDeleteStudent";
+import { toast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ClassList() {
   const { courseID } = useParams<{ courseID: string }>();
   const parsedCourseID = parseInt(courseID || "");
   const { data, isLoading } = useClassList(parsedCourseID);
   const [students, setStudents] = useState<Student[]>([]);
+  const deleteStudent = useDeleteStudent()
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (data?.classlist) {
@@ -28,13 +33,21 @@ export default function ClassList() {
     }
   }, [data]);
 
-  const handleDelete = (userID: string) => {
-    // Implement your delete logic here
-    console.log(`Delete student with UserID: ${userID}`);
-    setStudents((prev) => prev.filter((student) => student.UserID !== userID));
+  const handleDelete = (studentID: string, studentName: string) => {
+    deleteStudent.mutate({ studentID, courseID: parsedCourseID }, {
+      onSettled: () => {
+        toast({
+          variant: "success",
+          title: "Success!",
+          description: `${studentName} was deleted`,
+          duration: 3000,
+        })
+        queryClient.invalidateQueries({ queryKey: [`${parsedCourseID}-students`] })
+      },
+    })
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return
 
   return (
     <>
@@ -48,19 +61,18 @@ export default function ClassList() {
             {
               accessorKey: "Fullname",
               header: "Student Name",
-              cell: ({ row }) => (
-                <div className="flex justify-between items-center">
-                  <span>{row.original.Fullname}</span>
-                  <button
-                    className="p-1 text-gray-400 hover:text-gray-800 transition-colors"
-                    onClick={() => handleDelete(row.original.UserID)}
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
-              ),
             },
-            { id: "action" },
+            {
+              id: "action",
+              header: "",
+              cell: ({ row }) => {
+                const student = row.original
+                return (
+
+                  <Button variant="ghost" className="text-gray-400" onClick={() => handleDelete(student.UserID, student.Fullname)}><Trash2 className="w-5 h-5" /></Button>
+                )
+              }
+            },
           ]}
           data={students}
           resource="Students"
