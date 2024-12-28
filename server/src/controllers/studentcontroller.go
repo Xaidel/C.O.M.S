@@ -140,20 +140,26 @@ func (StudentController) POST(ctx *gin.Context) {
 }
 
 func (StudentController) DELETE(ctx *gin.Context) {
-	id := ctx.Param("id")
-	if id == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the student id"})
+	request := types.DeleteStudentRequest
+
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	var student models.Student
-	if err := lib.Database.First(&student, id).Error; err != nil {
+	if err := lib.Database.First(&student, "user_id = ?", request.UserID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Student does not exist"})
 		return
 	}
 
-	if err := lib.Database.Delete(&student).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete student"})
+	var course models.Course
+	if err := lib.Database.First(&course, request.CourseID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course does not exist"})
 		return
 	}
+
+	lib.Database.Model(&student).Association("Courses").Delete(&course)
+
 	ctx.JSON(http.StatusNoContent, gin.H{})
 }

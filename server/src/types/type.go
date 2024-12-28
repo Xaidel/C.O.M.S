@@ -70,3 +70,8 @@ var IntendedLearningOutcomeRequest struct {
 var StudentRequest struct {
 	UserID string `json:"userID" binding:"required"`
 }
+
+var DeleteStudentRequest struct {
+	UserID   string `json:"userID" binding:"required"`
+	CourseID uint   `json:"course_id" binding:"required"`
+}
