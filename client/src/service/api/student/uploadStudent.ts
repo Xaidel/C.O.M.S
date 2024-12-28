@@ -1,4 +1,5 @@
 import { api } from "@/service/api";
+import { UploadErrorResponse } from "@/types/Interface";
 
 export const uploadStudent = async (csv: File, courseID: number) => {
   try {
@@ -10,7 +11,9 @@ export const uploadStudent = async (csv: File, courseID: number) => {
       body: formData
     })
     if (!res.ok) {
-      throw new Error(`${res.status} ${res.statusText}`)
+      const errorResponse: UploadErrorResponse = await res.json()
+      errorResponse.code = res.status
+      throw new Error(JSON.stringify(errorResponse))
     }
     return res.json()
   } catch (error) {
