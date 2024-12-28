@@ -72,7 +72,7 @@ export default function ClassList() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button variant="ghost" className="text-gray-400" onClick={() => handleDelete(student.UserID, student.Fullname)}>
+                        <Button variant="ghost" className="text-gray-400 hover:text-red" onClick={() => handleDelete(student.UserID, student.Fullname)}>
                           <Trash2 className="w-5 h-5" />
                         </Button>
                       </TooltipTrigger>
