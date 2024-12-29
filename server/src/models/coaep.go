@@ -6,5 +6,5 @@ type Coeap struct {
 	Period         Period
 	Course         Course
 	PeriodID       uint `gorm:"not null"`
-	CourseID       uint `gorm:"not null"`
+	CourseID       uint
 }

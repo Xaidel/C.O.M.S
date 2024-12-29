@@ -15,7 +15,7 @@ func (COAEPController) GET(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		var coaep models.Coeap
-		if err := lib.Database.First(&coaep, id).Error; err != nil {
+		if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes").First(&coaep, id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Course Outcome Assessment Plan not found"})
 			return
 		}
