@@ -70,7 +70,7 @@ export default function ProgramManagement() {
                               <span className="font-bold">Faculty</span> Member
                               among the{" "}
                               <span className="font-bold">
-                                School of Computer and Information Sciences
+                                {currentUser?.role_info.Department.Dept_Name}
                               </span>
                             </DialogDescription>
                           </DialogHeader>
@@ -103,7 +103,7 @@ export default function ProgramManagement() {
                               <span className="font-bold">Faculty</span> Member
                               among the{" "}
                               <span className="font-bold">
-                                School of Computer and Information Sciences
+                                {currentUser?.role_info.Department.Dept_Name}
                               </span>
                             </DialogDescription>
                           </DialogHeader>
