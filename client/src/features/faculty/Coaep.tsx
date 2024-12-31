@@ -6,6 +6,8 @@ import { TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui
 import { useClassList } from "./useClassList";
 import { useState, useEffect } from "react";
 import { StudentResponse, Student } from "@/types/Interface";
+import { courseOutcomes } from "@/types/mockCoaep";
+import { Button } from "@/components/ui/button";
 
 export default function Coaep() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -61,8 +63,8 @@ export default function Coaep() {
                         <TooltipTrigger>
                           <div>{`ILO #${index + 1}`}</div>
                         </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="max-h-20">{ilo.Statement}</p>
+                        <TooltipContent className="max-w-[50rem]">
+                          <p >{ilo.Statement}</p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -76,6 +78,10 @@ export default function Coaep() {
                   <TableRow key={student.UserID}>
                     <TableCell className="border">{student.UserID}</TableCell>
                     <TableCell className="border">{student.Fullname}</TableCell>
+                    {coaep.coaep?.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo) => (
+                      <TableCell className="border" key={ilo.ID}>
+                      </TableCell>
+                    )))}
                   </TableRow>
                 ))
               ) : (
@@ -88,6 +94,9 @@ export default function Coaep() {
         ) : (
           <div>No COAEP Found</div>
         )}
+      </div >
+      <div className="mt-5 min-w-100 flex justify-end">
+        <Button >Generate Report</Button>
       </div>
     </>
   )
