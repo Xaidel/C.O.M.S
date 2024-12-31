@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { StudentResponse, Student } from "@/types/Interface";
 import { courseOutcomes } from "@/types/mockCoaep";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function Coaep() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -79,7 +80,15 @@ export default function Coaep() {
                     <TableCell className="border">{student.UserID}</TableCell>
                     <TableCell className="border">{student.Fullname}</TableCell>
                     {coaep.coaep?.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo) => (
-                      <TableCell className="border" key={ilo.ID}>
+                      <TableCell className="border p-0 " key={ilo.ID}>
+                        <div className="h-full w-full">
+                          <Input
+                            type="number"
+                            min="0"
+                            max="100"
+                            className="bg-transparent focus:outline-none focus:ring-0 border-none w-full h-full text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
+                          />
+                        </div>
                       </TableCell>
                     )))}
                   </TableRow>
