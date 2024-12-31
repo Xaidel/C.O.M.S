@@ -162,3 +162,22 @@ export interface UploadErrorResponse {
   error: string,
   missing: string
 }
+
+export interface CourseOutcome {
+  Statement: string,
+  IntendedLearningOutcomes: IntendedLearningOutcomes[]
+  ID: number
+}
+export interface IntendedLearningOutcomes {
+  Statement: string,
+  ID: number
+}
+export interface COAEP {
+  ID: number
+  CourseOutcomes: CourseOutcome[]
+  Period: Period
+  Course: Course
+}
+export interface COAEPResponse {
+  coaep: COAEP
+}

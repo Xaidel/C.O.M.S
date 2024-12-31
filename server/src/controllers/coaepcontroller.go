@@ -15,19 +15,43 @@ func (COAEPController) GET(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		var coaep models.Coeap
-		if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes").First(&coaep, id).Error; err != nil {
+		if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes").
+			Omit("CourseOutcomes.Coaep").
+			Omit("CourseOutcomes.IntendedLearningOutcomes.AssessmentToolID").
+			Omit("CourseOutcomes.IntendedLearningOutcomes.CourseOutcome").
+			First(&coaep, id).Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "Course Outcome Assessment Plan not found"})
 			return
 		}
 		ctx.JSON(http.StatusOK, gin.H{"coaep": coaep})
 	} else {
 		var coaeps []models.Coeap
-		if err := lib.Database.Find(&coaeps).Error; err != nil {
+		if err := lib.Database.Find(&coaeps).
+			Omit("CourseOutcomes.Coaep").
+			Omit("CourseOutcomes.IntendedLearningOutcomes.AssessmentToolID").
+			Omit("CourseOutcomes.IntendedLearningOutcomes.CourseOutcome").
+			Error; err != nil {
 			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
 		ctx.JSON(http.StatusOK, gin.H{"coaeps": coaeps})
 	}
+}
+
+func (COAEPController) GetByCourse(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide the course id"})
+		return
+	}
+
+	var coaep models.Coeap
+	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes").Find(&coaep, "course_id = ?", id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"coaep": coaep})
 }
 
 func (COAEPController) POST(ctx *gin.Context) {

@@ -97,6 +97,7 @@ func APIRoutes(router *gin.Engine) {
 		{
 			coaep.GET("", controllers.Coaep.GET)
 			coaep.GET("/:id", controllers.Coaep.GET)
+			coaep.GET("course/:id", controllers.Coaep.GetByCourse)
 			coaep.POST("", controllers.Coaep.POST)
 			coaep.DELETE("/:id", controllers.Coaep.DELETE)
 		}
