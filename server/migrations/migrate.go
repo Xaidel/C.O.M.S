@@ -30,6 +30,7 @@ func main() {
 		&models.Coeap{},
 		&models.CourseOutcome{},
 		&models.IntendedLearningOutcome{},
+		&models.ILOScore{},
 	); err != nil {
 		fmt.Println("Error Migrating")
 		return
