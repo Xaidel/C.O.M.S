@@ -14,4 +14,5 @@ type Controller struct {
 	Coaep                   COAEPController
 	CourseOutcome           CourseOutcomeController
 	IntendedLearningOutcome ILOController
+	ScoreController         ScoreController
 }

@@ -116,5 +116,10 @@ func APIRoutes(router *gin.Engine) {
 			ilo.POST("/:coID", controllers.IntendedLearningOutcome.POST)
 			ilo.DELETE("/:id", controllers.IntendedLearningOutcome.DELETE)
 		}
+		score := api.Group("/scores")
+		{
+			score.GET("/:id", controllers.ScoreController.GET)
+			score.POST("/", controllers.ScoreController.POST)
+		}
 	}
 }
