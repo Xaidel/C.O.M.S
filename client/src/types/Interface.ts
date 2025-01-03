@@ -181,3 +181,9 @@ export interface COAEP {
 export interface COAEPResponse {
   coaep: COAEP
 }
+export interface Score {
+  student_id: string
+  ilo_id: number
+  coaep_id: number
+  value: number | null
+}

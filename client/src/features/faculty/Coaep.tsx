@@ -1,21 +1,23 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useParams } from "react-router-dom";
 import { useCOAEPByCourse } from "./useCOAEPByCourse";
-import { Tooltip } from "@radix-ui/react-tooltip";
-import { TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useClassList } from "./useClassList";
 import { useState, useEffect } from "react";
-import { StudentResponse, Student } from "@/types/Interface";
-import { courseOutcomes } from "@/types/mockCoaep";
+import { StudentResponse, Student, Score, COAEP } from "@/types/Interface";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Coaep() {
   const [students, setStudents] = useState<Student[]>([]);
+  const [scores, setScores] = useState<Score[]>([])
   const { courseID } = useParams<{ courseID: string }>()
   const parsedCourseID = parseInt(courseID || "0", 10)
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
   const { data: classlist, isLoading: fetchingClasslist } = useClassList(parsedCourseID)
+  const queryClient = useQueryClient()
+  const coaepData = queryClient.getQueryData<COAEP>([`coaep-${parsedCourseID}`])
+  const coaepID = coaepData ? coaepData.ID : 0
   useEffect(() => {
     if (classlist?.classlist) {
       const studentList = classlist.classlist
@@ -25,11 +27,46 @@ export default function Coaep() {
             Fullname: `${student.User.Lastname}, ${student.User.Firstname} ${student.User.Middlename || ""}`.trim(),
           };
         })
-        .sort((a, b) => a.Fullname.localeCompare(b.Fullname)); // Sort alphabetically by Fullname
+        .sort((a, b) => a.Fullname.localeCompare(b.Fullname));
 
       setStudents(studentList);
+
+      if (classlist.classlist && coaep?.coaep) {
+        const initialScores: Score[] = []
+        classlist.classlist.forEach((student) => {
+          coaep.coaep.CourseOutcomes.forEach((co) => {
+            co.IntendedLearningOutcomes.forEach((ilo) => {
+              initialScores.push({
+                student_id: student.UserID,
+                coaep_id: coaepID,
+                ilo_id: ilo.ID,
+                value: null
+              })
+            })
+          })
+        })
+        setScores(initialScores)
+      }
     }
   }, [classlist]);
+
+  const handleScoreChange = (
+    student_id: string,
+    coaep_id: number,
+    ilo_id: number,
+    value: number | null
+  ) => {
+    setScores((prevScores) => prevScores.map((score) =>
+      score.student_id === student_id && score.coaep_id === coaep_id && score.ilo_id === ilo_id ? { ...score, value } : score
+    ))
+
+    console.log(scores)
+  }
+
+  const handleSubmit = () => {
+    console.log(scores)
+  }
+
   if (fetchingCoaep) return
   if (fetchingClasslist) return
   return (
@@ -80,18 +117,32 @@ export default function Coaep() {
                     <TableRow key={student.UserID}>
                       <TableCell className="border">{student.UserID}</TableCell>
                       <TableCell className="border">{student.Fullname}</TableCell>
-                      {coaep.coaep?.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo) => (
-                        <TableCell className="border p-0 " key={ilo.ID}>
-                          <div className="h-full w-full">
-                            <Input
-                              type="number"
-                              min="0"
-                              max="100"
-                              className="bg-transparent focus:outline-none focus:ring-0 border-none w-full h-full text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
-                            />
-                          </div>
-                        </TableCell>
-                      )))}
+                      {coaep.coaep?.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo) => {
+                        const score = scores.find((s) =>
+                          s.student_id === student.UserID && s.coaep_id === coaepID && s.ilo_id === ilo.ID
+                        )
+                        return (
+                          <TableCell className="border p-0 " key={ilo.ID}>
+                            <div className="h-full w-full">
+                              <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                className="bg-transparent focus:outline-none focus:ring-0 border-none w-full h-full text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
+                                value={score?.value === null ? "" : score?.value}
+                                onChange={(e) =>
+                                  handleScoreChange(
+                                    student.UserID,
+                                    coaepID,
+                                    ilo.ID,
+                                    e.target.value === "" ? null : parseInt(e.target.value, 10) || null
+                                  )
+                                }
+                              />
+                            </div>
+                          </TableCell>
+                        )
+                      }))}
                     </TableRow>
                   ))
                 ) : (
@@ -103,7 +154,7 @@ export default function Coaep() {
             </Table>
 
             <div className="mt-5 min-w-100 flex justify-end">
-              <Button >Generate Report</Button>
+              <Button type="submit" onClick={handleSubmit}>Generate Report</Button>
             </div>
           </>
         ) : (

@@ -7,5 +7,6 @@ type ILOScore struct {
 	IntendedLearningOutcomeID uint  `gorm:"not null"`
 	StudentID                 uint  `gorm:"not null"`
 	CoeapID                   uint  `gorm:"not null"`
+	Value                     uint
 	ID                        uint
 }
