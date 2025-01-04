@@ -186,4 +186,18 @@ export interface Score {
   ilo_id: number
   coaep_id: number
   value: number | null
+
+}
+
+export interface ILOScore {
+  IntendedLearningOutcome: IntendedLearningOutcomes
+  Student: Student
+  IntendedLearningOutcomeID: number
+  StudentID: string
+  Value: number
+  ID: number
+}
+
+export interface PerformanceData {
+  scores: ILOScore[]
 }

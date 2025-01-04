@@ -18,7 +18,7 @@ func (ScoreController) GET(ctx *gin.Context) {
 		return
 	}
 	var scores []models.ILOScore
-	if err := lib.Database.Find(&scores, "coaep_id = ?", id).Error; err != nil {
+	if err := lib.Database.Find(&scores, "coeap_id = ?", id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Scores not found"})
 		return
 	}
@@ -39,9 +39,15 @@ func (ScoreController) POST(ctx *gin.Context) {
 		CoeapID:                   request.Coaep_id,
 	}
 
-	if err := lib.Database.Create(&score).Error; err != nil {
+	if err := lib.Database.Where(&models.ILOScore{
+		StudentID:                 request.Student_id,
+		CoeapID:                   request.Coaep_id,
+		IntendedLearningOutcomeID: request.Ilo_id,
+	}).FirstOrCreate(&score).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	score.Value = request.Value
+	lib.Database.Save(&score)
 	ctx.JSON(http.StatusCreated, gin.H{"message": "Success"})
 }
