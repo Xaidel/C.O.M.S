@@ -7,17 +7,50 @@ import { useState, useEffect } from "react";
 import { StudentResponse, Student, Score, COAEP } from "@/types/Interface";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAddPerformanceData } from "./useAddPerformanceData";
+import { usePerformanceData } from "./usePerformanceData";
+
+interface Data {
+  coaep: COAEP
+}
 
 export default function Coaep() {
   const [students, setStudents] = useState<Student[]>([]);
+  const [scoreInput, setScoreInput] = useState<Score | null>(null)
+  const [debounceScore, setDebounceScore] = useState<Score | null>(null)
   const [scores, setScores] = useState<Score[]>([])
   const { courseID } = useParams<{ courseID: string }>()
   const parsedCourseID = parseInt(courseID || "0", 10)
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
   const { data: classlist, isLoading: fetchingClasslist } = useClassList(parsedCourseID)
   const queryClient = useQueryClient()
-  const coaepData = queryClient.getQueryData<COAEP>([`coaep-${parsedCourseID}`])
-  const coaepID = coaepData ? coaepData.ID : 0
+  const data = queryClient.getQueryData<Data>([`coaep-${parsedCourseID}`])!
+  const coData: COAEP = data?.coaep
+  const coDataID = coData?.ID
+  const { mutate: addPerformanceData, isCreating } = useAddPerformanceData()
+  const { data: performanceData, isLoading: fetchingPerformanceData } = usePerformanceData(coDataID)
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebounceScore(scoreInput)
+    }, 400)
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [scoreInput])
+
+  useEffect(() => {
+    if (debounceScore && !isCreating) {
+      addPerformanceData(debounceScore, {
+        onError: (err) => {
+          console.log(err.message)
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [`${coDataID}-performance_data`] })
+        }
+      })
+    }
+  }, [debounceScore])
+
   useEffect(() => {
     if (classlist?.classlist) {
       const studentList = classlist.classlist
@@ -36,11 +69,13 @@ export default function Coaep() {
         classlist.classlist.forEach((student) => {
           coaep.coaep.CourseOutcomes.forEach((co) => {
             co.IntendedLearningOutcomes.forEach((ilo) => {
+              const existingScore = performanceData?.scores?.find((score) =>
+                score.StudentID === student.UserID && score.IntendedLearningOutcomeID === ilo.ID)
               initialScores.push({
                 student_id: student.UserID,
-                coaep_id: coaepID,
+                coaep_id: coDataID,
                 ilo_id: ilo.ID,
-                value: null
+                value: existingScore ? existingScore.Value : null
               })
             })
           })
@@ -56,11 +91,10 @@ export default function Coaep() {
     ilo_id: number,
     value: number | null
   ) => {
+    setScoreInput({ student_id, coaep_id, ilo_id, value })
     setScores((prevScores) => prevScores.map((score) =>
       score.student_id === student_id && score.coaep_id === coaep_id && score.ilo_id === ilo_id ? { ...score, value } : score
     ))
-
-    console.log(scores)
   }
 
   const handleSubmit = () => {
@@ -69,6 +103,7 @@ export default function Coaep() {
 
   if (fetchingCoaep) return
   if (fetchingClasslist) return
+  if (fetchingPerformanceData) return
   return (
     <>
       <div className="mt-5">
@@ -119,7 +154,7 @@ export default function Coaep() {
                       <TableCell className="border">{student.Fullname}</TableCell>
                       {coaep.coaep?.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo) => {
                         const score = scores.find((s) =>
-                          s.student_id === student.UserID && s.coaep_id === coaepID && s.ilo_id === ilo.ID
+                          s.student_id === student.UserID && s.coaep_id === coDataID && s.ilo_id === ilo.ID
                         )
                         return (
                           <TableCell className="border p-0 " key={ilo.ID}>
@@ -133,7 +168,7 @@ export default function Coaep() {
                                 onChange={(e) =>
                                   handleScoreChange(
                                     student.UserID,
-                                    coaepID,
+                                    coDataID,
                                     ilo.ID,
                                     e.target.value === "" ? null : parseInt(e.target.value, 10) || null
                                   )

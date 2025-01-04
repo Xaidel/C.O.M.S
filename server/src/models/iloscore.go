@@ -1,12 +1,11 @@
 package models
 
 type ILOScore struct {
-	IntendedLearningOutcome   IntendedLearningOutcome
-	Student                   Student
-	Coeap                     Coeap `json:"-"`
-	IntendedLearningOutcomeID uint  `gorm:"not null"`
-	StudentID                 uint  `gorm:"not null"`
-	CoeapID                   uint  `gorm:"not null"`
+	IntendedLearningOutcome   IntendedLearningOutcome `json:"-"`
+	Student                   Student                 `json:"-" gorm:"references:UserID"`
+	Coeap                     Coeap                   `json:"-"`
+	IntendedLearningOutcomeID uint                    `gorm:"primaryKey;autoIncrement:false;not null"`
+	StudentID                 string                  `gorm:"primaryKey;autoIncrement:false;not null"`
+	CoeapID                   uint                    `gorm:"primaryKey;autoIncrement:false;not null"`
 	Value                     uint
-	ID                        uint
 }

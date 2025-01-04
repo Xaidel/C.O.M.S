@@ -77,7 +77,8 @@ var DeleteStudentRequest struct {
 }
 
 var PostScoreRequest struct {
-	Student_id uint `json:"student_id" binding:"required"`
-	Ilo_id     uint `json:"ilo_id" binding:"required"`
-	Coaep_id   uint `json:"coaep_id" binding:"required"`
+	Student_id string `json:"student_id" binding:"required"`
+	Ilo_id     uint   `json:"ilo_id" binding:"required"`
+	Coaep_id   uint   `json:"coaep_id" binding:"required"`
+	Value      uint   `json:"value" binding:"required"`
 }
