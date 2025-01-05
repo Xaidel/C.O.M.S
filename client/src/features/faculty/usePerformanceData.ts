@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 export function usePerformanceData(id: number) {
   const query = useQuery<PerformanceData>({
     queryKey: [`${id}-performance_data`],
-    queryFn: () => getPerformanceData(id)
+    queryFn: () => getPerformanceData(id),
+    staleTime: 3000,
   })
 
   return {

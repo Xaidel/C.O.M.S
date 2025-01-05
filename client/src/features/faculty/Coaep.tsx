@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAddPerformanceData } from "./useAddPerformanceData";
 import { usePerformanceData } from "./usePerformanceData";
+import { toast } from "@/hooks/use-toast";
 
 interface Data {
   coaep: COAEP
@@ -29,10 +30,11 @@ export default function Coaep() {
   const coDataID = coData?.ID
   const { mutate: addPerformanceData, isCreating } = useAddPerformanceData()
   const { data: performanceData, isLoading: fetchingPerformanceData } = usePerformanceData(coDataID)
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebounceScore(scoreInput)
-    }, 400)
+    }, 300)
     return () => {
       clearTimeout(handler)
     }
@@ -41,18 +43,31 @@ export default function Coaep() {
   useEffect(() => {
     if (debounceScore && !isCreating) {
       addPerformanceData(debounceScore, {
-        onError: (err) => {
-          console.log(err.message)
+        onError: () => {
+          toast({
+            variant: "destructive",
+            title: "Error!!",
+            description: "Error updating Performance Data",
+            duration: 3500
+          })
         },
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: [`${coDataID}-performance_data`] })
+        onSuccess: (newScore) => {
+          setScores((prev) =>
+            prev.map((score) =>
+              score.student_id === newScore.student_id &&
+                score.coaep_id === newScore.coaep_id &&
+                score.ilo_id === newScore.ilo_id ? { ...score, value: newScore.value } : score
+            )
+          )
+          console.log("New Scores")
+          console.table(scores)
         }
       })
     }
   }, [debounceScore])
 
   useEffect(() => {
-    if (classlist?.classlist) {
+    if (classlist?.classlist && !isCreating) {
       const studentList = classlist.classlist
         ?.map((student: StudentResponse) => {
           return {
@@ -64,26 +79,18 @@ export default function Coaep() {
 
       setStudents(studentList);
 
-      if (classlist.classlist && coaep?.coaep) {
-        const initialScores: Score[] = []
-        classlist.classlist.forEach((student) => {
-          coaep.coaep.CourseOutcomes.forEach((co) => {
-            co.IntendedLearningOutcomes.forEach((ilo) => {
-              const existingScore = performanceData?.scores?.find((score) =>
-                score.StudentID === student.UserID && score.IntendedLearningOutcomeID === ilo.ID)
-              initialScores.push({
-                student_id: student.UserID,
-                coaep_id: coDataID,
-                ilo_id: ilo.ID,
-                value: existingScore ? existingScore.Value : null
-              })
-            })
-          })
-        })
+      if (classlist.classlist && coaep?.coaep && performanceData?.scores) {
+        const initialScores: Score[] = performanceData?.scores.map(score => ({
+          student_id: score.StudentID,
+          coaep_id: coDataID,
+          ilo_id: score.IntendedLearningOutcomeID,
+          value: score.Value || null
+        }))
         setScores(initialScores)
       }
+      console.table(scores)
     }
-  }, [classlist]);
+  }, [classlist, performanceData]);
 
   const handleScoreChange = (
     student_id: string,
@@ -101,9 +108,7 @@ export default function Coaep() {
     console.log(scores)
   }
 
-  if (fetchingCoaep) return
-  if (fetchingClasslist) return
-  if (fetchingPerformanceData) return
+  if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData) return
   return (
     <>
       <div className="mt-5">
