@@ -10,6 +10,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useAddPerformanceData } from "./useAddPerformanceData";
 import { usePerformanceData } from "./usePerformanceData";
 import { toast } from "@/hooks/use-toast";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import Report from "./Report";
+import { Course, IntendedLearningOutcomes } from "@/types/Interface";
+import { useUser } from "../auth/useUser";
 
 interface Data {
   coaep: COAEP
@@ -30,6 +34,8 @@ export default function Coaep() {
   const coDataID = coData?.ID
   const { mutate: addPerformanceData, isCreating } = useAddPerformanceData()
   const { data: performanceData, isLoading: fetchingPerformanceData } = usePerformanceData(coDataID)
+  const { currentUser } = useUser()
+  const course: Course = currentUser?.role_info?.Courses?.find((course: Course) => course.ID === parsedCourseID)
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -59,8 +65,6 @@ export default function Coaep() {
                 score.ilo_id === newScore.ilo_id ? { ...score, value: newScore.value } : score
             )
           )
-          console.log("New Scores")
-          console.table(scores)
         }
       })
     }
@@ -88,7 +92,6 @@ export default function Coaep() {
         }))
         setScores(initialScores)
       }
-      console.table(scores)
     }
   }, [classlist, performanceData]);
 
@@ -105,7 +108,6 @@ export default function Coaep() {
   }
 
   const handleSubmit = () => {
-    console.log(scores)
   }
 
   if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData) return
@@ -194,7 +196,18 @@ export default function Coaep() {
             </Table>
 
             <div className="mt-5 min-w-100 flex justify-end">
-              <Button type="submit" onClick={handleSubmit}>Generate Report</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button type="button" onClick={handleSubmit}>Generate Report</Button>
+                </DialogTrigger>
+                <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl">COAEP Report</DialogTitle>
+                    <DialogDescription>Course Outcome Assessment and Evaluation Plan Report for <span className="font-bold">{`${course.Course_Name}`}</span></DialogDescription>
+                  </DialogHeader>
+                  <Report />
+                </DialogContent>
+              </Dialog>
             </div>
           </>
         ) : (
