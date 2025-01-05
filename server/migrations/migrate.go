@@ -29,6 +29,7 @@ func main() {
 		&models.Course{},
 		&models.Coeap{},
 		&models.CourseOutcome{},
+		&models.AssessmentTool{},
 		&models.IntendedLearningOutcome{},
 		&models.ILOScore{},
 	); err != nil {
