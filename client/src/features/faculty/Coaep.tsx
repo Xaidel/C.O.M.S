@@ -163,8 +163,9 @@ export default function Coaep() {
                         )
                         return (
                           <TableCell className="border p-0 " key={ilo.ID}>
-                            <div className="h-full w-full">
+                            <div className="h-full w-full" key={ilo.ID}>
                               <input
+                                key={ilo.ID}
                                 type="number"
                                 min="0"
                                 max="100"
