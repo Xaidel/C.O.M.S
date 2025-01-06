@@ -42,7 +42,7 @@ export default function Report() {
                       <TableCell className="border">{co.IntendedLearningOutcomes[0].Statement}</TableCell>
                       <TableCell className="border text-left">{co.IntendedLearningOutcomes[0].AssessmentTool.Tool}</TableCell>
                       <TableCell className="border text-center text-neutral-400">
-                        {(evaluations?.res[0]?.total_passed !== 0)
+                        {(evaluations?.res[0]?.total_passed !== 0 && evaluations!.res[0]?.total_population > 0)
                           ? `${evaluations?.res[0]?.total_passed}/${evaluations?.res[0]?.total_population}`
                           : `No Data`
                         }
@@ -59,17 +59,15 @@ export default function Report() {
                       </TableRow>
                       {co.IntendedLearningOutcomes.map((ilo: IntendedLearningOutcomes) => {
                         const data = evaluations?.res.find(data => data.ilo_id === ilo.ID)
-                        console.log(ilo.AssessmentTool.TargetPopulation)
+                        console.log(ilo.AssessmentTool.TargetScore)
+                        console.log(data?.total_passed === 0)
                         return (
                           <>
                             < TableRow key={ilo.ID} >
                               <TableCell className="border">{ilo.Statement}</TableCell>
                               <TableCell className="border text-left">{ilo.AssessmentTool.Tool}</TableCell>
                               <TableCell className="border text-center">
-                                {(data?.total_passed !== 0)
-                                  ? `${data?.total_passed}/${data?.total_population}`
-                                  : (<p className="text-neutral-400">No Data</p>)
-                                }
+                                {`${data?.total_passed}/${data?.total_population}`}
                               </TableCell>
                               <TableCell className="border text-center">{`${data?.total_percentage}%`}</TableCell>
                               <TableCell className="border">
