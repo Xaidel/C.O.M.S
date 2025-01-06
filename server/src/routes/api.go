@@ -119,6 +119,7 @@ func APIRoutes(router *gin.Engine) {
 		score := api.Group("/scores")
 		{
 			score.GET("/:id", controllers.ScoreController.GET)
+			score.GET("/eval/:id", controllers.ScoreController.GetEvaluation)
 			score.POST("", controllers.ScoreController.POST)
 		}
 	}

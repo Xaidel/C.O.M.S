@@ -38,9 +38,9 @@ export default function Report() {
                       <TableCell className="border">{co.Statement}</TableCell>
                       <TableCell className="border">{co.IntendedLearningOutcomes[0].Statement}</TableCell>
                       <TableCell className="border text-left">{co.IntendedLearningOutcomes[0].AssessmentTool.Tool}</TableCell>
-                      <TableCell className="border">{ }</TableCell>
-                      <TableCell className="border">{ }</TableCell>
-                      <TableCell className="border">{ }</TableCell>
+                      <TableCell className="border text-center text-neutral-400">No Data</TableCell>
+                      <TableCell className="border text-center">80%</TableCell>
+                      <TableCell className="border text-center text-red-400">NS</TableCell>
                       <TableCell className="border">{ }</TableCell>
                     </TableRow>
                   ) : (
