@@ -170,7 +170,13 @@ export interface CourseOutcome {
 }
 export interface IntendedLearningOutcomes {
   Statement: string,
+  AssessmentTool: AssessmentTool
   ID: number
+}
+export interface AssessmentTool {
+  Tool: string
+  TargetPopulation: number
+  TargetScore: number
 }
 export interface COAEP {
   ID: number

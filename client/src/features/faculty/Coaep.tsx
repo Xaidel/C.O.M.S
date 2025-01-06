@@ -12,7 +12,7 @@ import { usePerformanceData } from "./usePerformanceData";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import Report from "./Report";
-import { Course, IntendedLearningOutcomes } from "@/types/Interface";
+import { Course } from "@/types/Interface";
 import { useUser } from "../auth/useUser";
 
 interface Data {

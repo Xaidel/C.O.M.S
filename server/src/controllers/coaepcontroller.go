@@ -47,7 +47,7 @@ func (COAEPController) GetByCourse(ctx *gin.Context) {
 	}
 
 	var coaep models.Coeap
-	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes").Find(&coaep, "course_id = ?", id).Error; err != nil {
+	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, "course_id = ?", id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
 		return
 	}

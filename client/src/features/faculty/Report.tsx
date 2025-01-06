@@ -32,25 +32,40 @@ export default function Report() {
             {coaep && coaep?.coaep?.CourseOutcomes.length > 0 ? (
               coaep.coaep?.CourseOutcomes.map((co, index) => (
                 <Fragment key={co.ID}>
-                  <TableRow>
-                    <TableCell rowSpan={co.IntendedLearningOutcomes.length + 1} className="border">{index + 1}</TableCell>
-                    <TableCell rowSpan={co.IntendedLearningOutcomes.length + 1} className="border">{co.Statement}</TableCell>
-                  </TableRow>
-                  {co.IntendedLearningOutcomes.map((ilo: IntendedLearningOutcomes) => (
-                    <TableRow key={ilo.ID}>
-                      <TableCell className="border">{ilo.Statement}</TableCell>
-                      <TableCell className="border">{ }</TableCell>
+                  {co.IntendedLearningOutcomes.length === 1 ? (
+                    <TableRow>
+                      <TableCell className="border">{index + 1}</TableCell>
+                      <TableCell className="border">{co.Statement}</TableCell>
+                      <TableCell className="border">{co.IntendedLearningOutcomes[0].Statement}</TableCell>
+                      <TableCell className="border text-left">{co.IntendedLearningOutcomes[0].AssessmentTool.Tool}</TableCell>
                       <TableCell className="border">{ }</TableCell>
                       <TableCell className="border">{ }</TableCell>
                       <TableCell className="border">{ }</TableCell>
                       <TableCell className="border">{ }</TableCell>
                     </TableRow>
-                  ))}
+                  ) : (
+                    <>
+                      <TableRow>
+                        <TableCell rowSpan={co.IntendedLearningOutcomes.length + 1} className="border">{index + 1}</TableCell>
+                        <TableCell rowSpan={co.IntendedLearningOutcomes.length + 1} className="border">{co.Statement}</TableCell>
+                      </TableRow>
+                      {co.IntendedLearningOutcomes.map((ilo: IntendedLearningOutcomes) => (
+                        <TableRow key={ilo.ID}>
+                          <TableCell className="border">{ilo.Statement}</TableCell>
+                          <TableCell className="border text-left">{ilo.AssessmentTool.Tool}</TableCell>
+                          <TableCell className="border">{ }</TableCell>
+                          <TableCell className="border">{ }</TableCell>
+                          <TableCell className="border">{ }</TableCell>
+                          <TableCell className="border">{ }</TableCell>
+                        </TableRow>
+                      ))}
+                    </>
+                  )}
                 </Fragment>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={50} className="border text-center">No Report Data Found</TableCell>
+                <TableCell colSpan={8} className="border text-center">No Report Data Found</TableCell>
               </TableRow>
             )}
           </TableBody>
@@ -59,3 +74,4 @@ export default function Report() {
     </>
   )
 }
+
