@@ -177,6 +177,7 @@ export interface AssessmentTool {
   Tool: string
   TargetPopulation: number
   TargetScore: number
+  TotalScore: number
 }
 export interface COAEP {
   ID: number
@@ -206,4 +207,15 @@ export interface ILOScore {
 
 export interface PerformanceData {
   scores: ILOScore[]
+}
+
+export interface Evaluation {
+  ilo_id: number
+  total_passed: number
+  total_percentage: number
+  total_population: number
+}
+
+export interface EvaluationResponse {
+  res: Evaluation[]
 }

@@ -107,8 +107,6 @@ export default function Coaep() {
     ))
   }
 
-  const handleSubmit = () => {
-  }
 
   if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData) return
   return (
@@ -198,7 +196,7 @@ export default function Coaep() {
             <div className="mt-5 min-w-100 flex justify-end">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button type="button" onClick={handleSubmit}>Generate Report</Button>
+                  <Button type="button" >Generate Report</Button>
                 </DialogTrigger>
                 <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
                   <DialogHeader>

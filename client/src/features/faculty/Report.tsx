@@ -3,12 +3,15 @@ import { IntendedLearningOutcomes } from "@/types/Interface";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { Fragment } from "react/jsx-runtime";
+import { useEvaluation } from "./useEvaluation";
 
 export default function Report() {
   const { courseID } = useParams<{ courseID: string }>()
   const parsedCourseID = parseInt(courseID || "", 10)
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
-  if (fetchingCoaep) return
+  const { data: evaluations, isLoading: fetchingEval, error } = useEvaluation(coaep?.coaep.ID || 0)
+  if (fetchingCoaep || fetchingEval) return <div className="flex justify-center">Fetching Evaluation Data</div>
+  if (error) return <div className="flex justify-center">No Student, Therefore no data</div>
   return (
     <>
       <div className="flex flex-col gap-8">
@@ -38,9 +41,14 @@ export default function Report() {
                       <TableCell className="border">{co.Statement}</TableCell>
                       <TableCell className="border">{co.IntendedLearningOutcomes[0].Statement}</TableCell>
                       <TableCell className="border text-left">{co.IntendedLearningOutcomes[0].AssessmentTool.Tool}</TableCell>
-                      <TableCell className="border">{ }</TableCell>
-                      <TableCell className="border">{ }</TableCell>
-                      <TableCell className="border">{ }</TableCell>
+                      <TableCell className="border text-center text-neutral-400">
+                        {(evaluations?.res[0]?.total_passed !== 0)
+                          ? `${evaluations?.res[0]?.total_passed}/${evaluations?.res[0]?.total_population}`
+                          : `No Data`
+                        }
+                      </TableCell>
+                      <TableCell className="border text-center"></TableCell>
+                      <TableCell className="border text-center text-red-400"></TableCell>
                       <TableCell className="border">{ }</TableCell>
                     </TableRow>
                   ) : (
@@ -49,16 +57,30 @@ export default function Report() {
                         <TableCell rowSpan={co.IntendedLearningOutcomes.length + 1} className="border">{index + 1}</TableCell>
                         <TableCell rowSpan={co.IntendedLearningOutcomes.length + 1} className="border">{co.Statement}</TableCell>
                       </TableRow>
-                      {co.IntendedLearningOutcomes.map((ilo: IntendedLearningOutcomes) => (
-                        <TableRow key={ilo.ID}>
-                          <TableCell className="border">{ilo.Statement}</TableCell>
-                          <TableCell className="border text-left">{ilo.AssessmentTool.Tool}</TableCell>
-                          <TableCell className="border">{ }</TableCell>
-                          <TableCell className="border">{ }</TableCell>
-                          <TableCell className="border">{ }</TableCell>
-                          <TableCell className="border">{ }</TableCell>
-                        </TableRow>
-                      ))}
+                      {co.IntendedLearningOutcomes.map((ilo: IntendedLearningOutcomes) => {
+                        const data = evaluations?.res.find(data => data.ilo_id === ilo.ID)
+                        console.log(ilo.AssessmentTool.TargetPopulation)
+                        return (
+                          <>
+                            < TableRow key={ilo.ID} >
+                              <TableCell className="border">{ilo.Statement}</TableCell>
+                              <TableCell className="border text-left">{ilo.AssessmentTool.Tool}</TableCell>
+                              <TableCell className="border text-center">
+                                {(data?.total_passed !== 0)
+                                  ? `${data?.total_passed}/${data?.total_population}`
+                                  : (<p className="text-neutral-400">No Data</p>)
+                                }
+                              </TableCell>
+                              <TableCell className="border text-center">{`${data?.total_percentage}%`}</TableCell>
+                              <TableCell className="border">
+                                {(data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation)
+                                  ? (<p className="text-green-400 text-center">S</p>) : (<p className="text-red-400 text-center">NS</p>)
+                                }
+                              </TableCell>
+                              <TableCell className="border">{ }</TableCell>
+                            </TableRow>
+                          </>)
+                      })}
                     </>
                   )}
                 </Fragment>
@@ -70,7 +92,7 @@ export default function Report() {
             )}
           </TableBody>
         </Table>
-      </div>
+      </div >
     </>
   )
 }
