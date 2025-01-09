@@ -59,8 +59,6 @@ export default function Report() {
                       </TableRow>
                       {co.IntendedLearningOutcomes.map((ilo: IntendedLearningOutcomes) => {
                         const data = evaluations?.res.find(data => data.ilo_id === ilo.ID)
-                        console.log(ilo.AssessmentTool.TargetScore)
-                        console.log(data?.total_passed === 0)
                         return (
                           <>
                             < TableRow key={ilo.ID} >
