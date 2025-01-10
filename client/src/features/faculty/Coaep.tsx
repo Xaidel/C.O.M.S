@@ -26,7 +26,7 @@ export default function Coaep() {
   const [scores, setScores] = useState<Score[]>([])
   const { courseID } = useParams<{ courseID: string }>()
   const parsedCourseID = parseInt(courseID || "0", 10)
-  const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
+  const { data: coaep, isLoading: fetchingCoaep, error: fetchingCoaepError } = useCOAEPByCourse(parsedCourseID)
   const { data: classlist, isLoading: fetchingClasslist } = useClassList(parsedCourseID)
   const queryClient = useQueryClient()
   const data = queryClient.getQueryData<Data>([`coaep-${parsedCourseID}`])!
@@ -37,7 +37,6 @@ export default function Coaep() {
   const { currentUser } = useUser()
   const course: Course = currentUser?.role_info?.Courses?.find((course: Course) => course.ID === parsedCourseID)
 
-  console.log("Here")
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebounceScore(scoreInput)
@@ -110,6 +109,7 @@ export default function Coaep() {
 
 
   if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData) return
+  if (fetchingCoaepError) return <div>Error..</div>
   return (
     <>
       <div className="mt-5">
