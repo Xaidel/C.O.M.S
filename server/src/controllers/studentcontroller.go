@@ -38,12 +38,12 @@ func (StudentController) GetByCourse(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the Course ID"})
 		return
 	}
-	var course models.Course
-	if err := lib.Database.Preload("Students.User").First(&course, id).Error; err != nil {
+	var section models.Section
+	if err := lib.Database.Preload("Students.User").First(&section, id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"classlist": course.Students})
+	ctx.JSON(http.StatusOK, gin.H{"classlist": section.Students})
 }
 
 func (StudentController) BatchProcessStudent(ctx *gin.Context) {

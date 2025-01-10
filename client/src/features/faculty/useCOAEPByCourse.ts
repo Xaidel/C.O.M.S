@@ -6,9 +6,11 @@ export function useCOAEPByCourse(courseID: number) {
   const query = useQuery<COAEPResponse>({
     queryKey: [`coaep-${courseID}`],
     queryFn: () => getCOAEPByCourse(courseID)
+
   })
   return {
     ...query,
-    isLoading: query.isFetching
+    isLoading: query.isFetching,
+    error: query.isError,
   }
 }
