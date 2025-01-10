@@ -37,6 +37,7 @@ export default function Coaep() {
   const { currentUser } = useUser()
   const course: Course = currentUser?.role_info?.Courses?.find((course: Course) => course.ID === parsedCourseID)
 
+  console.log("Here")
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebounceScore(scoreInput)

@@ -7,6 +7,7 @@ type Course struct {
 	FacultyID    *uint      `csv:"-"`
 	Curriculum   Curriculum `csv:"-" gorm:"references:CurrID"`
 	Students     []*Student `csv:"-" gorm:"many2many:enrolled_courses"`
+	Sections     []Section  `csv:"-"`
 	Faculty      Faculty    `csv:"-"`
 	Lec_Unit     uint
 	Lab_Unit     uint
