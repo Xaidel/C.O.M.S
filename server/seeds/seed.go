@@ -172,6 +172,7 @@ var Departments = []models.Department{
 	{
 		Dept_Code: "SCIS",
 		Dept_Name: "School of Computer and Information Sciences",
+		Programs:  SCISPrograms,
 	},
 	{
 		Dept_Code: "SSNS",
@@ -179,7 +180,7 @@ var Departments = []models.Department{
 	},
 }
 
-var SCISPrograms = []*models.Program{
+var SCISPrograms = []models.Program{
 	{
 		Program_Code: "BSIT",
 		Program_Name: "Bachelor of Science in Information Technology",
@@ -202,7 +203,7 @@ var SCISPrograms = []*models.Program{
 	},
 }
 
-var SSNSProgram = []*models.Program{
+var SSNSProgram = []models.Program{
 	{
 		Program_Code: "BSP",
 		Program_Name: "Bachelor of Science in Psychology",
@@ -212,26 +213,5 @@ var SSNSProgram = []*models.Program{
 		Program_Code: "BSPS",
 		Program_Name: "Bachelor of Science in Political Science",
 		DepartmentID: 2,
-	},
-}
-
-var Curriculum = []models.Curriculum{
-	{
-		Effectivity_Sem: 1,
-		Effectivity_SY:  "2324",
-		CMO_Name:        "CMO no.15, series of 2022",
-		Revision_No:     1,
-		IsActive:        1,
-		CurrID:          "PK",
-		Programs:        SCISPrograms,
-	},
-	{
-		Effectivity_Sem: 1,
-		Effectivity_SY:  "2324",
-		CMO_Name:        "CMO no.15, series of 2022",
-		Revision_No:     1,
-		IsActive:        0,
-		CurrID:          "SL",
-		Programs:        SSNSProgram,
 	},
 }
