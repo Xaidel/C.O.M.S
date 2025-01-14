@@ -1,7 +1,7 @@
 package types
 
 type LoginRequest struct {
-	Role     string `json:"role" binding:required"`
+	Role     string `json:"role" binding:"required"`
 	UserID   string `json:"userID" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
@@ -39,8 +39,7 @@ var CurriculumRequest struct {
 	Effectivity_SY  string `json:"effectivity_sy" binding:"required"`
 	CMO_Name        string `json:"cmo_name" binding:"required"`
 	CurrID          string `json:"curr_id" binding:"required"`
-	Effectivity_Sem uint   `json:"effectivity_sem" binding:"required"`
-	IsActive        uint   `json:"is_active" binding:"required"`
+	Effectivity_Sem string `json:"effectivity_sem" binding:"required"`
 	Revision_No     uint   `json:"revision_no" binding:"required"`
 	ProgramID       uint   `json:"program_id" binding:"required"`
 }
@@ -80,5 +79,5 @@ var PostScoreRequest struct {
 	Student_id string `json:"student_id" binding:"required"`
 	Ilo_id     uint   `json:"ilo_id" binding:"required"`
 	Coaep_id   uint   `json:"coaep_id" binding:"required"`
-	Value      uint   `json:"value" "`
+	Value      uint   `json:"value"`
 }

@@ -8,7 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CurriculumColumn } from "@/features/curriculum-management/CurriculumColumn";
+import { useAddCurriculum } from "@/features/curriculum-management/useAddCurriculum";
 import { useCurriculumByProgram } from "@/features/curriculum-management/useCurriculum";
+import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Curriculum, DepartmentResponse } from "@/types/Interface";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,14 +52,16 @@ const semester = [
 
 export default function ProgramCurriculum() {
   const [openSemester, setOpenSemester] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const navigate = useNavigate()
   const { programID } = useParams<{ programID: string }>()
   const parsedProgID = parseInt(programID || "0", 10)
   const queryClient = useQueryClient()
   const deptData = queryClient.getQueryData<DepartmentResponse>(["department"])
   const currentProgram = deptData?.department?.Programs.find((program) => program.ID === parsedProgID)
-  const { isLoading, response, error } = useCurriculumByProgram(currentProgram?.ID || 0)
+  const { isLoading, response, error } = useCurriculumByProgram(parsedProgID || 0)
   const curriculums: Curriculum[] = response?.curriculums || []
+  const addCurriculum = useAddCurriculum()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,7 +74,28 @@ export default function ProgramCurriculum() {
   })
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data)
+    addCurriculum.mutate({ ...data, programID: parsedProgID }, {
+      onSuccess: () => {
+        toast({
+          variant: "success",
+          title: "Success!",
+          description: `Curriculum ${data.id} was added`,
+          duration: 3000
+        })
+        setOpenModal(false)
+      },
+      onError: (err) => {
+        toast({
+          variant: "destructive",
+          title: "Error!",
+          description: err.message,
+          duration: 3000
+        })
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: [`${parsedProgID}-curriculum`] })
+      }
+    })
   }
 
   if (isLoading) return;
@@ -117,7 +142,7 @@ export default function ProgramCurriculum() {
         }]}
         data={curriculums}
       />
-      <Dialog>
+      <Dialog open={openModal} onOpenChange={setOpenModal}>
         <DialogTrigger asChild>
           <Button className="mt-5 border-[#3C444E]"><Plus className="mr-2 h-5 w-5" /> Add Curriculum</Button>
         </DialogTrigger>

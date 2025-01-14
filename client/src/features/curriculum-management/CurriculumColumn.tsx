@@ -13,6 +13,16 @@ export const CurriculumColumn: ColumnDef<Curriculum>[] = [
   {
     accessorKey: "Effectivity_Sem",
     header: "Effectivity Sem",
+    cell: ({ row }) => {
+      switch (row.original.Effectivity_Sem) {
+        case 0:
+          return "Summer"
+        case 1:
+          return "First Semester"
+        case 2:
+          return "Second Semester"
+      }
+    },
   },
   {
     accessorKey: "Effectivity_SY",

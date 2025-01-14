@@ -8,7 +8,7 @@ export function useCurriculumByProgram(programID: number) {
     data: response,
     error,
   } = useQuery<CurriculumResponse>({
-    queryKey: ["curriculum"],
+    queryKey: [`${programID}-curriculum`],
     queryFn: async (): Promise<CurriculumResponse> => {
       const res = client.Curriculum().readByProgram(programID);
       return res;
