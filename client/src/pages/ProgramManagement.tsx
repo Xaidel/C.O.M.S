@@ -20,11 +20,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { UserRoundPen, UserRoundPlus } from "lucide-react";
+import { ChevronRight, UserRoundPen, UserRoundPlus } from "lucide-react";
 import NonPHTable from "../features/course-management/NonPHTable.tsx";
+import { useNavigate } from "react-router-dom";
 
 export default function ProgramManagement() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate()
   const currentUser = queryClient.getQueryData<currentUser>(["current-user"]);
   const departmentID = currentUser?.role_info?.DepartmentID;
   const { isLoading, response, error } = useDepartments(departmentID);
@@ -116,7 +118,25 @@ export default function ProgramManagement() {
                     </Tooltip>
                   </TooltipProvider>
                 );
-              return <div>{phIcon}</div>;
+              return (
+                <div className="flex gap-2 items-center">
+                  <div>{phIcon}</div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button onClick={() => {
+                          navigate(`/programs/${ID}/curriculums`)
+                        }}>
+                          <ChevronRight />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View Curriculum</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              );
             },
           },
         ]}
