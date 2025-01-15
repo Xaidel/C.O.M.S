@@ -6,6 +6,7 @@ import (
 
 	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/src/models"
+	"github.com/Xaidel/server/src/services"
 	"github.com/Xaidel/server/src/types"
 	"github.com/gin-gonic/gin"
 )
@@ -55,12 +56,19 @@ func (CurriculumController) POST(ctx *gin.Context) {
 		return
 	}
 
+	sem, err := services.ConvertSemester(currRequest.Effectivity_Sem)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Semester"})
+		return
+	}
+
 	curriculum := models.Curriculum{
 		CMO_Name:        currRequest.CMO_Name,
 		Effectivity_SY:  currRequest.Effectivity_SY,
 		CurrID:          currRequest.CurrID,
-		Effectivity_Sem: currRequest.Effectivity_Sem,
-		IsActive:        currRequest.IsActive,
+		Effectivity_Sem: sem,
+		IsActive:        1,
+		ProgramID:       currRequest.ProgramID,
 		Revision_No:     currRequest.Revision_No,
 	}
 
