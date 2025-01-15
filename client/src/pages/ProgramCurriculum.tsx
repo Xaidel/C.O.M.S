@@ -127,7 +127,7 @@ export default function ProgramCurriculum() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost">
+                      <Button >
                         <ChevronRight />
                       </Button>
                     </TooltipTrigger>
