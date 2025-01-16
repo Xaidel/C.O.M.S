@@ -219,3 +219,13 @@ export interface Evaluation {
 export interface EvaluationResponse {
   res: Evaluation[]
 }
+
+export interface ProspectusResponse {
+  prospectus: Prospectus
+}
+
+export interface Prospectus {
+  Courses: Course[]
+  CurriculumID: number
+  ID: number
+}
