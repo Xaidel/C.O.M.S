@@ -35,8 +35,8 @@ export default function Prospectus() {
           <TableRow >
             <TableHead className="text-black">Subject ID</TableHead>
             <TableHead className="text-black">Subject Description</TableHead>
-            <TableHead className="text-black">Lec Units</TableHead>
-            <TableHead className="text-black">Lab Units</TableHead>
+            <TableHead className="text-black">Lec</TableHead>
+            <TableHead className="text-black">Lab</TableHead>
             <TableHead className="text-black">Total Units</TableHead>
           </TableRow>
         </TableHeader>
@@ -53,7 +53,7 @@ export default function Prospectus() {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={2} className="text-right font-bold">TOTAL:  </TableCell>
+            <TableCell colSpan={2} className="text-right font-bold pr-[3.5rem]">TOTAL:</TableCell>
             <TableCell className="font-bold">{totalLec}</TableCell>
             <TableCell className="font-bold">{totalLab}</TableCell>
             <TableCell className="font-bold">{totalUnits}</TableCell>
