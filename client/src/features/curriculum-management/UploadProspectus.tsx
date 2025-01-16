@@ -5,8 +5,10 @@ import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUploadCourse } from "../course-management/useUploadCourse";
 import { toast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function UploadProspectus() {
+  const queryClient = useQueryClient()
   const inputRef = useRef<HTMLInputElement>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [file, setFile] = useState<File | null>(null)
@@ -36,6 +38,7 @@ export default function UploadProspectus() {
           setModalOpen(false)
           setFile(null)
           setFileName("No File Selected")
+          queryClient.invalidateQueries({ queryKey: [`${currID}-prospectus`] })
         },
         onError: (err) => {
           toast({

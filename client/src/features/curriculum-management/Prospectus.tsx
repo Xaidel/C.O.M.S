@@ -1,6 +1,5 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import CurriculumFilter from "./CurriculumFilter";
-import { DataTable } from "@/components/ui/datatable";
 import UploadProspectus from "./UploadProspectus";
 import { useProspectus } from "./useProspectus";
 import { Course } from "@/types/Interface";
@@ -12,8 +11,8 @@ export default function Prospectus() {
   const semester = searchParams.get("semester") || "all"
   const { currID } = useParams<{ currID: string }>()
   const curr = currID || ""
-  const { data: prospectus, isLoading } = useProspectus(curr)
-  const courses: Course[] = prospectus?.prospectus.Courses || []
+  const { data: prospectus, isLoading, error: prospectusError } = useProspectus(curr)
+  const courses: Course[] = prospectus?.prospectus?.Courses || []
   const totalLec = courses.reduce((sum, course) => sum + (Number(course.Lec_Unit) || 0), 0)
   const totalLab = courses.reduce((sum, course) => sum + (Number(course.Lab_Unit) || 0), 0)
   const totalUnits = totalLab + totalLec
@@ -22,6 +21,7 @@ export default function Prospectus() {
   }
 
   if (isLoading) return
+  if (prospectusError) return
   return (
     <>
       <CurriculumFilter
@@ -41,15 +41,21 @@ export default function Prospectus() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {courses.map((course) => (
-            <TableRow key={course.Course_No}>
-              <TableCell>{course.Course_No}</TableCell>
-              <TableCell>{course.Course_Name}</TableCell>
-              <TableCell>{course.Lec_Unit}</TableCell>
-              <TableCell>{course.Lab_Unit}</TableCell>
-              <TableCell>{Number(course.Lab_Unit) + Number(course.Lec_Unit)}</TableCell>
+          {courses.length ? (
+            courses.map((course: Course) => (
+              <TableRow key={course.Course_No}>
+                <TableCell>{course.Course_No}</TableCell>
+                <TableCell>{course.Course_Name}</TableCell>
+                <TableCell>{course.Lec_Unit}</TableCell>
+                <TableCell>{course.Lab_Unit}</TableCell>
+                <TableCell>{Number(course.Lab_Unit) + Number(course.Lec_Unit)}</TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell className="h-24 text-center" colSpan={50}>No Prospectus Found</TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
         <TableFooter>
           <TableRow>
