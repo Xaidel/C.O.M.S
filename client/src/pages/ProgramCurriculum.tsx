@@ -62,6 +62,7 @@ export default function ProgramCurriculum() {
   const { isLoading, response, error } = useCurriculumByProgram(parsedProgID || 0)
   const curriculums: Curriculum[] = response?.curriculums || []
   const addCurriculum = useAddCurriculum()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -121,13 +122,14 @@ export default function ProgramCurriculum() {
         columns={[...CurriculumColumn, {
           id: "action",
           header: "",
-          cell: () => {
+          cell: ({ row }) => {
+            const currID = row.original.CurrID
             return (
               <>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button >
+                      <Button onClick={() => { navigate(`/programs/${parsedProgID}/curriculums/${currID}/course-offerings`) }}>
                         <ChevronRight />
                       </Button>
                     </TooltipTrigger>
