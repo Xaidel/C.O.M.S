@@ -87,13 +87,7 @@ func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 	defer uploadedFile.Close()
 
 	var prospectus models.Prospectus
-	prospectus.CurriculumID = currID
-	if err := lib.Database.Create(&prospectus).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed Creating Prospectus"})
-	}
-
-	var currentProspectus models.Prospectus
-	if err := lib.Database.First(&currentProspectus, "curriculum_id = ?", currID).Error; err != nil {
+	if err := lib.Database.First(&prospectus, "curriculum_id = ?", currID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Prospectus not found"})
 		return
 	}
@@ -105,7 +99,7 @@ func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 	}
 
 	for _, course := range courses {
-		course.ProspectusID = currentProspectus.ID
+		course.ProspectusID = prospectus.ID
 	}
 
 	if err := lib.Database.Create(&courses).Error; err != nil {

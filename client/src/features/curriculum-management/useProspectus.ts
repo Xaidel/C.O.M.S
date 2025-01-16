@@ -10,6 +10,7 @@ export function useProspectus(currID: string) {
 
   return {
     ...query,
-    isLoading: query.isFetching
+    isLoading: query.isFetching,
+    error: query.isError
   }
 }

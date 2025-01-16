@@ -19,8 +19,8 @@ func (ProspectusController) GET(ctx *gin.Context) {
 	}
 
 	var prospectus models.Prospectus
-	if err := lib.Database.Preload("Courses").First(&prospectus, "curriculum_id = ?", currID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Prospectus not found"})
+	if err := lib.Database.Preload("Courses").FirstOrCreate(&prospectus, map[string]interface{}{"curriculum_id": currID}).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create or retrieve prospectus"})
 		return
 	}
 
