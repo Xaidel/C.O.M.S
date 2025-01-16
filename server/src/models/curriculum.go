@@ -5,7 +5,6 @@ type Curriculum struct {
 	Effectivity_SY  string `gorm:"size:4; not null"`
 	CurrID          string `gorm:"primaryKey; size:2"`
 	Program         Program
-	Courses         []Course
 	Effectivity_Sem int `gorm:"not null"`
 	ProgramID       uint
 	IsActive        uint `gorm:"type:tinyint;not null"`

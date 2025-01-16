@@ -10,8 +10,6 @@ export default function Prospectus() {
 
   const handleFilterChange = (newYear: string, newSem: string) => {
     setSearchParams({ year: newYear, semester: newSem })
-    const intYear = newYear === "all" ? null : parseInt(newYear, 10)
-    const intSem = newSem === "all" ? null : parseInt(newSem, 10)
   }
   return (
     <>
