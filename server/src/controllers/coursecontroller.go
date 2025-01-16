@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/src/models"
@@ -87,6 +88,12 @@ func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 	}
 	defer uploadedFile.Close()
 
+	parsedCurrID, err := strconv.ParseUint(currID, 10, 32)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed parsing curriculum ID"})
+		return
+	}
+
 	var courses []*models.Course
 	if err := gocsv.Unmarshal(uploadedFile, &courses); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse CSV", "details": err.Error()})
@@ -94,7 +101,7 @@ func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 	}
 
 	for _, course := range courses {
-		course.CurriculumID = currID
+		course.ProspectusID = uint(parsedCurrID)
 	}
 
 	if err := lib.Database.Create(&courses).Error; err != nil {
@@ -117,14 +124,14 @@ func (CourseController) POST(ctx *gin.Context) {
 	course := models.Course{
 		Course_No:    courseRequest.Course_Number,
 		Lec_Unit:     courseRequest.Lec_Unit,
-		Lab_Unit:     courseRequest.Lab_Unit,
+		Lab_Unit:     &courseRequest.Lab_Unit,
 		Course_Name:  courseRequest.Course_Name,
 		Sem:          courseRequest.Sem,
 		Year_Level:   courseRequest.Year_Level,
-		CurriculumID: courseRequest.CurriculumID,
+		ProspectusID: courseRequest.ProspectusID,
 	}
 
-	if err := lib.Database.FirstOrCreate(&course, course.ID).Error; err != nil {
+	if err := lib.Database.FirstOrCreate(&course, course.Course_No).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
