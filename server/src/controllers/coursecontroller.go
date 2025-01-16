@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/src/models"
@@ -64,7 +63,6 @@ func (CourseController) AssignFaculty(ctx *gin.Context) {
 		return
 	}
 
-	course.FacultyID = &faculty.ID
 	if err := lib.Database.Save(&course).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -88,9 +86,15 @@ func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 	}
 	defer uploadedFile.Close()
 
-	parsedCurrID, err := strconv.ParseUint(currID, 10, 32)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed parsing curriculum ID"})
+	var prospectus models.Prospectus
+	prospectus.CurriculumID = currID
+	if err := lib.Database.Create(&prospectus).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed Creating Prospectus"})
+	}
+
+	var currentProspectus models.Prospectus
+	if err := lib.Database.First(&currentProspectus, "curriculum_id = ?", currID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Prospectus not found"})
 		return
 	}
 
@@ -101,7 +105,7 @@ func (CourseController) BatchProcessCourse(ctx *gin.Context) {
 	}
 
 	for _, course := range courses {
-		course.ProspectusID = uint(parsedCurrID)
+		course.ProspectusID = currentProspectus.ID
 	}
 
 	if err := lib.Database.Create(&courses).Error; err != nil {

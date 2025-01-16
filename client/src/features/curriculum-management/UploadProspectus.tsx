@@ -2,13 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useUploadCourse } from "../course-management/useUploadCourse";
+import { toast } from "@/hooks/use-toast";
 
 export default function UploadProspectus() {
   const inputRef = useRef<HTMLInputElement>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [fileName, setFileName] = useState<String>("No file selected")
-
+  const { currID } = useParams<{ currID: string }>()
+  const { mutate: uploadCourse } = useUploadCourse()
+  const curr = currID || ""
   const onCancel = () => {
     if (inputRef.current) {
       inputRef.current.value = ""
@@ -17,8 +22,34 @@ export default function UploadProspectus() {
     setFileName("No file selected")
   }
 
-  const onSubmit = () => {
-    console.log(file)
+  const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if (file) {
+      uploadCourse({ file, currID: curr }, {
+        onSuccess: (data) => {
+          toast({
+            variant: "success",
+            duration: 3000,
+            title: "Success",
+            description: data?.message
+          })
+          setModalOpen(false)
+          setFile(null)
+          setFileName("No File Selected")
+        },
+        onError: (err) => {
+          toast({
+            variant: "destructive",
+            duration: 3000,
+            title: "Error",
+            description: err.message
+          })
+          setModalOpen(false)
+          setFile(null)
+          setFileName("No File Selected")
+        }
+      })
+    }
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

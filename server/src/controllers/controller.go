@@ -15,4 +15,5 @@ type Controller struct {
 	CourseOutcome           CourseOutcomeController
 	IntendedLearningOutcome ILOController
 	ScoreController         ScoreController
+	ProspectusController    ProspectusController
 }
