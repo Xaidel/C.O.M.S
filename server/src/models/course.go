@@ -1,7 +1,7 @@
 package models
 
 type Course struct {
-	Course_No    string `gorm:"primaryKey"`
+	Course_No    string
 	Course_Name  string
 	Students     []*Student `csv:"-" gorm:"many2many:enrolled_courses"`
 	Sections     []Section  `csv:"-"`
@@ -11,4 +11,5 @@ type Course struct {
 	Sem          uint
 	Year_Level   uint
 	ProspectusID uint `gorm:"not null"`
+	ID           uint
 }
