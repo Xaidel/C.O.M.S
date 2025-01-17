@@ -4,21 +4,48 @@ import UploadProspectus from "./UploadProspectus";
 import { useProspectus } from "./useProspectus";
 import { Course } from "@/types/Interface";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useEffect, useState } from "react";
 
 export default function Prospectus() {
+  const [totalLec, setTotalLec] = useState(0)
+  const [totalLab, setTotalLab] = useState(0)
+  const [totalUnits, setTotalUnits] = useState(0)
   const [searchParams, setSearchParams] = useSearchParams()
-  const year = searchParams.get("year") || "all"
-  const semester = searchParams.get("semester") || "all"
+  const year = searchParams.get("year") || "1"
+  const semester = searchParams.get("semester") || "1"
   const { currID } = useParams<{ currID: string }>()
   const curr = currID || ""
   const { data: prospectus, isLoading, error: prospectusError } = useProspectus(curr)
   const courses: Course[] = prospectus?.prospectus?.Courses || []
-  const totalLec = courses.reduce((sum, course) => sum + (Number(course.Lec_Unit) || 0), 0)
-  const totalLab = courses.reduce((sum, course) => sum + (Number(course.Lab_Unit) || 0), 0)
-  const totalUnits = totalLab + totalLec
+  const [filteredProspectus, setFilteredProspectus] = useState<Course[]>([])
+
   const handleFilterChange = (newYear: string, newSem: string) => {
     setSearchParams({ year: newYear, semester: newSem })
+    const intYear = parseInt(newYear, 10)
+    const intSem = parseInt(newSem, 10)
+    const filteredCourses = courses?.filter((course: Course) => {
+      const yearMatch = intYear === course.Year_Level
+      const semMatch = intSem === course.Sem
+      return yearMatch && semMatch
+    })
+    setFilteredProspectus(filteredCourses || [])
+    const totalLec = filteredCourses.reduce((sum, course) => sum + (Number(course.Lec_Unit) || 0), 0)
+    const totalLab = filteredCourses.reduce((sum, course) => sum + (Number(course.Lab_Unit) || 0), 0)
+    setTotalLec(totalLec)
+    setTotalLab(totalLab)
+    setTotalUnits(totalLab + totalLec)
   }
+  useEffect(() => {
+    if (courses) {
+      const initialCourse = courses?.filter((course) => course.Year_Level === 1 && course.Sem === 1)
+      setFilteredProspectus(initialCourse)
+      const totalLec = initialCourse.reduce((sum, course) => sum + (Number(course.Lec_Unit) || 0), 0)
+      const totalLab = initialCourse.reduce((sum, course) => sum + (Number(course.Lab_Unit) || 0), 0)
+      setTotalLec(totalLec)
+      setTotalLab(totalLab)
+      setTotalUnits(totalLab + totalLec)
+    }
+  }, [courses])
 
   if (isLoading) return
   if (prospectusError) return
@@ -29,6 +56,7 @@ export default function Prospectus() {
         setYear={(newYear) => handleFilterChange(newYear, semester)}
         semester={semester}
         setSemester={(newSem) => handleFilterChange(year, newSem)}
+        includeAll={false}
       />
       <Table>
         <TableHeader className="bg-[#CBD2DB]">
@@ -41,14 +69,14 @@ export default function Prospectus() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {courses.length ? (
-            courses.map((course: Course) => (
+          {filteredProspectus.length ? (
+            filteredProspectus.map((course: Course) => (
               <TableRow key={course.Course_No}>
                 <TableCell>{course.Course_No}</TableCell>
                 <TableCell>{course.Course_Name}</TableCell>
                 <TableCell>{course.Lec_Unit}</TableCell>
                 <TableCell>{course.Lab_Unit}</TableCell>
-                <TableCell>{Number(course.Lab_Unit) + Number(course.Lec_Unit)}</TableCell>
+                <TableCell>{Number.isNaN(Number(course.Lec_Unit)) ? course.Lec_Unit : Number(course.Lab_Unit) + Number(course.Lec_Unit)}</TableCell>
               </TableRow>
             ))
           ) : (
@@ -57,14 +85,16 @@ export default function Prospectus() {
             </TableRow>
           )}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={2} className="text-right font-bold pr-[3.5rem]">TOTAL:</TableCell>
-            <TableCell className="font-bold">{totalLec}</TableCell>
-            <TableCell className="font-bold">{totalLab}</TableCell>
-            <TableCell className="font-bold">{totalUnits}</TableCell>
-          </TableRow>
-        </TableFooter>
+        {filteredProspectus.length > 0 ? (
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={2} className="text-right font-bold pr-[3.5rem]">TOTAL:</TableCell>
+              <TableCell className="font-bold">{totalLec}</TableCell>
+              <TableCell className="font-bold">{totalLab}</TableCell>
+              <TableCell className="font-bold">{totalUnits}</TableCell>
+            </TableRow>
+          </TableFooter>
+        ) : <TableFooter />}
       </Table>
       <UploadProspectus />
     </>
