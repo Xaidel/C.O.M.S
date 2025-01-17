@@ -11,6 +11,7 @@ interface CurriculumFilterProps {
   setYear: (year: string) => void;
   semester: string;
   setSemester: (year: string) => void;
+  includeAll?: boolean
 }
 
 export default function CurriculumFilter({
@@ -18,10 +19,10 @@ export default function CurriculumFilter({
   setYear,
   semester,
   setSemester,
+  includeAll = true,
 }: CurriculumFilterProps) {
   return (
     <div className="flex justify-end flex-wrap gap-4 mb-6">
-      {/* Year Select */}
       <div className="flex items-center gap-2">
         <span className="text-sm font-medium">Select Year:</span>
         <Select value={year} onValueChange={setYear}>
@@ -29,7 +30,9 @@ export default function CurriculumFilter({
             <SelectValue placeholder="Select year" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
+            {includeAll ??
+              <SelectItem value="all">All</SelectItem>
+            }
             <SelectItem value="1">1</SelectItem>
             <SelectItem value="2">2</SelectItem>
             <SelectItem value="3">3</SelectItem>
@@ -38,7 +41,6 @@ export default function CurriculumFilter({
         </Select>
       </div>
 
-      {/* Semester Select */}
       <div className="flex items-center gap-2">
         <span className="text-sm font-medium">Select Sem:</span>
         <Select value={semester} onValueChange={setSemester}>
@@ -46,7 +48,9 @@ export default function CurriculumFilter({
             <SelectValue placeholder="Select semester" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
+            {includeAll ??
+              <SelectItem value="all">All</SelectItem>
+            }
             <SelectItem value="0">0</SelectItem>
             <SelectItem value="1">1</SelectItem>
             <SelectItem value="2">2</SelectItem>

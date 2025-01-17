@@ -1,0 +1,54 @@
+Course_No, Course_Name,  Lec_Unit, Lab_Unit, Sem, Year_Level
+BCS223L, Introduction to Computing, 2, 1, 1, 1
+BCS312L, Fundamentals of Programming, 2, 1, 1, 1
+GEE-LITE, Living in the IT Era, 3, , 1, 1
+UTS, Understanding the Self, 3, , 1, 1
+PC, Purposive Communication, 3, , 1, 1
+PATHFit1, Movement Competency Training, 2, , 1, 1
+NSTP1k, National Service Training Program I, 3, , 1, 1
+SOCARTS1, The University & 21st Century Learning, (2), , 1, 1
+BCS121L, Discrete Structures 1, 3, , 2, 1
+BCS121L, Intermediate Programming, 1, 1, 2, 1
+BCS123L, Data Structures and Algorithms, 2, 1, 2, 1
+MMW, Mathematics in the Modern World, 3, , 2, 1
+RLW, Rizal's Life and Works, 3, , 2, 1
+PATHFit2, Exercise-based Fitness Activities, 2, , 2, 1
+NSTP2k, National Service Training Program II, 3, , 2, 1
+SOCARTS2, Special Topics, (2), , 2, 1
+BCS211L, Database Management (Info Mgt) I, 2, 1, 1, 2
+BCS212L, Web Development I, 2, 1, 1, 2
+BCS213L, Object-Oriented Programming, 2, 2, 1, 2
+BCS214L, Networking and Communications, 2, 1, 1, 2
+BCS215L, Social Issues and Professional Practice, 3, , 1, 2
+BCS216L, Discrete Structures 2, 3, , 1, 2
+PE3k, Outdoor and Simulation SPORTS ( with life saving exercises), 2, , 1, 2
+BCS221L, Database Management (Info Mgt) 1, 2, 1, 2, 2
+BCS222L, Web Development 2, 2, 1, 2, 2
+BCS223L, Presentaton Negotiation and Consulting, 3, , 2, 2
+BCS224L, Computer Organization and Assembly Lang, 2, 1, 2, 2
+GEC-EM, The Entrepreneurial Mind, 3, , 2, 2
+RPH, Readings in the Philippine History, 3, , 2, 2
+PATHFit4, Dance, 2, , 2, 2
+BCS311L, Design and Analysis of Algorithms, 3, , 1, 3
+BCS312L, Operating Systems, 2, 1, 1, 3
+BCS313L, Human Computer Interaction, 2, 1, 1, 3
+BCS314L, Intelligent Systems, 3, , 1, 3
+BCS315L, Quantitative Methods, 3, , 1, 3
+BCS316L, Automata Theory and Formal Languages, 3, , 1, 3
+MATH311L, Statistics, 3, , 1, 3
+BCS321L, Programming Languages (Design Implementation), 2, 1, 2, 3
+BCS322L, Applications Development and Emerging, 2, 1, 2, 3
+BCS323L, Information Assurance and Security 1, 2, 1, 2, 3
+BCS324L, Software Engineering, 2, 1, 2, 3
+ETH, Ethics, 3, , 2, 3
+BCS411L, Information Assurance and Secuirty 2, 2, 1, 1, 4
+BCS412L, Senior Project 2, 3, , 1, 4
+AA, Arts Appreciation, 3, , 1, 4
+STS, Science Technology and Society with HIV, 3, , 1, 4
+TCW, The Contemporary World, 3, , 1, 4
+GEC-68, Great Books, 3, , 1, 4
+BCS421L, Practicum (incl. CPSO), 6, , 2, 4
+BCS-SPE1, Specialization 1, 2, 1, 2, 4
+BCS-SPE2, Specialization 2, 2, 1, 2 4
+BCS-SPE3, Specializati0on 3, 2, 1, 2, 4
+SVA, Application and Interview, 3, , 2, 4
