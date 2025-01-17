@@ -1,8 +1,9 @@
-Course_No, Course_Name,  Lec_Unit, Lab_Unit, Sem, Year_Level
-BCS223L, Introduction to Computing, 2, 1, 1, 1
-BCS312L, Fundamentals of Programming, 2, 1, 1, 1
-GEE-LITE, Living in the IT Era, 3, , 1, 1
-UTS, Understanding the Self, 3, ,1, 1
-PC, Purposive Communication, 3, ,1 ,1
-PATHFit1, Movement Competency Training, 2, , 1, 1
-NSTP1K, National Service Training Program 1, 3, , 1, 1
+Course_No,Course_Name,Lec_Unit,Lab_Unit,Sem,Year_Level
+BCS223L,Introduction to Computing,2,1,1,1
+BCS312L,Fundamentals of Programming,2,1,1,1
+GEE-LITE,Living in the IT Era,3,,1,1
+UTS,Understanding the Self,3,,1,1
+PC,Purposive Communication,3,,1,1
+PATHFit1,Movement Competency Training,2,,1,1
+NSTP1K,National Service Training Program 1,3,,1,1
+SOCARTS1,"The University & 21st Century Learning","(2)",,1,1

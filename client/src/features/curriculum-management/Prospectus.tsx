@@ -15,7 +15,7 @@ export default function Prospectus() {
   const courses: Course[] = prospectus?.prospectus?.Courses || []
   const totalLec = courses.reduce((sum, course) => sum + (Number(course.Lec_Unit) || 0), 0)
   const totalLab = courses.reduce((sum, course) => sum + (Number(course.Lab_Unit) || 0), 0)
-  const totalUnits = totalLab + totalLec
+  const totalUnits = totalLab + totalLec || 0
   const handleFilterChange = (newYear: string, newSem: string) => {
     setSearchParams({ year: newYear, semester: newSem })
   }
@@ -48,7 +48,7 @@ export default function Prospectus() {
                 <TableCell>{course.Course_Name}</TableCell>
                 <TableCell>{course.Lec_Unit}</TableCell>
                 <TableCell>{course.Lab_Unit}</TableCell>
-                <TableCell>{Number(course.Lab_Unit) + Number(course.Lec_Unit)}</TableCell>
+                <TableCell>{Number.isNaN(Number(course.Lec_Unit)) ? course.Lec_Unit : Number(course.Lab_Unit) + Number(course.Lec_Unit)}</TableCell>
               </TableRow>
             ))
           ) : (

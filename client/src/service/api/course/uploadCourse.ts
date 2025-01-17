@@ -10,7 +10,8 @@ export const uploadCourse = async (csv: File, currID: string) => {
       body: formData
     })
     if (!res.ok) {
-      throw new Error(`${res.status} ${res.statusText}`)
+      const err = await res.json()
+      throw new Error(err.error)
     }
     return res.json()
   } catch (error) {
