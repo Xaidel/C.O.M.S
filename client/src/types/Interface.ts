@@ -229,3 +229,15 @@ export interface Prospectus {
   CurriculumID: number
   ID: number
 }
+export interface SectionResponse {
+  sections: Section[]
+}
+
+export interface Section {
+  Curriculum: Curriculum
+  Faculty: Faculty
+  Course: Course
+  SectionCode: string
+  Section_Name: string
+  ID: number
+}
