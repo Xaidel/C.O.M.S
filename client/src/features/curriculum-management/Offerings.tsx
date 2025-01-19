@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import CurriculumFilter from "./CurriculumFilter";
+import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 export default function Offerings() {
   const [searchParams, setSearchParams] = useSearchParams()
   const year = searchParams.get("year") || "1"
@@ -16,6 +17,19 @@ export default function Offerings() {
         setSemester={(newSem) => handleFilterChange(year, newSem)}
         includeAll={false}
       />
+
+      <Table>
+        <TableHeader className="bg-[#CBD2DB]">
+          <TableRow>
+            <TableHead className="text-black">No</TableHead>
+            <TableHead className="text-black">Code</TableHead>
+            <TableHead className="text-black">Course No</TableHead>
+            <TableHead className="text-black">Description</TableHead>
+            <TableHead className="text-black">Unit</TableHead>
+            <TableHead className="text-black">Faculty Name</TableHead>
+          </TableRow>
+        </TableHeader>
+      </Table>
     </>
   )
 }

@@ -126,5 +126,9 @@ func APIRoutes(router *gin.Engine) {
 		{
 			prospectus.GET("/:id", controllers.ProspectusController.GET)
 		}
+		section := api.Group("/sections")
+		{
+			section.GET("/:currID", controllers.SectionController.GET)
+		}
 	}
 }

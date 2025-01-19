@@ -16,4 +16,5 @@ type Controller struct {
 	IntendedLearningOutcome ILOController
 	ScoreController         ScoreController
 	ProspectusController    ProspectusController
+	SectionController       SectionController
 }
