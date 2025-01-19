@@ -37,7 +37,7 @@ export default function Prospectus() {
   }
   useEffect(() => {
     if (courses) {
-      const initialCourse = courses?.filter((course) => course.Year_Level === 1 && course.Sem === 1)
+      const initialCourse = courses?.filter((course) => course.Year_Level === Number(year) && course.Sem === Number(semester))
       setFilteredProspectus(initialCourse)
       const totalLec = initialCourse.reduce((sum, course) => sum + (Number(course.Lec_Unit) || 0), 0)
       const totalLab = initialCourse.reduce((sum, course) => sum + (Number(course.Lab_Unit) || 0), 0)

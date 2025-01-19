@@ -20,7 +20,7 @@ export default function CourseOfferings() {
         <AppLabel currentPage="Subject Offerings" />
       </div>
       <div className="flex justify-start gap-1 items-start text-3xl font-bold text-[#1f2937] mb-6">
-        <Button variant="ghost" onClick={() => { navigate(-1) }}>
+        <Button variant="ghost" onClick={() => { navigate(`/programs/${programID}/curriculums`) }}>
           <CircleArrowLeft />
         </Button>
         <div>
