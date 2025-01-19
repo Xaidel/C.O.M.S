@@ -129,6 +129,7 @@ func APIRoutes(router *gin.Engine) {
 		section := api.Group("/sections")
 		{
 			section.GET("/:currID", controllers.SectionController.GET)
+			section.POST("/prospectus/:currID", controllers.SectionController.BatchProcessSection)
 		}
 	}
 }
