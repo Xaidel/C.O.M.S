@@ -1,64 +1,44 @@
 import AppLabel from "@/components/ui/applabel";
+import CurriculumFilter from "../features/curriculum-management/CurriculumFilter";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/datatable";
-import UploadCourse from "@/features/course-management/UploadCourse";
-import { CourseColumn } from "@/features/curriculum-management/CourseColumn";
-import CurriculumFilter from "@/features/curriculum-management/CurriculumFilter";
-import { useCurriculumByID } from "@/features/curriculum-management/useCurriculumByID";
+import { useCurrentPeriod } from "@/features/auth/useCurrentPeriod";
 import { Course } from "@/types/Interface";
-import { CircleArrowLeft } from "lucide-react";
+import { ChevronRight, CircleArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-
-import { UserPen, UserPlus } from "lucide-react";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  TooltipProvider,
-  TooltipContent,
-  Tooltip,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import FacultyTable from "@/features/curriculum-management/FacultyTable";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useProspectus } from "@/features/curriculum-management/useProspectus";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function CurriculumCourseManagement() {
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const year = searchParams.get("year") || "all";
-  const semester = searchParams.get("semester") || "all";
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const year = searchParams.get("year") || "1"
+  const { currID } = useParams<{ currID: string }>()
+  const curr = currID || ""
+  const { data: prospectus, isLoading: prospectusLoading, error: prospectusError } = useProspectus(curr)
+  const courses: Course[] = prospectus?.prospectus?.Courses || []
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([])
+  const { response: period, isLoading: periodLoading, error: periodError } = useCurrentPeriod()
 
-  const { currID } = useParams<{ currID: string }>();
-  const { isLoading, response, error } = useCurriculumByID(currID);
 
-  const handleFilterChange = (newYear: string, newSem: string) => {
-    setSearchParams({ year: newYear, semester: newSem });
-    const intYear = newYear === "all" ? null : parseInt(newYear, 10);
-    const intSem = newSem === "all" ? null : parseInt(newSem, 10);
-    const filteredCourse = response?.curriculum?.Courses?.filter(
-      (course: Course) => {
-        const yearMatch = intYear === null || course.Year_Level === intYear;
-        const semMatch = intSem === null || course.Sem === intSem;
-        return yearMatch && semMatch;
-      },
-    );
-    setCourses(filteredCourse || []);
-  };
-  const [courses, setCourses] = useState<Course[]>([]);
+  const handleFilterChange = (newYear: string) => {
+    setSearchParams({ year: newYear })
+    const intYear = parseInt(newYear, 10)
+    const intSem = period?.current_period?.Semester
+    const filterCourse = courses?.filter((course) => intYear === course.Year_Level && intSem === course?.Sem)
+    setFilteredCourses(filterCourse || [])
+  }
+
   useEffect(() => {
-    if (response?.curriculum?.Courses) {
-      const initialCOurses = response.curriculum.Courses;
-      setCourses(initialCOurses);
+    if (courses && period) {
+      const initialCourse = courses?.filter((course) => course.Sem === period?.current_period?.Semester && course.Year_Level === Number(year))
+      setFilteredCourses(initialCourse)
+      console.log(initialCourse)
     }
-  }, [response?.curriculum?.Courses]);
-  if (isLoading) return;
-  if (error) return;
+  }, [courses, period])
+  if (prospectusLoading || periodLoading) return
+  if (prospectusError || periodError) return
   return (
     <>
       <div>
@@ -74,103 +54,54 @@ export default function CurriculumCourseManagement() {
         >
           <CircleArrowLeft className="text-2xl" />
         </Button>
-        List of Courses
+        {`Curriculum ${curr}`}
       </div>
-
       <CurriculumFilter
         year={year}
-        setYear={(newYear) => handleFilterChange(newYear, semester)}
-        semester={semester}
-        setSemester={(newSem) => handleFilterChange(year, newSem)}
+        setYear={(newYear) => handleFilterChange(newYear)}
+        includeAll={false}
       />
-
-      <DataTable
-        columns={[
-          ...CourseColumn,
-
-          {
-            id: "action",
-            header: "",
-            cell: ({ row }) => {
-              const user = row.original.Faculty?.User;
-              const courseID = row.original.ID;
-              return user?.Firstname === "" ? (
-                <TooltipProvider>
-                  <Tooltip>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <TooltipTrigger asChild>
-                          <Button variant="outline">
-                            <UserPlus />
-                          </Button>
-                        </TooltipTrigger>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle className="text-2xl">
-                            Assign Faculty
-                          </DialogTitle>
-                          <DialogDescription>
-                            Choose a <span className="font-bold">Faculty</span>{" "}
-                            Member among the{" "}
-                            <span className="font-bold">
-                              School of Computer and Information Sciences
-                            </span>
-                          </DialogDescription>
-                        </DialogHeader>
-                        <FacultyTable courseID={courseID} />
-                      </DialogContent>
-                    </Dialog>
-                    <TooltipContent>
-                      <p>Assign Faculty</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ) : (
-                <TooltipProvider>
-                  <Tooltip>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <TooltipTrigger asChild>
-                          <Button variant="outline">
-                            <UserPen />
-                          </Button>
-                        </TooltipTrigger>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle className="text-2xl">
-                            Assign Faculty
-                          </DialogTitle>
-                          <DialogDescription>
-                            Choose a <span className="font-bold">Faculty</span>{" "}
-                            Member among the{" "}
-                            <span className="font-bold">
-                              School of Computer and Information Sciences
-                            </span>
-                          </DialogDescription>
-                        </DialogHeader>
-                        <FacultyTable
-                          courseID={courseID}
-                          userID={user?.UserID}
-                        />
-                      </DialogContent>
-                    </Dialog>
-                    <TooltipContent>
-                      <p>Reassign Faculty</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            },
-          },
-        ]}
-        data={courses}
-        resource="Courses"
-      />
-      <div className="mt-4">
-        <UploadCourse />
-      </div>
+      <Table>
+        <TableHeader className="bg-[#CBD2DB]">
+          <TableRow >
+            <TableHead className="text-black">Subject ID</TableHead>
+            <TableHead className="text-black">Subject Description</TableHead>
+            <TableHead className="text-black">Lec</TableHead>
+            <TableHead className="text-black">Lab</TableHead>
+            <TableHead className="text-black">Total Units</TableHead>
+            <TableHead className="text-black"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filteredCourses.length ? (
+            filteredCourses.map((course: Course) => (
+              <TableRow key={course.Course_No}>
+                <TableCell>{course.Course_No}</TableCell>
+                <TableCell>{course.Course_Name}</TableCell>
+                <TableCell>{course.Lec_Unit}</TableCell>
+                <TableCell>{course.Lab_Unit}</TableCell>
+                <TableCell>{Number.isNaN(Number(course.Lec_Unit)) ? course.Lec_Unit : Number(course.Lab_Unit) + Number(course.Lec_Unit)}</TableCell>
+                <TableCell>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button><ChevronRight size={20} /></Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View Offerings</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell className="h-24 text-center" colSpan={50}>No Courses Found</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </>
   );
 }
