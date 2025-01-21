@@ -35,6 +35,22 @@ func (SectionController) GET(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"sections": sections})
 }
 
+func (SectionController) GetByFaculty(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the Faculty ID"})
+		return
+	}
+
+	var sections []models.Section
+	if err := lib.Database.Preload("Course").Preload("Curriculum").Preload("Faculty.User").Find(&sections, "faculty_key = ?", id).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find requested data"})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"sections": sections})
+}
+
 func (SectionController) GetByCourseNo(ctx *gin.Context) {
 	currID := ctx.Param("currID")
 	courseNo := ctx.Param("courseNo")
