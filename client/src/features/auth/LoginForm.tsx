@@ -39,6 +39,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useCurrentPeriod } from "./useCurrentPeriod";
 import { Period } from "@/types/Interface";
+import SplashPage from "@/pages/SplashPage";
 
 const formSchema = z.object({
   role: z
@@ -110,12 +111,13 @@ export default function LoginForm() {
     return formattedPeriod;
   };
   const { isLoading, response, error } = useCurrentPeriod();
-  if (isLoading) return;
+  if (isLoading) return <div><SplashPage /></div>
   if (error) return;
   let current;
   if (response?.current_period) {
     current = formatPeriod(response?.current_period);
   }
+
   return (
     <Card className="flex flex-col gap-1 justify-start min-w-[31rem] min-h-[37rem] text-gray shadow-2xl">
       <CardHeader className="hidden md:inline-block mt-[1rem] ">
@@ -153,7 +155,7 @@ export default function LoginForm() {
                           >
                             {field.value
                               ? roles.find((role) => role.value === field.value)
-                                  ?.label
+                                ?.label
                               : "Select your role"}
                             <ChevronsUpDown className="m1-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>

@@ -24,19 +24,16 @@ export default function CurriculumCourseManagement() {
 
   const handleFilterChange = (newYear: string) => {
     setSearchParams({ year: newYear })
-    const intYear = parseInt(newYear, 10)
-    const intSem = period?.current_period?.Semester
-    const filterCourse = courses?.filter((course) => intYear === course.Year_Level && intSem === course?.Sem)
-    setFilteredCourses(filterCourse || [])
+    const intYear = parseInt(newYear)
+    const filterCourses = courses?.filter((course) => course.Year_Level === intYear && period?.current_period?.Semester === course.Sem)
+    setFilteredCourses(filterCourses)
   }
 
   useEffect(() => {
-    if (courses && period) {
-      const initialCourse = courses?.filter((course) => course.Sem === period?.current_period?.Semester && course.Year_Level === Number(year))
-      setFilteredCourses(initialCourse)
-      console.log(initialCourse)
+    if (courses.length) {
+      handleFilterChange(year)
     }
-  }, [courses, period])
+  }, [courses, year])
   if (prospectusLoading || periodLoading) return
   if (prospectusError || periodError) return
   return (
@@ -84,8 +81,8 @@ export default function CurriculumCourseManagement() {
                 <TableCell>
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger>
-                        <Button><ChevronRight size={20} /></Button>
+                      <TooltipTrigger asChild>
+                        <Button onClick={() => navigate(`/curriculums/${curr}/courses/${course.Course_No}`)}><ChevronRight size={20} /></Button>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>View Offerings</p>
@@ -97,7 +94,7 @@ export default function CurriculumCourseManagement() {
             ))
           ) : (
             <TableRow>
-              <TableCell className="h-24 text-center" colSpan={50}>No Courses Found</TableCell>
+              <TableCell className="h-24 text-center" colSpan={6}>No Courses Found</TableCell>
             </TableRow>
           )}
         </TableBody>
