@@ -4,7 +4,7 @@ import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useClassList } from "./useClassList";
 import { useState, useEffect } from "react";
-import { StudentResponse, Student, Score, COAEP } from "@/types/Interface";
+import { StudentResponse, Student, Score, COAEP, Section } from "@/types/Interface";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAddPerformanceData } from "./useAddPerformanceData";
@@ -12,7 +12,6 @@ import { usePerformanceData } from "./usePerformanceData";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import Report from "./Report";
-import { Course } from "@/types/Interface";
 import { useUser } from "../auth/useUser";
 
 interface Data {
@@ -35,7 +34,8 @@ export default function Coaep() {
   const { mutate: addPerformanceData, isCreating } = useAddPerformanceData()
   const { data: performanceData, isLoading: fetchingPerformanceData } = usePerformanceData(coDataID)
   const { currentUser } = useUser()
-  const course: Course = currentUser?.role_info?.Courses?.find((course: Course) => course.ID === parsedCourseID)
+  const course: Section = currentUser?.role_info?.Sections?.find((section) => section.ID === parsedCourseID)!
+  console.log(course)
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -203,7 +203,7 @@ export default function Coaep() {
                 <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
                   <DialogHeader>
                     <DialogTitle className="text-2xl">COAEP Report</DialogTitle>
-                    <DialogDescription>Course Outcome Assessment and Evaluation Plan Report for <span className="font-bold">{`${course.Course_Name}`}</span></DialogDescription>
+                    <DialogDescription>Course Outcome Assessment and Evaluation Plan Report for <span className="font-bold">{``}</span></DialogDescription>
                   </DialogHeader>
                   <Report />
                 </DialogContent>

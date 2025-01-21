@@ -40,6 +40,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCurrentPeriod } from "./useCurrentPeriod";
 import { Period } from "@/types/Interface";
 import SplashPage from "@/pages/SplashPage";
+import ErrorState from "@/pages/ErrorState";
 
 const formSchema = z.object({
   role: z
@@ -111,8 +112,8 @@ export default function LoginForm() {
     return formattedPeriod;
   };
   const { isLoading, response, error } = useCurrentPeriod();
-  if (isLoading) return <div><SplashPage /></div>
-  if (error) return;
+  if (isLoading) return <SplashPage />
+  if (error) return <ErrorState />;
   let current;
   if (response?.current_period) {
     current = formatPeriod(response?.current_period);

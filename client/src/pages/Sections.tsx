@@ -1,9 +1,10 @@
 import AppLabel from "@/components/ui/applabel";
 import { Button } from "@/components/ui/button";
-import { CircleArrowLeft } from "lucide-react";
+import { ChevronRight, CircleArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSectionsByCourseNo } from "@/features/curriculum-management/useSectionsByCourseNo";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function Sections() {
   const navigate = useNavigate()
@@ -38,7 +39,8 @@ export default function Sections() {
             <TableHead className="text-black">Course No</TableHead>
             <TableHead className="text-black">Description</TableHead>
             <TableHead className="text-black">Unit</TableHead>
-            <TableHead className="text-black">Faculty Name</TableHead>
+            <TableHead className="text-black">Assigned Faculty</TableHead>
+            <TableHead className="text-black"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -51,6 +53,20 @@ export default function Sections() {
                 <TableCell>{section.Course.Course_Name}</TableCell>
                 <TableCell>{Number(section.Course.Lec_Unit) + Number(section.Course.Lab_Unit)}</TableCell>
                 <TableCell>{`${section.Faculty.User?.Lastname.toUpperCase()} ${section.Faculty.User?.Firstname.toUpperCase()}`}</TableCell>
+                <TableCell>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button>
+                          <ChevronRight />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View Data</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
               </TableRow>
             ))
           ) : (

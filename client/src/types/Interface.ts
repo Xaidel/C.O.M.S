@@ -86,7 +86,7 @@ export interface ProgramHead {
 interface RoleInfo {
   Department: Department;
   Programs: Program[];
-  Courses: Course[];
+  Sections: Section[];
   User: UserInfo;
   DepartmentID: number;
   ID: number;
@@ -239,5 +239,6 @@ export interface Section {
   Course: Course
   SectionCode: string
   Section_Name: string
+  CurriculumID: string
   ID: number
 }
