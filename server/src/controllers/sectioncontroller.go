@@ -35,6 +35,36 @@ func (SectionController) GET(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"sections": sections})
 }
 
+func (SectionController) GetByCourseNo(ctx *gin.Context) {
+	currID := ctx.Param("currID")
+	courseNo := ctx.Param("courseNo")
+
+	if currID == "" || courseNo == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please include the Curriculum ID or Course No"})
+		return
+	}
+
+	var prospectus models.Prospectus
+	if err := lib.Database.First(&prospectus, "curriculum_id= ?", currID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Curriculum not found"})
+		return
+	}
+
+	var course models.Course
+	if err := lib.Database.Preload("Prospectus").First(&course, "course_no = ?", courseNo).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
+		return
+	}
+
+	var sections []models.Section
+	if err := lib.Database.Preload("Faculty.User").Preload("Course").Preload("Curriculum").Find(&sections, "curriculum_id = ? AND course_id = ?", course.Prospectus.CurriculumID, course.ID).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Sections not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"sections": sections})
+}
+
 func (SectionController) BatchProcessSection(ctx *gin.Context) {
 	file, err := ctx.FormFile("file")
 	id := ctx.Param("currID")

@@ -18,6 +18,7 @@ import CourseSelection from "./pages/CourseSelection";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import ProgramCurriculum from "./pages/ProgramCurriculum.tsx";
 import CourseOfferings from "./pages/CourseOfferings.tsx";
+import Sections from "./pages/Sections.tsx";
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -64,6 +65,10 @@ function App() {
             <Route
               path="/curriculums/:currID/courses"
               element={<CurriculumCourseManagement />}
+            />
+            <Route
+              path="/curriculums/:currID/courses/:courseID"
+              element={<Sections />}
             />
             <Route path="/courses" element={<CourseSelection />} />
             <Route path="/courses/:courseID/assessment-plan" element={<AssessmentPlan />} />
