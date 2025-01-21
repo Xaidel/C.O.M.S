@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useEffect, useState } from "react";
 import { Section } from "@/types/Interface";
 export default function Offerings() {
+
   const [searchParams, setSearchParams] = useSearchParams()
   const year = searchParams.get("year") || "1"
   const semester = searchParams.get("semester") || "1"

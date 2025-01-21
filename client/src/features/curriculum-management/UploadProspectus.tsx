@@ -73,12 +73,12 @@ export default function UploadProspectus() {
     <>
       <Dialog open={modalOpen} onOpenChange={() => setModalOpen(!modalOpen)}>
         <DialogTrigger asChild>
-          <Button className="flex gap-2 mt-3"><Upload size={22} />Upload Prospectus</Button>
+          <Button className="flex gap-2 mt-3"><Upload size={22} />Upload Offerings</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="font-bold text-red-500 text-2xl">
-              Upload Prospectus
+              Upload Offerings
             </DialogTitle>
           </DialogHeader>
           <div className="flex gap-3 items-center">

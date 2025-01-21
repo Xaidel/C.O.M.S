@@ -13,6 +13,7 @@ import { currentUser, Curriculum } from "@/types/Interface";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ErrorState from "./ErrorState";
 
 export default function CurriculumManagement() {
   const navigate = useNavigate();

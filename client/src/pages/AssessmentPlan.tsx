@@ -2,7 +2,7 @@ import AppLabel from "@/components/ui/applabel";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/features/auth/useUser";
 import FacultyTabs from "@/features/faculty/FacultyTabs";
-import { Course } from "@/types/Interface";
+import { Section } from "@/types/Interface";
 import { CircleArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,12 +11,12 @@ export default function AssessmentPlan() {
   const { courseID } = useParams<{ courseID: string }>()
   const navigate = useNavigate()
   const { currentUser } = useUser()
-  const courses: Course[] = currentUser?.role_info.Courses;
+  const courses: Section[] = currentUser?.role_info.Sections;
   const [courseName, setCourseName] = useState("")
   useEffect(() => {
     const parsedCourseID = parseInt(courseID || "", 10)
     const selectedCourse = courses?.find((course) => course.ID === parsedCourseID)
-    setCourseName(selectedCourse?.Course_Name.toUpperCase() || "")
+    setCourseName(selectedCourse?.Course?.Course_Name.toUpperCase() || "")
   }, [courseID, courses])
   return (
     <>
