@@ -10,7 +10,7 @@ type Section struct {
 	SectionCode  string
 	Course_No    string  `gorm:"-"`
 	FacultyID    *string `gorm:"-"`
-	FacultyKey   *uint
-	CourseID     uint `csv:"-"`
-	ID           uint `csv:"-"`
+	FacultyKey   *uint   `gorm:"column:faculty_key"`
+	CourseID     uint    `csv:"-"`
+	ID           uint    `csv:"-"`
 }
