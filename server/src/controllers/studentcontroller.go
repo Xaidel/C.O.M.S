@@ -49,6 +49,7 @@ func (StudentController) GetByCourse(ctx *gin.Context) {
 func (StudentController) BatchProcessStudent(ctx *gin.Context) {
 	file, err := ctx.FormFile("file")
 	courseID := ctx.Param("courseID")
+	sectionID := ctx.Param("sectionID")
 
 	if courseID == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the course id"})
@@ -62,10 +63,18 @@ func (StudentController) BatchProcessStudent(ctx *gin.Context) {
 		return
 	}
 
+	var section models.Section
+
+	if err := lib.Database.Where("course_id = ? AND id = ?", courseID, sectionID).First(&section).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Section not found"})
+		return
+	}
+
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File upload failed"})
 		return
 	}
+
 	uploadedFile, err := file.Open()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot open file"})
@@ -112,8 +121,8 @@ func (StudentController) BatchProcessStudent(ctx *gin.Context) {
 	}
 
 	for _, student := range enrolledStudents {
-		if err := lib.Database.Model(student).Association("Courses").Append(&course); err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to associate student with course"})
+		if err := lib.Database.Model(student).Association("Sections").Append(&section); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to associate student with section"})
 			return
 		}
 	}

@@ -4,10 +4,11 @@ import { useMutation } from "@tanstack/react-query"
 interface uploadClassListParams {
   file: File
   courseID: number
+  sectionID: number
 }
 
 export function useUploadClassList() {
   return useMutation({
-    mutationFn: ({ file, courseID }: uploadClassListParams) => uploadStudent(file, courseID)
+    mutationFn: ({ file, courseID, sectionID }: uploadClassListParams) => uploadStudent(file, courseID, sectionID)
   })
 }

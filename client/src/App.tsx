@@ -71,7 +71,7 @@ function App() {
               element={<Sections />}
             />
             <Route path="/courses" element={<CourseSelection />} />
-            <Route path="/courses/:courseID/assessment-plan" element={<AssessmentPlan />} />
+            <Route path="/courses/:courseID/assessment-plan/section/:sectionID" element={<AssessmentPlan />} />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="*" element={<NotFound />} />

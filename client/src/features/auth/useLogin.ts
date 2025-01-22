@@ -28,6 +28,7 @@ export function useLogin() {
       if (user) {
         queryClient.setQueryData<User>(["current-user"], user);
         sessionStorage.setItem("user_info", JSON.stringify(user));
+        sessionStorage.setItem("splashShown", "false")
         navigate("/dashboard");
       }
     },

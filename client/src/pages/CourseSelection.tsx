@@ -4,7 +4,7 @@ import CurriculumFilter from "@/features/curriculum-management/CurriculumFilter"
 import { CurrentPeriodResponse, Section } from "@/types/Interface";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSections } from "@/features/faculty/useSections";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 
 export default function CourseSelection() {
+  const navigate = useNavigate()
   const { currentUser } = useUser()
   const [searchParams, setSearchParams] = useSearchParams()
   const year = searchParams.get("year") || "1"
@@ -69,10 +70,12 @@ export default function CourseSelection() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button><ChevronRight /></Button>
+                        <Button onClick={() => navigate(`/courses/${section.Course.ID}/assessment-plan/section/${section.ID}`)}>
+                          <ChevronRight />
+                        </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>View COAEP</p>
+                        <p>View Report</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

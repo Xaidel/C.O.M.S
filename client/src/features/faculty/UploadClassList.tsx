@@ -12,12 +12,14 @@ import { UploadErrorResponse } from "@/types/Interface";
 export default function UploadClassList() {
   const queryClient = useQueryClient()
   const { courseID } = useParams<{ courseID: string }>()
+  const { sectionID } = useParams<{ sectionID: string }>()
   const [modalOpen, setModalOpen] = useState(false)
   const [fileName, setFileName] = useState<String>("No file selected")
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { mutate: UploadClassList } = useUploadClassList()
   const parsedCourseID = parseInt(courseID || "", 10)
+  const parsedSectionID = parseInt(sectionID || "", 10)
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
     if (selectedFile) {
@@ -36,7 +38,7 @@ export default function UploadClassList() {
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (file) {
-      UploadClassList({ file, courseID: parsedCourseID }, {
+      UploadClassList({ file, courseID: parsedCourseID, sectionID: parsedSectionID }, {
         onSuccess: (data) => {
           toast({
             variant: "success",
