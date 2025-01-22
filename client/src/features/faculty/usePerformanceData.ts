@@ -2,10 +2,10 @@ import { getPerformanceData } from "@/service/api/performancedata/getPerformance
 import { PerformanceData } from "@/types/Interface";
 import { useQuery } from "@tanstack/react-query";
 
-export function usePerformanceData(id: number) {
+export function usePerformanceData(coaepID: number, sectionID: number) {
   const query = useQuery<PerformanceData>({
-    queryKey: [`${id}-performance_data`],
-    queryFn: () => getPerformanceData(id),
+    queryKey: [`${sectionID}-performance_data`],
+    queryFn: () => getPerformanceData(coaepID, sectionID),
     staleTime: 3000,
   })
 

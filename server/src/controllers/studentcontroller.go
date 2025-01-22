@@ -35,7 +35,7 @@ func (StudentController) GET(ctx *gin.Context) {
 func (StudentController) GetByCourse(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the Course ID"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the Section ID"})
 		return
 	}
 	var section models.Section
@@ -162,13 +162,13 @@ func (StudentController) DELETE(ctx *gin.Context) {
 		return
 	}
 
-	var course models.Course
-	if err := lib.Database.First(&course, request.CourseID).Error; err != nil {
+	var section models.Section
+	if err := lib.Database.First(&section, request.SectionID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course does not exist"})
 		return
 	}
 
-	lib.Database.Model(&student).Association("Courses").Delete(&course)
+	lib.Database.Model(&student).Association("Sections").Delete(&section)
 
 	ctx.JSON(http.StatusNoContent, gin.H{})
 }

@@ -4,10 +4,10 @@ import { useMutation } from "@tanstack/react-query";
 
 interface deleteStudentParams {
   studentID: string,
-  courseID: number
+  sectionID: number
 }
 export function useDeleteStudent() {
   return useMutation({
-    mutationFn: ({ studentID, courseID }: deleteStudentParams) => deleteStudent(studentID, courseID)
+    mutationFn: ({ studentID, sectionID }: deleteStudentParams) => deleteStudent(studentID, sectionID)
   })
 }

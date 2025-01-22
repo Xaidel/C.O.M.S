@@ -3,7 +3,6 @@ package models
 type Course struct {
 	Course_No    string
 	Course_Name  string
-	Students     []*Student `csv:"-" gorm:"many2many:enrolled_courses"`
 	Sections     []Section  `csv:"-"`
 	Prospectus   Prospectus `csv:"-"`
 	Lec_Unit     string

@@ -4,7 +4,7 @@ import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useClassList } from "./useClassList";
 import { useState, useEffect } from "react";
-import { StudentResponse, Student, Score, COAEP, Section } from "@/types/Interface";
+import { StudentResponse, Student, Score, COAEP } from "@/types/Interface";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAddPerformanceData } from "./useAddPerformanceData";
@@ -12,7 +12,6 @@ import { usePerformanceData } from "./usePerformanceData";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import Report from "./Report";
-import { useUser } from "../auth/useUser";
 
 interface Data {
   coaep: COAEP
@@ -24,18 +23,17 @@ export default function Coaep() {
   const [debounceScore, setDebounceScore] = useState<Score | null>(null)
   const [scores, setScores] = useState<Score[]>([])
   const { courseID } = useParams<{ courseID: string }>()
+  const { sectionID } = useParams<{ sectionID: string }>()
   const parsedCourseID = parseInt(courseID || "0", 10)
+  const parsedSectionID = parseInt(sectionID || "0", 10)
   const { data: coaep, isLoading: fetchingCoaep, error: fetchingCoaepError } = useCOAEPByCourse(parsedCourseID)
-  const { data: classlist, isLoading: fetchingClasslist } = useClassList(parsedCourseID)
+  const { data: classlist, isLoading: fetchingClasslist } = useClassList(parsedSectionID)
   const queryClient = useQueryClient()
   const data = queryClient.getQueryData<Data>([`coaep-${parsedCourseID}`])!
   const coData: COAEP = data?.coaep
   const coDataID = coData?.ID
   const { mutate: addPerformanceData, isCreating } = useAddPerformanceData()
-  const { data: performanceData, isLoading: fetchingPerformanceData } = usePerformanceData(coDataID)
-  const { currentUser } = useUser()
-  const course: Section = currentUser?.role_info?.Sections?.find((section) => section.ID === parsedCourseID)!
-  console.log(course)
+  const { data: performanceData, isLoading: fetchingPerformanceData, refetch: fetchPerformanceData } = usePerformanceData(coDataID, parsedSectionID)
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -45,6 +43,12 @@ export default function Coaep() {
       clearTimeout(handler)
     }
   }, [scoreInput])
+
+  useEffect(() => {
+    if (coDataID) {
+      fetchPerformanceData()
+    }
+  }, [coDataID])
 
   useEffect(() => {
     if (debounceScore && !isCreating) {
@@ -88,6 +92,7 @@ export default function Coaep() {
           student_id: score.StudentID,
           coaep_id: coDataID,
           ilo_id: score.IntendedLearningOutcomeID,
+          section_id: parsedSectionID,
           value: score.Value || null
         }))
         setScores(initialScores)
@@ -99,9 +104,10 @@ export default function Coaep() {
     student_id: string,
     coaep_id: number,
     ilo_id: number,
+    section_id: number,
     value: number | null
   ) => {
-    setScoreInput({ student_id, coaep_id, ilo_id, value })
+    setScoreInput({ student_id, coaep_id, ilo_id, section_id, value })
     setScores((prevScores) => prevScores.map((score) =>
       score.student_id === student_id && score.coaep_id === coaep_id && score.ilo_id === ilo_id ? { ...score, value } : score
     ))
@@ -177,6 +183,7 @@ export default function Coaep() {
                                     student.UserID,
                                     coDataID,
                                     ilo.ID,
+                                    parsedSectionID,
                                     e.target.value === "" ? null : parseInt(e.target.value, 10) || null
                                   )
                                 }

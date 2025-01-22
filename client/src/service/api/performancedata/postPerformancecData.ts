@@ -1,6 +1,6 @@
 import { api } from "../../api"
 
-export const postPerformanceData = async (student_id: string, ilo_id: number, coaep_id: number, value: number | null) => {
+export const postPerformanceData = async (student_id: string, ilo_id: number, coaep_id: number, section_id: number, value: number | null) => {
   const res = await fetch(`${api}/scores`, {
     method: "POST",
     headers: {
@@ -11,6 +11,7 @@ export const postPerformanceData = async (student_id: string, ilo_id: number, co
       student_id: student_id,
       ilo_id: ilo_id,
       coaep_id: coaep_id,
+      section_id: section_id,
       value: value
     })
   })
