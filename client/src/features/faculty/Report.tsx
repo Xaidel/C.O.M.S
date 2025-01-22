@@ -8,8 +8,10 @@ import { useEvaluation } from "./useEvaluation";
 export default function Report() {
   const { courseID } = useParams<{ courseID: string }>()
   const parsedCourseID = parseInt(courseID || "", 10)
+  const { sectionID } = useParams<{ sectionID: string }>()
+  const parsedSectionID = parseInt(sectionID || "", 10)
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
-  const { data: evaluations, isLoading: fetchingEval, error } = useEvaluation(coaep?.coaep.ID || 0)
+  const { data: evaluations, isLoading: fetchingEval, error } = useEvaluation(coaep?.coaep.ID || 0, parsedSectionID || 0)
   if (fetchingCoaep || fetchingEval) return <div className="flex justify-center">Fetching Evaluation Data</div>
   if (error) return <div className="flex justify-center">No Student, Therefore no data</div>
   return (
