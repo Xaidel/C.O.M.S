@@ -1,12 +1,12 @@
 import { api } from "@/service/api";
 import { UploadErrorResponse } from "@/types/Interface";
 
-export const uploadStudent = async (csv: File, courseID: number) => {
+export const uploadStudent = async (csv: File, courseID: number, sectionID: number) => {
   try {
     const formData = new FormData()
     formData.append("file", csv)
 
-    const res = await fetch(`${api}/students/${courseID}`, {
+    const res = await fetch(`${api}/students/courses/${courseID}/sections/${sectionID}`, {
       method: "POST",
       body: formData
     })

@@ -78,7 +78,7 @@ export default function Prospectus() {
             ))
           ) : (
             <TableRow>
-              <TableCell className="h-24 text-center" colSpan={50}>No Course Offerings Found</TableCell>
+              <TableCell className="h-24 text-center" colSpan={6}>No Course Offerings Found</TableCell>
             </TableRow>
           )}
         </TableBody>

@@ -85,7 +85,7 @@ export default function CurriculumCourseManagement() {
                         <Button onClick={() => navigate(`/curriculums/${curr}/courses/${course.Course_No}`)}><ChevronRight size={20} /></Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>View Offerings</p>
+                        <p>View Sections</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

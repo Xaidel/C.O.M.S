@@ -51,7 +51,7 @@ export default function Offerings() {
             <TableHead className="text-black">Course No</TableHead>
             <TableHead className="text-black">Description</TableHead>
             <TableHead className="text-black">Unit</TableHead>
-            <TableHead className="text-black">Faculty Name</TableHead>
+            <TableHead className="text-black">Assigned Faculty</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
