@@ -12,9 +12,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function ClassList() {
-  const { courseID } = useParams<{ courseID: string }>();
-  const parsedCourseID = parseInt(courseID || "");
-  const { data, isLoading } = useClassList(parsedCourseID);
+  const { sectionID } = useParams<{ sectionID: string }>();
+  const parsedSectionID = parseInt(sectionID || "");
+  const { data, isLoading } = useClassList(parsedSectionID);
   const [students, setStudents] = useState<Student[]>([]);
   const deleteStudent = useDeleteStudent()
   const queryClient = useQueryClient()
@@ -35,7 +35,7 @@ export default function ClassList() {
   }, [data]);
 
   const handleDelete = (studentID: string, studentName: string) => {
-    deleteStudent.mutate({ studentID, courseID: parsedCourseID }, {
+    deleteStudent.mutate({ studentID, sectionID: parsedSectionID }, {
       onSettled: () => {
         toast({
           variant: "success",
@@ -43,7 +43,7 @@ export default function ClassList() {
           description: `${studentName} was deleted`,
           duration: 3000,
         })
-        queryClient.invalidateQueries({ queryKey: [`${parsedCourseID}-students`] })
+        queryClient.invalidateQueries({ queryKey: [`${parsedSectionID}-students`] })
       },
     })
   };

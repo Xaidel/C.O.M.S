@@ -49,7 +49,7 @@ export default function UploadClassList() {
           setModalOpen(false)
           setFile(null)
           setFileName("No file selected")
-          queryClient.invalidateQueries({ queryKey: [`${parsedCourseID}-students`] })
+          queryClient.invalidateQueries({ queryKey: [`${parsedSectionID}-students`] })
         },
         onError: (err: unknown) => {
           if (err instanceof Error) {

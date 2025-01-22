@@ -12,13 +12,15 @@ import (
 type ScoreController struct{}
 
 func (ScoreController) GET(ctx *gin.Context) {
-	id := ctx.Param("id")
-	if id == "" {
+	coaepID := ctx.Param("coaepID")
+	sectionID := ctx.Param("sectionID")
+
+	if coaepID == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide the COAEP ID"})
 		return
 	}
 	var scores []models.ILOScore
-	if err := lib.Database.Find(&scores, "coeap_id = ?", id).Error; err != nil {
+	if err := lib.Database.Find(&scores, "coeap_id = ? AND section_id = ?", coaepID, sectionID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Scores not found"})
 		return
 	}
@@ -27,25 +29,32 @@ func (ScoreController) GET(ctx *gin.Context) {
 }
 
 func (ScoreController) GetEvaluation(ctx *gin.Context) {
-	id := ctx.Param("id")
-	if id == "" {
+	coaepID := ctx.Param("coaepID")
+	sectionID := ctx.Param("sectionID")
+	if coaepID == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide the COAEP ID"})
 		return
 	}
 
 	var coaep models.Coeap
-	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, id).Error; err != nil {
+	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, coaepID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
 		return
 	}
 
 	var course models.Course
-	if err := lib.Database.Preload("Students").First(&course, coaep.CourseID).Error; err != nil {
+	if err := lib.Database.First(&course, coaep.CourseID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
 		return
 	}
 
-	totalStudents := len(course.Students)
+	var section models.Section
+	if err := lib.Database.Preload("Students").First(&section, sectionID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Section not found"})
+		return
+	}
+
+	totalStudents := len(section.Students)
 	if totalStudents == 0 {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "No Students enrolled in this course"})
 		return
@@ -67,7 +76,7 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 			if err := lib.Database.Table("ilo_scores").
 				Joins("JOIN intended_learning_outcomes ON ilo_scores.intended_learning_outcome_id = intended_learning_outcomes.id").
 				Joins("JOIN assessment_tools ON intended_learning_outcomes.assessment_tool_id = assessment_tools.id").
-				Where("(ilo_scores.value / assessment_tools.total_score) * 100 >= assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL", ilo.ID).
+				Where("(ilo_scores.value / assessment_tools.total_score) * 100 >= assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL AND ilo_scores.sections_id = ? AND ilo_scores.sectiond_id = ?", ilo.ID, sectionID).
 				Find(&scores).Error; err != nil {
 				ctx.JSON(http.StatusNotFound, gin.H{"error": "Scores not found"})
 				return
@@ -96,12 +105,14 @@ func (ScoreController) POST(ctx *gin.Context) {
 		IntendedLearningOutcomeID: request.Ilo_id,
 		StudentID:                 request.Student_id,
 		CoeapID:                   request.Coaep_id,
+		SectionID:                 request.SectionID,
 	}
 
 	if err := lib.Database.Where(&models.ILOScore{
 		StudentID:                 request.Student_id,
 		CoeapID:                   request.Coaep_id,
 		IntendedLearningOutcomeID: request.Ilo_id,
+		SectionID:                 request.SectionID,
 	}).FirstOrCreate(&score).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

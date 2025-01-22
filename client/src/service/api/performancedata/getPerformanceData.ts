@@ -1,7 +1,7 @@
 import { api } from "@/service/api"
 
-export const getPerformanceData = async (id: number) => {
-  const res = await fetch(`${api}/scores/${id}`, {
+export const getPerformanceData = async (coaepID: number, sectionID: number) => {
+  const res = await fetch(`${api}/scores/coaep/${coaepID}/section/${sectionID}`, {
     method: "GET",
     headers: {
       Accept: "application/json"

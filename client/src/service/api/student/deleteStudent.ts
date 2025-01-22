@@ -9,7 +9,7 @@ export const deleteStudent = async (studentID: string, courseID: number) => {
     },
     body: JSON.stringify({
       userID: studentID,
-      course_id: courseID
+      section_id: courseID
     })
   })
   if (!res.ok) {
