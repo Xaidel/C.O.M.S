@@ -118,7 +118,7 @@ func APIRoutes(router *gin.Engine) {
 		score := api.Group("/scores")
 		{
 			score.GET("/coaep/:coaepID/section/:sectionID", controllers.ScoreController.GET)
-			score.GET("/eval/:id", controllers.ScoreController.GetEvaluation)
+			score.GET("/eval/coaep/:coaepID/section/:sectionID", controllers.ScoreController.GetEvaluation)
 			score.POST("", controllers.ScoreController.POST)
 		}
 		prospectus := api.Group("/prospectus")

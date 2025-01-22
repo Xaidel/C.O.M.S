@@ -76,7 +76,7 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 			if err := lib.Database.Table("ilo_scores").
 				Joins("JOIN intended_learning_outcomes ON ilo_scores.intended_learning_outcome_id = intended_learning_outcomes.id").
 				Joins("JOIN assessment_tools ON intended_learning_outcomes.assessment_tool_id = assessment_tools.id").
-				Where("(ilo_scores.value / assessment_tools.total_score) * 100 >= assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL AND ilo_scores.sections_id = ? AND ilo_scores.sectiond_id = ?", ilo.ID, sectionID).
+				Where("(ilo_scores.value / assessment_tools.total_score) * 100 >= assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL AND ilo_scores.section_id = ?", ilo.ID, sectionID).
 				Find(&scores).Error; err != nil {
 				ctx.JSON(http.StatusNotFound, gin.H{"error": "Scores not found"})
 				return
