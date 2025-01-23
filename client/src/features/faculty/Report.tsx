@@ -4,7 +4,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { Fragment } from "react/jsx-runtime";
 import { useEvaluation } from "./useEvaluation";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function Report() {
