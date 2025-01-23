@@ -34,6 +34,8 @@ export default function Coaep() {
   const coDataID = coData?.ID
   const { mutate: addPerformanceData, isCreating } = useAddPerformanceData()
   const { data: performanceData, isLoading: fetchingPerformanceData, refetch: fetchPerformanceData } = usePerformanceData(coDataID, parsedSectionID)
+  const [reportModalOpen, setReportModalOpen] = useState(false)
+
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -203,9 +205,13 @@ export default function Coaep() {
             </Table>
 
             <div className="mt-5 min-w-100 flex justify-end">
-              <Dialog>
+              <Dialog open={reportModalOpen} onOpenChange={setReportModalOpen}>
                 <DialogTrigger asChild>
-                  <Button type="button" >Generate Report</Button>
+                  <Button type="button" onClick={() => {
+                    fetchPerformanceData()
+                    setReportModalOpen(true)
+                  }
+                  }>Generate Report</Button>
                 </DialogTrigger>
                 <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
                   <DialogHeader>
