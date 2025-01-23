@@ -7,12 +7,13 @@ export default function Login() {
   const [showSplash, setShowSplash] = useState(() => {
     return !sessionStorage.getItem("splashShown")
   })
+
   useEffect(() => {
     if (showSplash) {
       const timer = setTimeout(() => {
         setShowSplash(false)
         sessionStorage.setItem("splashShown", "true")
-      }, 1000)
+      }, 1300)
       return () => clearTimeout(timer)
     }
   }, [showSplash])
