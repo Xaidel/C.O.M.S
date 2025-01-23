@@ -2,7 +2,7 @@ import Logo from "@/components/ui/logo";
 
 export default function SplashPage() {
   return (
-    <main className="fixed inset-0 min-h-screen flex flex-col items-center justify-between bg-[#F3F4F6] p-4">
+    <main className={"fixed inset-0 min-h-screen flex flex-col items-center justify-between bg-[#F3F4F6] p-4 animate-fade-out"}>
       <div className="flex-grow flex items-center justify-center">
         <Logo />
       </div>
