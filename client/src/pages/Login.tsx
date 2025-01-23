@@ -13,7 +13,7 @@ export default function Login() {
       const timer = setTimeout(() => {
         setShowSplash(false)
         sessionStorage.setItem("splashShown", "true")
-      }, 2040)
+      }, 1300)
       return () => clearTimeout(timer)
     }
   }, [showSplash])
