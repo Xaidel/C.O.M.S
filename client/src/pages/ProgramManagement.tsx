@@ -37,7 +37,7 @@ export default function ProgramManagement() {
   return (
     <>
       <div>
-        <AppLabel currentPage="Course Management" />
+        <AppLabel currentPage="Program Management" />
       </div>
       <h1 className="text-3xl font-bold text-[#1F2937] mb-3">Programs</h1>
       <DataTable
