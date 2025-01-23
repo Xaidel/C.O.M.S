@@ -82,3 +82,7 @@ var PostScoreRequest struct {
 	SectionID  uint   `json:"section_id" binding:"required"`
 	Value      uint   `json:"value"`
 }
+var PostRecomRequest struct {
+	SectioniD uint `json:"section_id" binding:"required"`
+	Ilo_id    uint `json:"ilo_id" binding:"required"`
+}

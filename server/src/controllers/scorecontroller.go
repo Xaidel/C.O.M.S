@@ -62,10 +62,11 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 
 	COs := coaep.CourseOutcomes
 	type response struct {
-		IloID           uint `json:"ilo_id"`
-		TotalPassed     int  `json:"total_passed"`
-		TotalPercentage int  `json:"total_percentage"`
-		TotalPopulation int  `json:"total_population"`
+		IloID           uint    `json:"ilo_id"`
+		TotalPassed     int     `json:"total_passed"`
+		TotalPercentage int     `json:"total_percentage"`
+		TotalPopulation int     `json:"total_population"`
+		Recommendation  *string `json:"recommendation"`
 	}
 
 	var res []response
@@ -76,6 +77,7 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 			if err := lib.Database.Table("ilo_scores").
 				Joins("JOIN intended_learning_outcomes ON ilo_scores.intended_learning_outcome_id = intended_learning_outcomes.id").
 				Joins("JOIN assessment_tools ON intended_learning_outcomes.assessment_tool_id = assessment_tools.id").
+				Joins("LEFT JOIN recommendations ON intended_learning_outcomes.recommendation_id = recommendations.id").
 				Where("(ilo_scores.value / assessment_tools.total_score) * 100 >= assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL AND ilo_scores.section_id = ?", ilo.ID, sectionID).
 				Find(&scores).Error; err != nil {
 				ctx.JSON(http.StatusNotFound, gin.H{"error": "Scores not found"})
@@ -87,6 +89,7 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 				IloID: ilo.ID, TotalPassed: len(scores),
 				TotalPercentage: int(totalPercentage),
 				TotalPopulation: totalStudents,
+				Recommendation:  ilo.Recommendation.Comment,
 			})
 		}
 	}

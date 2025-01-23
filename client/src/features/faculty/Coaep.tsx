@@ -186,7 +186,7 @@ export default function Coaep() {
                                     coDataID,
                                     ilo.ID,
                                     parsedSectionID,
-                                    e.target.value === "" ? null : parseInt(e.target.value, 10) || null
+                                    e.target.value === "" ? null : parseInt(e.target.value, 10) || 0
                                   )
                                 }
                               />

@@ -4,6 +4,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { Fragment } from "react/jsx-runtime";
 import { useEvaluation } from "./useEvaluation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function Report() {
   const { courseID } = useParams<{ courseID: string }>()
@@ -13,7 +15,8 @@ export default function Report() {
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error } = useEvaluation(coaep?.coaep.ID || 0, parsedSectionID || 0)
   if (fetchingCoaep || fetchingEval) return <div className="flex justify-center">Fetching Evaluation Data</div>
-  if (error) return <div className="flex justify-center">No Student, Therefore no data</div>
+  if (error) return <div className="flex justify-center">No Performance Data Yet</div>
+  console.log(evaluations)
   return (
     <>
       <div className="flex flex-col gap-8">
@@ -49,9 +52,14 @@ export default function Report() {
                           : `No Data`
                         }
                       </TableCell>
-                      <TableCell className="border text-center"></TableCell>
-                      <TableCell className="border text-center text-red-400"></TableCell>
-                      <TableCell className="border">{ }</TableCell>
+                      <TableCell className="border text-center">{evaluations?.res[0].total_percentage}</TableCell>
+                      <TableCell className="border text-center text-red-400">
+                        {
+                          (evaluations?.res[0]?.total_percentage !== undefined && evaluations?.res[0]?.total_percentage >= co.IntendedLearningOutcomes[0].AssessmentTool.TargetPopulation)
+                            ? (<p className="text-green-400 text-center">S</p>) : (<p className="text-red-400 text-center">NS</p>)
+                        }
+                      </TableCell>
+                      <TableCell className="border"></TableCell>
                     </TableRow>
                   ) : (
                     <>
@@ -71,11 +79,17 @@ export default function Report() {
                               </TableCell>
                               <TableCell className="border text-center">{`${data?.total_percentage}%`}</TableCell>
                               <TableCell className="border">
-                                {(data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation)
-                                  ? (<p className="text-green-400 text-center">S</p>) : (<p className="text-red-400 text-center">NS</p>)
+                                {
+                                  (data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation)
+                                    ? (<p className="text-green-400 text-center">S</p>) : (<p className="text-red-400 text-center">NS</p>)
                                 }
                               </TableCell>
-                              <TableCell className="border">{ }</TableCell>
+                              <TableCell className="border">
+                                {(data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation) ?
+                                  <Input type="text" disabled className="w-full h-full border-none bg-transparent" /> :
+                                  <Input type="text" placeholder="Recommendation" className="w-full h-full border-none bg-transparent" />
+                                }
+                              </TableCell>
                             </TableRow>
                           </>)
                       })}
