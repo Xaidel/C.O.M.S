@@ -33,6 +33,7 @@ func main() {
 		&models.AssessmentTool{},
 		&models.IntendedLearningOutcome{},
 		&models.ILOScore{},
+		&models.Recommendation{},
 	); err != nil {
 		fmt.Println("Error Migrating")
 		return
