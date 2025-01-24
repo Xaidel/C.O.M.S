@@ -1,21 +1,56 @@
 import { useParams } from "react-router-dom";
-import { IntendedLearningOutcomes } from "@/types/Interface";
+import { IntendedLearningOutcomes, Recommendation } from "@/types/Interface";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { Fragment } from "react/jsx-runtime";
 import { useEvaluation } from "./useEvaluation";
-import { Input } from "@/components/ui/input";
+import { useAddRecommendation } from "./useAddRecommendation";
+import { useEffect, useState } from "react";
+import { toast } from "@/hooks/use-toast";
+import RecommendationInput from "./RecommendationInput";
 
 export default function Report() {
   const { courseID } = useParams<{ courseID: string }>()
+  const [recommendationInput, setRecommendationInput] = useState<Recommendation | null>(null)
+  const [debounceRecommendation, setDebounceRecommendation] = useState<Recommendation | null>(null)
   const parsedCourseID = parseInt(courseID || "", 10)
   const { sectionID } = useParams<{ sectionID: string }>()
   const parsedSectionID = parseInt(sectionID || "", 10)
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error } = useEvaluation(coaep?.coaep.ID || 0, parsedSectionID || 0)
+  const { mutate: addRecommendation, isCreating } = useAddRecommendation()
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebounceRecommendation(recommendationInput)
+    }, 2000)
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [recommendationInput])
+
+  useEffect(() => {
+    if (debounceRecommendation && !isCreating) {
+      addRecommendation(debounceRecommendation, {
+        onError: () => {
+          toast({
+            variant: "destructive",
+            title: "Error!!",
+            description: "Error adding Recommendation",
+            duration: 3500
+          })
+        },
+      })
+    }
+  }, [debounceRecommendation])
+
+
+  const handleRecommendationChange = (comment: string, ilo_id: number, section_id: number) => {
+    setRecommendationInput({ comment, ilo_id, section_id })
+  }
+
   if (fetchingCoaep || fetchingEval) return <div className="flex justify-center">Fetching Evaluation Data</div>
   if (error) return <div className="flex justify-center">No Performance Data Yet</div>
-  console.log(evaluations)
   return (
     <>
       <div className="flex flex-col gap-8">
@@ -84,10 +119,12 @@ export default function Report() {
                                 }
                               </TableCell>
                               <TableCell className="border">
-                                {(data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation) ?
-                                  <Input type="text" disabled className="w-full h-full border-none bg-transparent" /> :
-                                  <Input type="text" placeholder="Recommendation" className="w-full h-full border-none bg-transparent" />
-                                }
+                                <RecommendationInput initialRecommendation={data?.recommendation || ""}
+                                  sectionID={parsedSectionID}
+                                  ilo_id={ilo.ID}
+                                  isPassed={data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation}
+                                  handleRecommendationChange={handleRecommendationChange}
+                                />
                               </TableCell>
                             </TableRow>
                           </>)
