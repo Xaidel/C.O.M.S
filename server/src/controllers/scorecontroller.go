@@ -37,7 +37,7 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 	}
 
 	var coaep models.Coeap
-	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, coaepID).Error; err != nil {
+	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.Recommendation").Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, coaepID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
 		return
 	}
@@ -84,7 +84,6 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 				return
 			}
 			totalPercentage := float64(len(scores)) / float64(totalStudents) * 100
-
 			res = append(res, response{
 				IloID: ilo.ID, TotalPassed: len(scores),
 				TotalPercentage: int(totalPercentage),

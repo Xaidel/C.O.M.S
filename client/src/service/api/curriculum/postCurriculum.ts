@@ -17,7 +17,6 @@ export const postCurriculum = async (id: string, revision_number: number, effect
     })
   })
   if (!res.ok) {
-    console.log(res)
     throw new Error(`${res.status} ${res.statusText}`)
   }
   return res.json()

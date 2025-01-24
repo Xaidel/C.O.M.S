@@ -171,6 +171,7 @@ export interface CourseOutcome {
 export interface IntendedLearningOutcomes {
   Statement: string,
   AssessmentTool: AssessmentTool
+  Recommendation: Recommendation
   ID: number
 }
 export interface AssessmentTool {
@@ -215,6 +216,7 @@ export interface Evaluation {
   total_passed: number
   total_percentage: number
   total_population: number
+  recommendation: string
 }
 
 export interface EvaluationResponse {
@@ -242,4 +244,10 @@ export interface Section {
   Section_Name: string
   CurriculumID: string
   ID: number
+}
+
+export interface Recommendation {
+  comment: string
+  ilo_id: number
+  section_id: number
 }
