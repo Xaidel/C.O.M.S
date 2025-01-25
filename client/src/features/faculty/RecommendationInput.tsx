@@ -41,7 +41,7 @@ export default function RecommendationInput({
         <Input
           type="text"
           placeholder="Input Recommendation"
-          className="w-full text-center h-full border-none bg-transparent"
+          className="w-full text-center h-full text-xs border-none bg-transparent"
           value={recommendation || ""}
           onChange={handleInputChange}
         />

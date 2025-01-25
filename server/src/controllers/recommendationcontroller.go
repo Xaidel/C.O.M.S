@@ -19,8 +19,9 @@ func (RecommendationController) POST(ctx *gin.Context) {
 		return
 	}
 	recommendation := models.Recommendation{
-		SectionID: recomRequest.SectioniD,
-		Comment:   recomRequest.Comment,
+		SectionID:                 recomRequest.SectioniD,
+		IntendedLearningOutcomeID: recomRequest.Ilo_id,
+		Comment:                   recomRequest.Comment,
 	}
 
 	if err := lib.Database.Create(&recommendation).Error; err != nil {
@@ -29,12 +30,12 @@ func (RecommendationController) POST(ctx *gin.Context) {
 	}
 
 	var ilo models.IntendedLearningOutcome
-	if err := lib.Database.FirstOrCreate(&ilo, recomRequest.Ilo_id).Error; err != nil {
+	if err := lib.Database.First(&ilo, recomRequest.Ilo_id).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Intended Learning Outcomes not found"})
 		return
 	}
 
-	ilo.RecommendationID = &recommendation.ID
+	ilo.Recommendations = append(ilo.Recommendations, &recommendation)
 	if err := lib.Database.Save(&ilo).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save recommendation"})
 		return

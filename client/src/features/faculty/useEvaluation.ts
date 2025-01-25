@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useEvaluation(coaepID: number, sectionID: number) {
   const query = useQuery<EvaluationResponse>({
-    queryKey: [`${coaepID}-evaluation`],
+    queryKey: [`${sectionID}-evaluation`],
     queryFn: () => getEvaluation(coaepID, sectionID)
   })
 
