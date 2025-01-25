@@ -37,7 +37,8 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 	}
 
 	var coaep models.Coeap
-	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.Recommendation").Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, coaepID).Error; err != nil {
+	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.Recommendations", "section_id = ?", sectionID).
+		Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, coaepID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
 		return
 	}
@@ -77,18 +78,25 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 			if err := lib.Database.Table("ilo_scores").
 				Joins("JOIN intended_learning_outcomes ON ilo_scores.intended_learning_outcome_id = intended_learning_outcomes.id").
 				Joins("JOIN assessment_tools ON intended_learning_outcomes.assessment_tool_id = assessment_tools.id").
-				Joins("LEFT JOIN recommendations ON intended_learning_outcomes.recommendation_id = recommendations.id").
 				Where("(ilo_scores.value / assessment_tools.total_score) * 100 >= assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL AND ilo_scores.section_id = ?", ilo.ID, sectionID).
 				Find(&scores).Error; err != nil {
 				ctx.JSON(http.StatusNotFound, gin.H{"error": "Scores not found"})
 				return
 			}
 			totalPercentage := float64(len(scores)) / float64(totalStudents) * 100
+			var recommendation *string
+			for _, rec := range ilo.Recommendations {
+				if rec.Comment != nil {
+					recommendation = rec.Comment
+				}
+			}
+
 			res = append(res, response{
-				IloID: ilo.ID, TotalPassed: len(scores),
+				IloID:           ilo.ID,
+				TotalPassed:     len(scores),
 				TotalPercentage: int(totalPercentage),
 				TotalPopulation: totalStudents,
-				Recommendation:  ilo.Recommendation.Comment,
+				Recommendation:  recommendation,
 			})
 		}
 	}

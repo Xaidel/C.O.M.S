@@ -19,7 +19,6 @@ export default function Report() {
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error } = useEvaluation(coaep?.coaep.ID || 0, parsedSectionID || 0)
   const { mutate: addRecommendation, isCreating } = useAddRecommendation()
-
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebounceRecommendation(recommendationInput)
@@ -51,6 +50,7 @@ export default function Report() {
 
   if (fetchingCoaep || fetchingEval) return <div className="flex justify-center">Fetching Evaluation Data</div>
   if (error) return <div className="flex justify-center">No Performance Data Yet</div>
+  console.log(evaluations)
   return (
     <>
       <div className="flex flex-col gap-8">
@@ -114,15 +114,17 @@ export default function Report() {
                               <TableCell className="border text-center">{`${data?.total_percentage}%`}</TableCell>
                               <TableCell className="border">
                                 {
-                                  (data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation)
-                                    ? (<p className="text-green-400 text-center">S</p>) : (<p className="text-red-400 text-center">NS</p>)
+                                  data?.total_percentage === 0
+                                    ? <p className="text-center text-gray-500">No Data</p>
+                                    : (data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation)
+                                      ? (<p className="text-green-400 text-center">S</p>) : (<p className="text-red-400 text-center">NS</p>)
                                 }
                               </TableCell>
                               <TableCell className="border">
                                 <RecommendationInput initialRecommendation={data?.recommendation || ""}
                                   sectionID={parsedSectionID}
                                   ilo_id={ilo.ID}
-                                  isPassed={data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation}
+                                  isPassed={data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation || data?.total_percentage === 0}
                                   handleRecommendationChange={handleRecommendationChange}
                                 />
                               </TableCell>
