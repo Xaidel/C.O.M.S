@@ -7,9 +7,10 @@ interface addRecommendationParams {
   section_id: number
 }
 
-export function useAddRecommendation() {
+export function useAddRecommendation(section_id: number) {
   const mutation = useMutation({
-    mutationFn: ({ comment, ilo_id, section_id }: addRecommendationParams) => postRecommendation(comment, ilo_id, section_id)
+    mutationFn: ({ comment, ilo_id, section_id }: addRecommendationParams) => postRecommendation(comment, ilo_id, section_id),
+    mutationKey: [`${section_id}-recoms`]
   })
   return {
     ...mutation,

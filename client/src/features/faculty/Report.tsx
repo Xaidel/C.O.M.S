@@ -8,6 +8,7 @@ import { useAddRecommendation } from "./useAddRecommendation";
 import { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import RecommendationInput from "./RecommendationInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Report() {
   const { courseID } = useParams<{ courseID: string }>()
@@ -18,11 +19,12 @@ export default function Report() {
   const parsedSectionID = parseInt(sectionID || "", 10)
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error } = useEvaluation(coaep?.coaep.ID || 0, parsedSectionID || 0)
-  const { mutate: addRecommendation, isCreating } = useAddRecommendation()
+  const { mutate: addRecommendation, isCreating } = useAddRecommendation(parsedSectionID)
+  const queryClient = useQueryClient()
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebounceRecommendation(recommendationInput)
-    }, 2000)
+    }, 300)
     return () => {
       clearTimeout(handler)
     }
@@ -39,6 +41,10 @@ export default function Report() {
             duration: 3500
           })
         },
+        onSuccess: () => {
+          console.log(debounceRecommendation)
+          queryClient.invalidateQueries({ queryKey: [`${parsedSectionID}-recoms`] })
+        }
       })
     }
   }, [debounceRecommendation])
@@ -50,7 +56,6 @@ export default function Report() {
 
   if (fetchingCoaep || fetchingEval) return <div className="flex justify-center">Fetching Evaluation Data</div>
   if (error) return <div className="flex justify-center">No Performance Data Yet</div>
-  console.log(evaluations)
   return (
     <>
       <div className="flex flex-col gap-8">
