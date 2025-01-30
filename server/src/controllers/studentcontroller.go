@@ -32,6 +32,23 @@ func (StudentController) GET(ctx *gin.Context) {
 	}
 }
 
+func (StudentController) GetByProgram(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the Program ID"})
+		return
+	}
+
+	var students []models.Student
+	if err := lib.Database.Preload("User").Find(&students, "program_id = ?", id).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot find students"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"students": students})
+}
+
 func (StudentController) GetByCourse(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {

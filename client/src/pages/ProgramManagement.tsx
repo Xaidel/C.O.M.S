@@ -20,7 +20,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ChevronRight, UserRoundPen, UserRoundPlus } from "lucide-react";
+import { ChevronRight, UserRoundPen, UserRoundPlus, Users } from "lucide-react";
 import NonPHTable from "../features/course-management/NonPHTable.tsx";
 import { useNavigate } from "react-router-dom";
 
@@ -120,6 +120,21 @@ export default function ProgramManagement() {
                 );
               return (
                 <div className="flex gap-2 items-center">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="outline"
+                          onClick={() => {
+                            navigate(`/programs/${ID}/enrolled-students`)
+                          }}>
+                          <Users />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View Students</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <div>{phIcon}</div>
                   <TooltipProvider>
                     <Tooltip>

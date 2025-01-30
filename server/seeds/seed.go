@@ -155,17 +155,21 @@ var Faculty = []models.Faculty{
 }
 
 var Student = []models.Student{{
-	ProgramID: 1,
-	UserID:    "21-28238",
+	ProgramID:      1,
+	UserID:         "21-28238",
+	CurrentYearLvl: 4,
 }, {
-	ProgramID: 1,
-	UserID:    "21-28239",
+	ProgramID:      1,
+	UserID:         "21-28239",
+	CurrentYearLvl: 4,
 }, {
-	ProgramID: 2,
-	UserID:    "21-28230",
+	ProgramID:      2,
+	UserID:         "21-28230",
+	CurrentYearLvl: 4,
 }, {
-	ProgramID: 2,
-	UserID:    "21-28231",
+	ProgramID:      2,
+	UserID:         "21-28231",
+	CurrentYearLvl: 4,
 }}
 
 var Departments = []models.Department{

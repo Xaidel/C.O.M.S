@@ -42,7 +42,6 @@ export default function Report() {
           })
         },
         onSuccess: () => {
-          console.log(debounceRecommendation)
           queryClient.invalidateQueries({ queryKey: [`${parsedSectionID}-recoms`] })
         }
       })
@@ -109,7 +108,7 @@ export default function Report() {
                       {co.IntendedLearningOutcomes.map((ilo: IntendedLearningOutcomes) => {
                         const data = evaluations?.res.find(data => data.ilo_id === ilo.ID)
                         return (
-                          <>
+                          <Fragment key={ilo.ID}>
                             < TableRow key={ilo.ID} >
                               <TableCell className="border">{ilo.Statement}</TableCell>
                               <TableCell className="border text-left">{ilo.AssessmentTool.Tool}</TableCell>
@@ -134,7 +133,7 @@ export default function Report() {
                                 />
                               </TableCell>
                             </TableRow>
-                          </>)
+                          </Fragment>)
                       })}
                     </>
                   )}

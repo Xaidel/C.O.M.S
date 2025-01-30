@@ -251,3 +251,11 @@ export interface Recommendation {
   ilo_id: number
   section_id: number
 }
+
+export interface ProgramResponse {
+  program: Program
+}
+
+export interface StudentResponse {
+  students: Student[]
+}

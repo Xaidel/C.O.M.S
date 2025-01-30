@@ -17,9 +17,7 @@ export default function Sections() {
   if (sectionError) return
   return (
     <>
-      <div>
-        <AppLabel currentPage="Subject Offerings" />
-      </div>
+      <AppLabel currentPage="Subject Offerings" />
       <div className="flex justify-start gap-1 items-center text-3xl font-bold text-[#1F2937] mb-6">
         <Button
           variant="ghost"
@@ -57,7 +55,7 @@ export default function Sections() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button>
+                        <Button onClick={() => navigate(`/curriculums/${currID}/courses/${courseID}/sections/${section.ID}/coaep`)}>
                           <ChevronRight />
                         </Button>
                       </TooltipTrigger>
