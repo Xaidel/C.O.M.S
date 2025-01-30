@@ -1,9 +1,9 @@
 import { getStudentByProgram } from "@/service/api/student/getStudentByProgram";
-import { StudentResponse } from "@/types/Interface";
+import { ProgramStudentResponse } from "@/types/Interface";
 import { useQuery } from "@tanstack/react-query";
 
 export function useStudentsByProgram(id: number) {
-  const query = useQuery<StudentResponse>({
+  const query = useQuery<ProgramStudentResponse>({
     queryKey: [`${id}-students`],
     queryFn: () => getStudentByProgram(id)
   })
