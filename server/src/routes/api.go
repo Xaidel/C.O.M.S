@@ -64,6 +64,7 @@ func APIRoutes(router *gin.Engine) {
 		{
 			student.GET("", controllers.Student.GET)
 			student.GET("/:id", controllers.Student.GET)
+			student.GET("/program/:id", controllers.Student.GetByProgram)
 			student.GET("/course/:id", controllers.Student.GetByCourse)
 			student.POST("", controllers.Student.POST)
 			student.POST("/courses/:courseID/sections/:sectionID", controllers.Student.BatchProcessStudent)
