@@ -141,6 +141,7 @@ export interface StudentResponse {
   Courses: Course[]
   UserID: string
   User: RawUserResponse
+  CurrentYearLvl: number
 }
 
 export interface RawUserResponse {
@@ -256,6 +257,6 @@ export interface ProgramResponse {
   program: Program
 }
 
-export interface StudentResponse {
-  students: Student[]
+export interface ProgramStudentResponse {
+  students: StudentResponse[]
 }
