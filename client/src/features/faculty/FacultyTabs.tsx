@@ -2,6 +2,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ClassList from "./ClassList"
 import Coaep from "./Coaep"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import ILOCriteria from "../course-management/ILOCriteria"
 
 export default function FacultyTabs() {
   return (
@@ -12,7 +14,18 @@ export default function FacultyTabs() {
             <TabsTrigger value="classlist">Class List</TabsTrigger>
             <TabsTrigger value="coaep">COAEP</TabsTrigger>
           </TabsList>
-          <Button variant="outline">ILO Criteria</Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline">ILO Criteria</Button>
+            </DialogTrigger>
+            <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
+              <DialogHeader>
+                <DialogTitle className="text-2xl">ILO Criteria</DialogTitle>
+                <DialogDescription>Expected points students should attain</DialogDescription>
+              </DialogHeader>
+              <ILOCriteria />
+            </DialogContent>
+          </Dialog>
         </div>
         <TabsContent value="classlist">
           <ClassList />
