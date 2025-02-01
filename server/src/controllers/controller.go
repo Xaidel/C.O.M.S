@@ -18,4 +18,5 @@ type Controller struct {
 	ProspectusController     ProspectusController
 	SectionController        SectionController
 	RecommendationController RecommendationController
+	CriteriaController       CriteriaController
 }

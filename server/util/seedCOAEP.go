@@ -13,43 +13,36 @@ var AssessmentTools = []models.AssessmentTool{
 		Tool:             "CP Findings",
 		TargetPopulation: 80,
 		TargetScore:      75,
-		TotalScore:       100,
 	},
 	{
 		Tool:             "CP Software",
 		TargetPopulation: 80,
 		TargetScore:      75,
-		TotalScore:       100,
 	},
 	{
 		Tool:             "CP Proposal",
 		TargetPopulation: 80,
 		TargetScore:      75,
-		TotalScore:       100,
 	},
 	{
 		Tool:             "System Development Plan",
 		TargetPopulation: 80,
 		TargetScore:      75,
-		TotalScore:       100,
 	},
 	{
 		Tool:             "System Requirement Specifications and Design",
 		TargetPopulation: 80,
 		TargetScore:      75,
-		TotalScore:       100,
 	},
 	{
 		Tool:             "CP Individual Task and Assignment Evaluation",
 		TargetPopulation: 80,
 		TargetScore:      75,
-		TotalScore:       100,
 	},
 	{
 		Tool:             "CP Individual Task and Assignment Evaluation",
 		TargetPopulation: 80,
 		TargetScore:      75,
-		TotalScore:       100,
 	},
 }
 
