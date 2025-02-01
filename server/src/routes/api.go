@@ -137,5 +137,9 @@ func APIRoutes(router *gin.Engine) {
 		{
 			recommendation.POST("", controllers.RecommendationController.POST)
 		}
+		criteria := api.Group("/criteria")
+		{
+			criteria.POST("", controllers.CriteriaController.POST)
+		}
 	}
 }

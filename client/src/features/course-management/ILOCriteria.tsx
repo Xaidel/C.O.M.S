@@ -3,10 +3,50 @@ import { useParams } from "react-router-dom"
 import { useCOAEPByCourse } from "../faculty/useCOAEPByCourse";
 import { Fragment } from "react/jsx-runtime";
 import { Input } from "@/components/ui/input";
+import { useState, useEffect } from "react";
+import { useAddCriteria } from "../faculty/useAddCriteria";
+import { toast } from "@/hooks/use-toast";
+
+interface criteriaRequest {
+  ilo_id: number
+  criteria: number | null
+}
+
 export default function ILOCriteria() {
   const { courseID } = useParams<{ courseID: string }>()
+  const [criteriaInput, setCriteriaInput] = useState<criteriaRequest | null>(null)
+  const [debounceValue, setDebounceValue] = useState<criteriaRequest | null>(null)
+  const { mutate: addCriteria, isCreating } = useAddCriteria()
   const parsedCourseID = parseInt(courseID || "0", 10)
   const { data: coaep, isLoading: fetchingCoaep, error: fetchingCoaepError } = useCOAEPByCourse(parsedCourseID)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebounceValue(criteriaInput)
+    }, 1000)
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [criteriaInput])
+
+  const handleCriteriaChange = (ilo_id: number, criteria: number | null) => {
+    setCriteriaInput({ ilo_id, criteria })
+  }
+
+  useEffect(() => {
+    if (debounceValue && !isCreating) {
+      addCriteria(debounceValue, {
+        onError: () => {
+          toast({
+            variant: "destructive",
+            title: "Error!",
+            description: "Error updating Criteria",
+            duration: 3500
+          })
+        },
+      })
+    }
+  }, [debounceValue])
 
   if (fetchingCoaep) return
   if (fetchingCoaepError) return
@@ -44,6 +84,11 @@ export default function ILOCriteria() {
                             <TableCell className="border">{ilo.Statement}</TableCell>
                             <TableCell className="border">
                               <Input className="border-none bg-transparent text-center"
+                                onChange={(e) => {
+                                  handleCriteriaChange(ilo.ID,
+                                    e.target.value === "" ? null : parseInt(e.target.value, 10) || 0
+                                  )
+                                }}
                               />
                             </TableCell>
                           </TableRow>
@@ -54,7 +99,7 @@ export default function ILOCriteria() {
                 )}
               </Fragment>
             ))
-          ) : <div>Error</div>}
+          ) : <div>No COAEP</div>}
         </TableBody>
       </Table>
     </>
