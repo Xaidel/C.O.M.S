@@ -12,6 +12,7 @@ import { usePerformanceData } from "./usePerformanceData";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import Report from "./Report";
+import { useCriteria } from "./useCriteria";
 
 interface Data {
   coaep: COAEP
@@ -28,6 +29,7 @@ export default function Coaep() {
   const parsedSectionID = parseInt(sectionID || "0", 10)
   const { data: coaep, isLoading: fetchingCoaep, error: fetchingCoaepError } = useCOAEPByCourse(parsedCourseID)
   const { data: classlist, isLoading: fetchingClasslist } = useClassList(parsedSectionID)
+  const { data: criteria, isLoading: fetchingCriteria, error: fetchingCriteriaError } = useCriteria(parsedSectionID)
   const queryClient = useQueryClient()
   const data = queryClient.getQueryData<Data>([`coaep-${parsedCourseID}`])!
   const coData: COAEP = data?.coaep
@@ -116,8 +118,8 @@ export default function Coaep() {
   }
 
 
-  if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData) return
-  if (fetchingCoaepError) return <div>Error..</div>
+  if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData || fetchingCriteria) return
+  if (fetchingCoaepError || fetchingCriteriaError) return <div>Error..</div>
   return (
     <>
       <div className="mt-5">
@@ -150,6 +152,9 @@ export default function Coaep() {
                         <Tooltip>
                           <TooltipTrigger>
                             <div>{`ILO #${index + 1}`}</div>
+                            <div className="text-sm font-light">
+                              {criteria?.criteria.find((crit) => crit.IntendedLearningOutcomeID === ilo.ID)?.Criteria ?? "No"} pts
+                            </div>
                           </TooltipTrigger>
                           <TooltipContent className="max-w-[50rem]">
                             <p >{ilo.Statement}</p>

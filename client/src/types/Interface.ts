@@ -175,6 +175,18 @@ export interface IntendedLearningOutcomes {
   Recommendation: Recommendation
   ID: number
 }
+
+export interface IloCriteria {
+  Criteria: number
+  IntendedLearningOutcomeID: number
+  SectionID: number
+  ID: number
+}
+
+export interface CriteriaResponse {
+  criteria: IloCriteria[]
+}
+
 export interface AssessmentTool {
   Tool: string
   TargetPopulation: number
