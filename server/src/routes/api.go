@@ -139,6 +139,7 @@ func APIRoutes(router *gin.Engine) {
 		}
 		criteria := api.Group("/criteria")
 		{
+			criteria.GET("/section/:sectionID", controllers.CriteriaController.GetByCOAEP)
 			criteria.POST("", controllers.CriteriaController.POST)
 		}
 	}

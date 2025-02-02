@@ -6,19 +6,35 @@ import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { useAddCriteria } from "../faculty/useAddCriteria";
 import { toast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCriteria } from "../faculty/useCriteria";
 
 interface criteriaRequest {
   ilo_id: number
   criteria: number | null
+  section_id: number
 }
 
 export default function ILOCriteria() {
   const { courseID } = useParams<{ courseID: string }>()
+  const { sectionID } = useParams<{ sectionID: string }>()
+  const [criteriaValues, setCriteriaValues] = useState<{ [key: number]: number | null }>({})
   const [criteriaInput, setCriteriaInput] = useState<criteriaRequest | null>(null)
   const [debounceValue, setDebounceValue] = useState<criteriaRequest | null>(null)
   const { mutate: addCriteria, isCreating } = useAddCriteria()
   const parsedCourseID = parseInt(courseID || "0", 10)
+  const parsedSectionID = parseInt(sectionID || "0", 10)
   const { data: coaep, isLoading: fetchingCoaep, error: fetchingCoaepError } = useCOAEPByCourse(parsedCourseID)
+  const { data: criteria, isLoading: fetchingCriteria, error: fetchingCriteriaError } = useCriteria(parsedSectionID)
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    if (criteria?.criteria) {
+      criteria.criteria.map((crit) => {
+        setCriteriaValues((prev) => ({ ...prev, [crit.IntendedLearningOutcomeID]: crit.Criteria }))
+      })
+    }
+  }, [criteria?.criteria])
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -29,8 +45,9 @@ export default function ILOCriteria() {
     }
   }, [criteriaInput])
 
-  const handleCriteriaChange = (ilo_id: number, criteria: number | null) => {
-    setCriteriaInput({ ilo_id, criteria })
+  const handleCriteriaChange = (ilo_id: number, criteria: number | null, section_id: number) => {
+    setCriteriaValues(prev => ({ ...prev, [ilo_id]: criteria }))
+    setCriteriaInput({ ilo_id, criteria, section_id })
   }
 
   useEffect(() => {
@@ -44,12 +61,15 @@ export default function ILOCriteria() {
             duration: 3500
           })
         },
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [`criteria-${parsedSectionID}`] })
+        }
       })
     }
   }, [debounceValue])
 
-  if (fetchingCoaep) return
-  if (fetchingCoaepError) return
+  if (fetchingCoaep || fetchingCriteria) return
+  if (fetchingCoaepError || fetchingCriteriaError) return
   return (
     <>
       <Table>
@@ -70,6 +90,7 @@ export default function ILOCriteria() {
                     <TableCell className="border ">{index + 1}</TableCell>
                     <TableCell className="border">{co.Statement}</TableCell>
                     <TableCell className="border">{co.IntendedLearningOutcomes[0]?.Statement}</TableCell>
+                    <TableCell className="border">{ }</TableCell>
                   </TableRow>
                 ) : (
                   <>
@@ -84,10 +105,11 @@ export default function ILOCriteria() {
                             <TableCell className="border">{ilo.Statement}</TableCell>
                             <TableCell className="border">
                               <Input className="border-none bg-transparent text-center"
+                                value={criteriaValues[ilo.ID] === 0 ? "" : criteriaValues[ilo.ID] ?? ""}
                                 onChange={(e) => {
-                                  handleCriteriaChange(ilo.ID,
-                                    e.target.value === "" ? null : parseInt(e.target.value, 10) || 0
-                                  )
+                                  const newValue = e.target.value === "" ? null : parseInt(e.target.value, 10)
+                                  handleCriteriaChange(ilo.ID, newValue, parsedSectionID)
+                                  setCriteriaInput({ ilo_id: ilo.ID, criteria: newValue, section_id: parsedSectionID })
                                 }}
                               />
                             </TableCell>

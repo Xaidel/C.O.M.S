@@ -1,8 +1,9 @@
 package models
 
 type IloCriteria struct {
-	IntendedLearningOutcome   IntendedLearningOutcome
-	IntendedLearningOutcomeID uint `gorm:"not null"`
-	Criteria                  uint `gorm:"not null"`
-	ID                        uint
+	Criteria                  uint                    `gorm:"not null"`
+	Section                   Section                 `json:"-"`
+	IntendedLearningOutcome   IntendedLearningOutcome `json:"-"`
+	IntendedLearningOutcomeID uint                    `gorm:"primaryKey;autoIncrement:false"`
+	SectionID                 uint                    `gorm:"primaryKey;autoIncrement:false"`
 }

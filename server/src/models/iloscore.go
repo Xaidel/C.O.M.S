@@ -10,4 +10,5 @@ type ILOScore struct {
 	CoeapID                   uint    `gorm:"primaryKey;autoIncrement:false;not null"`
 	SectionID                 uint    `gorm:"primaryKey;autoIncrement:false;not null"`
 	Value                     uint
+	Status                    *int `gorm:"type:TINYINT(1)"`
 }

@@ -89,6 +89,7 @@ var PostRecomRequest struct {
 }
 
 var PostCriteria struct {
-	Ilo_id   uint `json:"ilo_id" binding:"required"`
-	Criteria uint `json:"criteria" binding:"required"`
+	Ilo_id     uint `json:"ilo_id" binding:"required"`
+	Section_id uint `json:"section_id" binding:"required"`
+	Criteria   uint `json:"criteria" binding:"required"`
 }

@@ -175,6 +175,18 @@ export interface IntendedLearningOutcomes {
   Recommendation: Recommendation
   ID: number
 }
+
+export interface IloCriteria {
+  Criteria: number
+  IntendedLearningOutcomeID: number
+  SectionID: number
+  ID: number
+}
+
+export interface CriteriaResponse {
+  criteria: IloCriteria[]
+}
+
 export interface AssessmentTool {
   Tool: string
   TargetPopulation: number
@@ -196,7 +208,7 @@ export interface Score {
   coaep_id: number
   section_id: number
   value: number | null
-
+  status?: number
 }
 
 export interface ILOScore {
@@ -205,6 +217,7 @@ export interface ILOScore {
   IntendedLearningOutcomeID: number
   StudentID: string
   Value: number
+  Status: number
   ID: number
 }
 
