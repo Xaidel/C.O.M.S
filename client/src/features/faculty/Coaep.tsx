@@ -73,6 +73,7 @@ export default function Coaep() {
                 score.ilo_id === newScore.ilo_id ? { ...score, value: newScore.value } : score
             )
           )
+          fetchPerformanceData()
         }
       })
     }
@@ -97,7 +98,8 @@ export default function Coaep() {
           coaep_id: coDataID,
           ilo_id: score.IntendedLearningOutcomeID,
           section_id: parsedSectionID,
-          value: score.Value || null
+          value: score.Value || null,
+          status: score.Status
         }))
         setScores(initialScores)
       }
@@ -113,12 +115,19 @@ export default function Coaep() {
   ) => {
     setScoreInput({ student_id, coaep_id, ilo_id, section_id, value })
     setScores((prevScores) => prevScores.map((score) =>
-      score.student_id === student_id && score.coaep_id === coaep_id && score.ilo_id === ilo_id ? { ...score, value } : score
+      score.student_id === student_id && score.coaep_id === coaep_id && score.ilo_id === ilo_id ? { ...score, value, status: undefined } : score
     ))
   }
 
 
-  if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData || fetchingCriteria) return
+  if (fetchingPerformanceData) {
+    toast({
+      title: "Saving...",
+      description: "Please Wait",
+      duration: 500
+    })
+  }
+  if (fetchingCoaep || fetchingClasslist || fetchingCriteria) return
   if (fetchingCoaepError || fetchingCriteriaError) return <div>Error..</div>
   return (
     <>
@@ -176,11 +185,12 @@ export default function Coaep() {
                           s.student_id === student.UserID && s.coaep_id === coDataID && s.ilo_id === ilo.ID
                         )
                         return (
-                          <TableCell className="border p-0 " key={ilo.ID}>
+                          <TableCell className={`border p-0 ${score?.status === 1 ? "bg-green-200" : score?.status === 0 ? "bg-red-200" : ""}`} key={ilo.ID}>
                             <div className="h-full w-full" key={ilo.ID}>
                               <input
                                 key={ilo.ID}
                                 type="number"
+                                disabled={!criteria?.criteria.some((crit) => crit.IntendedLearningOutcomeID === ilo.ID)}
                                 min="0"
                                 max="100"
                                 className="bg-transparent focus:outline-none focus:ring-0 border-none w-full h-full text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "

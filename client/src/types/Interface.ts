@@ -208,7 +208,7 @@ export interface Score {
   coaep_id: number
   section_id: number
   value: number | null
-
+  status?: number
 }
 
 export interface ILOScore {
@@ -217,6 +217,7 @@ export interface ILOScore {
   IntendedLearningOutcomeID: number
   StudentID: string
   Value: number
+  Status: number
   ID: number
 }
 

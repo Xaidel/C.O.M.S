@@ -111,11 +111,26 @@ func (ScoreController) POST(ctx *gin.Context) {
 		return
 	}
 
+	var criteria models.IloCriteria
+	if err := lib.Database.Where(models.IloCriteria{SectionID: request.SectionID, IntendedLearningOutcomeID: request.Ilo_id}).First(&criteria).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Criteria not found"})
+		return
+	}
+	var ilo models.IntendedLearningOutcome
+	if err := lib.Database.Preload("AssessmentTool").First(&ilo, request.Ilo_id).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "ILO not found"})
+		return
+	}
 	score := models.ILOScore{
 		IntendedLearningOutcomeID: request.Ilo_id,
 		StudentID:                 request.Student_id,
 		CoeapID:                   request.Coaep_id,
 		SectionID:                 request.SectionID,
+	}
+
+	if request.Value > criteria.Criteria {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Input exceeds the total score"})
+		return
 	}
 
 	if err := lib.Database.Where(&models.ILOScore{
@@ -127,7 +142,17 @@ func (ScoreController) POST(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	scorePercentage := (float64(request.Value) / float64(criteria.Criteria)) * 100
+	var eval int
+
+	if int(scorePercentage) >= int(ilo.AssessmentTool.TargetScore) {
+		eval = 1
+	} else {
+		eval = 0
+	}
 	score.Value = request.Value
+	score.Status = &eval
 	lib.Database.Save(&score)
+
 	ctx.JSON(http.StatusCreated, gin.H{"message": "Success"})
 }
