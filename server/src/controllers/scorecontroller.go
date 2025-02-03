@@ -65,6 +65,7 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 	type response struct {
 		IloID           uint    `json:"ilo_id"`
 		TotalPassed     int     `json:"total_passed"`
+		TotalFailed     int     `json:"total_failed"`
 		TotalPercentage int     `json:"total_percentage"`
 		TotalPopulation int     `json:"total_population"`
 		Recommendation  *string `json:"recommendation"`
@@ -78,8 +79,19 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 			if err := lib.Database.Table("ilo_scores").
 				Joins("JOIN intended_learning_outcomes ON ilo_scores.intended_learning_outcome_id = intended_learning_outcomes.id").
 				Joins("JOIN assessment_tools ON intended_learning_outcomes.assessment_tool_id = assessment_tools.id").
-				Where("(ilo_scores.value / assessment_tools.total_score) * 100 >= assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL AND ilo_scores.section_id = ?", ilo.ID, sectionID).
+				Joins("JOIN ilo_criteria ON intended_learning_outcomes.id = ilo_criteria.intended_learning_outcome_id").
+				Where("(ilo_scores.value / ilo_criteria.criteria) * 100 >= assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL AND ilo_scores.section_id = ? AND ilo_criteria.section_id = ?", ilo.ID, sectionID, sectionID).
 				Find(&scores).Error; err != nil {
+				ctx.JSON(http.StatusNotFound, gin.H{"error": "Scores not found"})
+				return
+			}
+			var failed []models.ILOScore
+			if err := lib.Database.Table("ilo_scores").
+				Joins("JOIN intended_learning_outcomes ON ilo_scores.intended_learning_outcome_id = intended_learning_outcomes.id").
+				Joins("JOIN assessment_tools ON intended_learning_outcomes.assessment_tool_id = assessment_tools.id").
+				Joins("JOIN ilo_criteria ON intended_learning_outcomes.id = ilo_criteria.intended_learning_outcome_id").
+				Where("(ilo_scores.value / ilo_criteria.criteria) * 100 < assessment_tools.target_score AND ilo_scores.intended_learning_outcome_id = ? AND ilo_scores.value IS NOT NULL AND ilo_scores.section_id = ? AND ilo_criteria.section_id = ?", ilo.ID, sectionID, sectionID).
+				Find(&failed).Error; err != nil {
 				ctx.JSON(http.StatusNotFound, gin.H{"error": "Scores not found"})
 				return
 			}
@@ -94,6 +106,7 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 			res = append(res, response{
 				IloID:           ilo.ID,
 				TotalPassed:     len(scores),
+				TotalFailed:     len(failed),
 				TotalPercentage: int(totalPercentage),
 				TotalPopulation: totalStudents,
 				Recommendation:  recommendation,

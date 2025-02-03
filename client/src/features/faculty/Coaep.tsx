@@ -122,9 +122,9 @@ export default function Coaep() {
 
   if (fetchingPerformanceData) {
     toast({
-      title: "Saving...",
+      title: "Loading...",
       description: "Please Wait",
-      duration: 500
+      duration: 400
     })
   }
   if (fetchingCoaep || fetchingClasslist || fetchingCriteria) return
