@@ -228,6 +228,7 @@ export interface PerformanceData {
 export interface Evaluation {
   ilo_id: number
   total_passed: number
+  total_failed: number
   total_percentage: number
   total_population: number
   recommendation: string

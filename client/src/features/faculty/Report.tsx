@@ -42,6 +42,12 @@ export default function Report() {
           })
         },
         onSuccess: () => {
+          toast({
+            variant: "success",
+            title: "Success!",
+            description: "Recommendation saved",
+            duration: 1500
+          })
           queryClient.invalidateQueries({ queryKey: [`${parsedSectionID}-recoms`] })
         }
       })
@@ -118,7 +124,7 @@ export default function Report() {
                               <TableCell className="border text-center">{`${data?.total_percentage}%`}</TableCell>
                               <TableCell className="border">
                                 {
-                                  data?.total_percentage === 0
+                                  data?.total_percentage === 0 && data?.total_failed === 0
                                     ? <p className="text-center text-gray-500">No Data</p>
                                     : (data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation)
                                       ? (<p className="text-green-400 text-center">S</p>) : (<p className="text-red-400 text-center">NS</p>)
@@ -128,7 +134,7 @@ export default function Report() {
                                 <RecommendationInput initialRecommendation={data?.recommendation || ""}
                                   sectionID={parsedSectionID}
                                   ilo_id={ilo.ID}
-                                  isPassed={data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation || data?.total_percentage === 0}
+                                  isPassed={data?.total_percentage !== undefined && data?.total_percentage >= ilo.AssessmentTool.TargetPopulation || data?.total_percentage === 0 && data?.total_failed === 0}
                                   handleRecommendationChange={handleRecommendationChange}
                                 />
                               </TableCell>
