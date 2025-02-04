@@ -28,6 +28,32 @@ func (ScoreController) GET(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"scores": scores})
 }
 
+func (ScoreController) GetByProgram(ctx *gin.Context) {
+	coaepID := ctx.Param("coaepID")
+	programID := ctx.Param("programID")
+
+	if coaepID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide the COAEP ID"})
+		return
+	}
+	if programID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide the Program ID"})
+		return
+	}
+	var scores []models.ILOScore
+	if err := lib.Database.
+		Joins("JOIN intended_learning_outcomes ON intended_learning_outcomes.id = ilo_scores.intended_learning_outcome_id").
+		Joins("JOIN students ON students.user_id = ilo_scores.student_id").
+		Joins("JOIN coeaps ON coeaps.id = ilo_scores.coeap_id").
+		Where("students.program_id = ? AND coeap_id = ?", programID, coaepID).
+		Find(&scores).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"scores": scores})
+}
+
 func (ScoreController) GetEvaluation(ctx *gin.Context) {
 	coaepID := ctx.Param("coaepID")
 	sectionID := ctx.Param("sectionID")
@@ -37,15 +63,9 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 	}
 
 	var coaep models.Coeap
-	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.Recommendations", "section_id = ?", sectionID).
+	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.Recommendations", "section_id = ?", sectionID).Preload("Courses").
 		Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, coaepID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
-		return
-	}
-
-	var course models.Course
-	if err := lib.Database.First(&course, coaep.CourseID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
 		return
 	}
 

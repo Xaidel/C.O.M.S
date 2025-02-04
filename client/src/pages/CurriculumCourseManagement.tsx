@@ -9,6 +9,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useProspectus } from "@/features/curriculum-management/useProspectus";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useUser } from "@/features/auth/useUser";
 
 export default function CurriculumCourseManagement() {
   const navigate = useNavigate()
@@ -20,7 +21,8 @@ export default function CurriculumCourseManagement() {
   const courses: Course[] = prospectus?.prospectus?.Courses || []
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([])
   const { response: period, isLoading: periodLoading, error: periodError } = useCurrentPeriod()
-
+  const { currentUser } = useUser();
+  const programID = currentUser?.role_info?.Programs[0]?.ID || 0;
 
   const handleFilterChange = (newYear: string) => {
     setSearchParams({ year: newYear })
@@ -61,7 +63,6 @@ export default function CurriculumCourseManagement() {
       <Table>
         <TableHeader className="bg-[#CBD2DB]">
           <TableRow >
-            <TableHead className="text-black">Subject ID</TableHead>
             <TableHead className="text-black">Subject Description</TableHead>
             <TableHead className="text-black">Lec</TableHead>
             <TableHead className="text-black">Lab</TableHead>
@@ -73,7 +74,6 @@ export default function CurriculumCourseManagement() {
           {filteredCourses.length ? (
             filteredCourses.map((course: Course) => (
               <TableRow key={course.Course_No}>
-                <TableCell>{course.Course_No}</TableCell>
                 <TableCell>{course.Course_Name}</TableCell>
                 <TableCell>{course.Lec_Unit}</TableCell>
                 <TableCell>{course.Lab_Unit}</TableCell>
@@ -82,10 +82,10 @@ export default function CurriculumCourseManagement() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button onClick={() => navigate(`/curriculums/${curr}/courses/${course.Course_No}`)}><ChevronRight size={20} /></Button>
+                        <Button onClick={() => navigate(`/curriculums/${curr}/courses/${course.ID}/program/${programID}/profile`)}><ChevronRight size={20} /></Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>View Sections</p>
+                        <p>View <span className="font-bold">{course.Course_Name}</span> Profile</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

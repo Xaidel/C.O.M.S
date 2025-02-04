@@ -5,6 +5,7 @@ type Course struct {
 	Course_Name  string
 	Sections     []Section  `csv:"-"`
 	Prospectus   Prospectus `csv:"-"`
+	Coeaps       []*Coeap   `gorm:"many2many:coeap_courses" csv:"-"`
 	Lec_Unit     string
 	Lab_Unit     *string
 	Sem          uint

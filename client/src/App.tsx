@@ -18,9 +18,9 @@ import CourseSelection from "./pages/CourseSelection";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import ProgramCurriculum from "./pages/ProgramCurriculum.tsx";
 import CourseOfferings from "./pages/CourseOfferings.tsx";
-import Sections from "./pages/Sections.tsx";
 import PHData from "./pages/PHData.tsx";
 import EnrolledStudents from "./pages/EnrolledStudents.tsx";
+import Profile from "./pages/Profile.tsx";
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -70,8 +70,8 @@ function App() {
               element={<CurriculumCourseManagement />}
             />
             <Route
-              path="/curriculums/:currID/courses/:courseID"
-              element={<Sections />}
+              path="/curriculums/:currID/courses/:courseID/program/:programID/profile"
+              element={<Profile />}
             />
             <Route path="/curriculums/:currID/courses/:courseID/sections/:sectionID/coaep" element={<PHData />} />
             <Route path="/courses" element={<CourseSelection />} />

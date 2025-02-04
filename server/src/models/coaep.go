@@ -3,8 +3,7 @@ package models
 type Coeap struct {
 	CourseOutcomes []CourseOutcome
 	Period         Period
-	Course         Course
-	PeriodID       uint `gorm:"not null"`
-	CourseID       uint
-	ID             uint `gorm:"primaryKey;autoIncrement"`
+	Courses        []*Course `gorm:"many2many:coeap_courses"`
+	PeriodID       uint      `gorm:"not null"`
+	ID             uint      `gorm:"primaryKey;autoIncrement"`
 }

@@ -65,6 +65,7 @@ func APIRoutes(router *gin.Engine) {
 			student.GET("", controllers.Student.GET)
 			student.GET("/:id", controllers.Student.GET)
 			student.GET("/program/:id", controllers.Student.GetByProgram)
+			student.GET("/programs/:programID/coaep/:coaepID", controllers.Student.GetByProgramAndEnrolledCourses)
 			student.GET("/course/:id", controllers.Student.GetByCourse)
 			student.POST("", controllers.Student.POST)
 			student.POST("/courses/:courseID/sections/:sectionID", controllers.Student.BatchProcessStudent)
@@ -119,6 +120,7 @@ func APIRoutes(router *gin.Engine) {
 		score := api.Group("/scores")
 		{
 			score.GET("/coaep/:coaepID/section/:sectionID", controllers.ScoreController.GET)
+			score.GET("/coaep/:coaepID/program/:programID", controllers.ScoreController.GetByProgram)
 			score.GET("/eval/coaep/:coaepID/section/:sectionID", controllers.ScoreController.GetEvaluation)
 			score.POST("", controllers.ScoreController.POST)
 		}

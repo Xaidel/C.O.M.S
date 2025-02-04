@@ -206,7 +206,7 @@ export interface Score {
   student_id: string
   ilo_id: number
   coaep_id: number
-  section_id: number
+  section_id?: number | null
   value: number | null
   status?: number
 }
