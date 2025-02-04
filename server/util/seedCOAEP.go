@@ -71,13 +71,11 @@ var CourseOutcomes1 = []models.CourseOutcome{
 }
 
 var Coaep = models.Coeap{
-	CourseID:       1,
 	PeriodID:       1,
 	CourseOutcomes: CourseOutcomes,
 }
 
 var Coaep1 = models.Coeap{
-	CourseID:       2,
 	PeriodID:       1,
 	CourseOutcomes: CourseOutcomes1,
 }
@@ -184,9 +182,19 @@ func init() {
 }
 
 func main() {
+	var course1 models.Course
+	var course2 models.Course
+	if err := lib.Database.First(&course1, 1).Error; err != nil {
+		log.Printf("error: %v", err.Error())
+	}
+	if err := lib.Database.First(&course2, 54).Error; err != nil {
+		log.Printf("error: %v", err.Error())
+	}
 	if err := lib.Database.Create(&AssessmentTools).Error; err != nil {
 		log.Printf("Error in Seeding AssessmentTools %v", err)
 	}
+
+	Coaep.Courses = append(Coaep.Courses, &course1, &course2)
 
 	if err := lib.Database.Create(&Coaep).Error; err != nil {
 		log.Printf("Error in seeding COAEP %v", err)

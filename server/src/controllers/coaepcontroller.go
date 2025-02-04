@@ -47,7 +47,10 @@ func (COAEPController) GetByCourse(ctx *gin.Context) {
 	}
 
 	var coaep models.Coeap
-	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, "course_id = ?", id).Error; err != nil {
+	if err := lib.Database.
+		Joins("JOIN coeap_courses ON coeap_courses.coeap_id = coeaps.id").
+		Where("coeap_courses.course_id = ?", id).
+		Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").First(&coaep).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
 		return
 	}
@@ -60,13 +63,18 @@ func (COAEPController) POST(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	var course models.Course
+	if err := lib.Database.FirstOrCreate(&course, coaepRequest.CourseID).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
 	coaep := models.Coeap{
 		PeriodID: coaepRequest.PeriodID,
-		CourseID: coaepRequest.CourseID,
 	}
 
-	if err := lib.Database.FirstOrCreate(&coaep, models.Coeap{PeriodID: coaep.PeriodID, CourseID: coaep.CourseID}).Error; err != nil {
+	coaep.Courses = append(coaep.Courses, &course)
+	if err := lib.Database.FirstOrCreate(&coaep, models.Coeap{PeriodID: coaep.PeriodID}).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
