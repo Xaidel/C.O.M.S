@@ -8,7 +8,6 @@ import { useStudentByProgramAndEnrolledCourses } from "@/features/faculty/useStu
 import { CircleArrowLeft } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "@/hooks/use-toast";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ export default function Profile() {
         Fullname: `${student.User.Lastname}, ${student.User.Firstname} ${student.User.Middlename || ""}`.trim(),
       }))
       .sort((a, b) => a.Fullname.localeCompare(b.Fullname));
-  }, [classlist?.classlist]);
+  }, [classlist?.classlist, coaep?.coaep]);
 
   const scores = useMemo(() => {
     if (!coaep?.coaep || !performanceData?.scores?.length) return [];
@@ -42,15 +41,16 @@ export default function Profile() {
       value: score.Value || null,
       status: score.Status,
     }));
-  }, [coaep?.coaep, performanceData?.scores]);
+  }, [coaep?.coaep, performanceData?.scores, classlist?.classlist]);
 
   useEffect(() => {
-    if (fetchingCoaep || fetchingPerformanceData || fetchingClasslist) {
-      toast({ title: "Loading...", duration: 500 });
-    }
-  }, [fetchingCoaep, fetchingPerformanceData, fetchingClasslist]);
+    console.log("COAEP:", coaep);
+    console.log("Classlist:", classlist);
+    console.log("Performance Data:", performanceData);
+  }, [coaep, classlist, performanceData]);
 
-  if (fetchingCoaepError) return null;
+  if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData) return
+  if (fetchingCoaepError) return
   return (
     <>
       <div>
