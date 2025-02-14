@@ -122,6 +122,7 @@ func APIRoutes(router *gin.Engine) {
 			score.GET("/coaep/:coaepID/section/:sectionID", controllers.ScoreController.GET)
 			score.GET("/coaep/:coaepID/program/:programID", controllers.ScoreController.GetByProgram)
 			score.GET("/eval/coaep/:coaepID/section/:sectionID", controllers.ScoreController.GetEvaluation)
+			score.GET("/eval/coaep/:coaepID/program/:programID", controllers.ScoreController.GetEvaluationByProgram)
 			score.POST("", controllers.ScoreController.POST)
 		}
 		prospectus := api.Group("/prospectus")

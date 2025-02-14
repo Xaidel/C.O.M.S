@@ -137,6 +137,111 @@ func (ScoreController) GetEvaluation(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"res": res})
 }
 
+func (ScoreController) GetEvaluationByProgram(ctx *gin.Context) {
+	programID := ctx.Param("programID")
+	coaepID := ctx.Param("coaepID")
+
+	if programID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the Program ID"})
+		return
+	}
+	if coaepID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Please provide the COAEP ID"})
+		return
+	}
+
+	var coaep models.Coeap
+	if err := lib.Database.Preload("CourseOutcomes.IntendedLearningOutcomes.Recommendations").Preload("Courses").
+		Preload("CourseOutcomes.IntendedLearningOutcomes.AssessmentTool").Find(&coaep, coaepID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
+		return
+	}
+	var students []models.Student
+	if err := lib.Database.
+		Joins("JOIN enrolled_courses ON enrolled_courses.student_id = students.id").
+		Joins("JOIN sections ON sections.id = enrolled_courses.section_id").
+		Joins("JOIN courses ON courses.id = sections.course_id").
+		Joins("JOIN coeap_courses ON coeap_courses.course_id = courses.id").
+		Where("students.program_id = ? AND coeap_courses.coeap_id = ?", programID, coaepID).
+		Preload("User").
+		Find(&students).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	totalStudents := len(students)
+	if totalStudents == 0 {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "No students found"})
+		return
+	}
+
+	COs := coaep.CourseOutcomes
+	type response struct {
+		IloID           uint    `json:"ilo_id"`
+		TotalPassed     int     `json:"total_passed"`
+		TotalFailed     int     `json:"total_failed"`
+		TotalPercentage int     `json:"total_percentage"`
+		TotalPopulation int     `json:"total_population"`
+		Recommendation  *string `json:"recommendation"`
+	}
+
+	var res []response
+
+	for _, co := range COs {
+		for _, ilo := range co.IntendedLearningOutcomes {
+			var scores []models.ILOScore
+			if err := lib.Database.
+				Table("ilo_scores as is2").
+				Select("DISTINCT is2.*").
+				Joins("JOIN students s ON s.user_id = is2.student_id").
+				Joins("JOIN intended_learning_outcomes ilo ON ilo.id = is2.intended_learning_outcome_id").
+				Joins("JOIN assessment_tools at2 ON at2.id = ilo.assessment_tool_id").
+				Joins("JOIN ilo_criteria ic ON ic.intended_learning_outcome_id = ilo.id").
+				Where("(is2.value / ic.criteria) * 100 >= at2.target_score").
+				Where("is2.intended_learning_outcome_id = ?", ilo.ID).
+				Where("is2.value IS NOT NULL").
+				Where("s.program_id = ?", programID).
+				Find(&scores).Error; err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "No Record found"})
+				return
+			}
+			var failed []models.ILOScore
+			if err := lib.Database.
+				Table("ilo_scores as is2").
+				Select("DISTINCT is2.*").
+				Joins("JOIN students s ON s.user_id = is2.student_id").
+				Joins("JOIN intended_learning_outcomes ilo ON ilo.id = is2.intended_learning_outcome_id").
+				Joins("JOIN assessment_tools at2 ON at2.id = ilo.assessment_tool_id").
+				Joins("JOIN ilo_criteria ic ON ic.intended_learning_outcome_id = ilo.id").
+				Where("(is2.value / ic.criteria) * 100 < at2.target_score").
+				Where("is2.intended_learning_outcome_id = ?", ilo.ID).
+				Where("is2.value IS NOT NULL").
+				Where("s.program_id = ?", programID).
+				Find(&failed).Error; err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "No Record found"})
+				return
+			}
+			totalPercentage := float64(len(scores)) / float64(totalStudents) * 100
+			var recommendation *string
+			for _, rec := range ilo.Recommendations {
+				if rec.Comment != nil {
+					recommendation = rec.Comment
+				}
+			}
+			res = append(res, response{
+				IloID:           ilo.ID,
+				TotalPassed:     len(scores),
+				TotalFailed:     len(failed),
+				TotalPercentage: int(totalPercentage),
+				TotalPopulation: totalStudents,
+				Recommendation:  recommendation,
+			})
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"scores": res})
+}
+
 func (ScoreController) POST(ctx *gin.Context) {
 	request := types.PostScoreRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {

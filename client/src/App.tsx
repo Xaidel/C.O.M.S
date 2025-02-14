@@ -20,7 +20,6 @@ import ProgramCurriculum from "./pages/ProgramCurriculum.tsx";
 import CourseOfferings from "./pages/CourseOfferings.tsx";
 import PHData from "./pages/PHData.tsx";
 import EnrolledStudents from "./pages/EnrolledStudents.tsx";
-import Profile from "./pages/Profile.tsx";
 import PHTab from "./pages/PHTab.tsx";
 function App() {
   const queryClient: QueryClient = new QueryClient({
