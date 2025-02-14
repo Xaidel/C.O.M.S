@@ -1,16 +1,12 @@
-import AppLabel from "@/components/ui/applabel";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
 import { useCOAEPByCourse } from "@/features/faculty/useCOAEPByCourse";
 import { usePerformanceDataByProgram } from "@/features/faculty/usePerformanceDataByProgram";
 import { useStudentByProgramAndEnrolledCourses } from "@/features/faculty/useStudentByProgramAndEnrolledCourses";
-import { CircleArrowLeft } from "lucide-react";
 import { useEffect, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function Profile() {
-  const navigate = useNavigate();
   const { programID } = useParams<{ programID: string }>()
   const { courseID } = useParams<{ courseID: string }>();
   const parsedCourseID = parseInt(courseID || "0", 10) || 0;

@@ -4,6 +4,7 @@ import AppLabel from "@/components/ui/applabel";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CircleArrowLeft } from "lucide-react";
+import PHReport from "./PHReport";
 
 export default function PHTab() {
   const navigate = useNavigate()
@@ -21,10 +22,10 @@ export default function PHTab() {
       <Tabs>
         <TabsList className="grid w-[30rem] grid-cols-2">
           <TabsTrigger value="report">Report</TabsTrigger>
-          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="profile">Student Profile</TabsTrigger>
         </TabsList>
         <TabsContent value="report">
-          <Profile />
+          <PHReport />
         </TabsContent>
         <TabsContent value="profile">
           <Profile />
