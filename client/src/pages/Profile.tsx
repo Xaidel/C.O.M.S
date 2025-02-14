@@ -53,16 +53,7 @@ export default function Profile() {
   if (fetchingCoaepError) return
   return (
     <>
-      <div>
-        <AppLabel currentPage="Program Profiling" />
-      </div>
 
-      <div className="flex justify-start gap-1 items-center text-3xl font-bold text-[#1F2937] mb-6">
-        <Button variant="ghost" onClick={() => navigate(-1)}>
-          <CircleArrowLeft className="text-2xl" />
-        </Button>
-        Program Profile
-      </div>
 
       <Table>
         <TableHeader className="bg-[#CBD2DB] hover:bg-[#CBD2DB]">
