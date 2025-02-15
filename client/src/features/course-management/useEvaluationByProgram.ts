@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 export function useEvaluationByProgram(coaepID: number, programID: number) {
   const query = useQuery<EvaluationResponse>({
     queryKey: [`${programID}-evaluation`],
-    queryFn: () => getEvaluationByProgram(coaepID, programID)
+    queryFn: () => getEvaluationByProgram(coaepID, programID),
+    enabled: !!coaepID
   })
 
   return {
