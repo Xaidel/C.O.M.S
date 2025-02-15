@@ -46,7 +46,7 @@ export function SidebarLayout() {
   };
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="z-20">
       <SidebarHeader className="py-4">
         <div className="flex justify-center items-center p-2 gap-1">
           <div className="flex-shrink-0 w-[4.5rem] h-[4.5rem]">

@@ -239,7 +239,7 @@ func (ScoreController) GetEvaluationByProgram(ctx *gin.Context) {
 		}
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"scores": res})
+	ctx.JSON(http.StatusOK, gin.H{"res": res})
 }
 
 func (ScoreController) POST(ctx *gin.Context) {

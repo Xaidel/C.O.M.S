@@ -19,7 +19,7 @@ export default function PHTab() {
         </Button>
         Program Profile
       </div>
-      <Tabs>
+      <Tabs defaultValue="report">
         <TabsList className="grid w-[30rem] grid-cols-2">
           <TabsTrigger value="report">Report</TabsTrigger>
           <TabsTrigger value="profile">Student Profile</TabsTrigger>
