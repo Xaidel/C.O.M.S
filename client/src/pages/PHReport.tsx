@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useEvaluationByProgram } from "@/features/course-management/useEvaluationByProgram"
 import { useCOAEPByCourse } from "@/features/faculty/useCOAEPByCourse"
+import { toast } from "@/hooks/use-toast"
 import { useParams } from "react-router-dom"
 import { Fragment } from "react/jsx-runtime"
 
@@ -9,10 +10,17 @@ export default function PHReport() {
   const { programID } = useParams<{ programID: string }>()
   const parsedCourseID = parseInt(courseID || "0", 10)
   const parsedProgramID = parseInt(programID || "0", 10)
-  const { data: coaep, isLoading: fetchingCoaep, error: CoaepError } = useCOAEPByCourse(parsedCourseID)
+  const { data: coaep, isLoading: fetchingCoaep, error: coaepError } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error: evalError } = useEvaluationByProgram(coaep?.coaep?.ID || 0, parsedProgramID)
-  if (fetchingCoaep || fetchingEval) return
-  if (CoaepError || evalError) return
+  if (fetchingCoaep || fetchingEval) {
+    console.log(fetchingEval, fetchingCoaep)
+    toast({
+      title: "Loading",
+      description: "Please Wait",
+      duration: 350
+    })
+  }
+  if (coaepError || evalError) return
   return (
     <>
       <div className="bg-gray-main">

@@ -3,7 +3,7 @@ import CurriculumFilter from "../features/curriculum-management/CurriculumFilter
 import { Button } from "@/components/ui/button";
 import { useCurrentPeriod } from "@/features/auth/useCurrentPeriod";
 import { Course } from "@/types/Interface";
-import { ChevronRight, CircleArrowLeft } from "lucide-react";
+import { BookOpen, ChevronRight, CircleArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -79,16 +79,28 @@ export default function CurriculumCourseManagement() {
                 <TableCell>{course.Lab_Unit}</TableCell>
                 <TableCell>{Number.isNaN(Number(course.Lec_Unit)) ? course.Lec_Unit : Number(course.Lab_Unit) + Number(course.Lec_Unit)}</TableCell>
                 <TableCell>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button onClick={() => navigate(`/curriculums/${curr}/courses/${course.ID}/program/${programID}/profile`)}><ChevronRight size={20} /></Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>View <span className="font-bold">{course.Course_Name}</span> Profile</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <div className="flex gap-4 justify-center">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button onClick={() => navigate(`/curriculums/${curr}/courses/${course.Course_No}`)}><BookOpen size={20} /></Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>View <span className="font-bold">{course.Course_Name}</span> Sections (Course Offerings)</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button onClick={() => navigate(`/curriculums/${curr}/courses/${course.ID}/program/${programID}/profile`)}><ChevronRight size={20} /></Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>View <span className="font-bold">{course.Course_Name}</span> Profile</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
                 </TableCell>
               </TableRow>
             ))

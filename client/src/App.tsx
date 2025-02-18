@@ -21,6 +21,7 @@ import CourseOfferings from "./pages/CourseOfferings.tsx";
 import PHData from "./pages/PHData.tsx";
 import EnrolledStudents from "./pages/EnrolledStudents.tsx";
 import PHTab from "./pages/PHTab.tsx";
+import PHSection from "./pages/PHSection.tsx";
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -68,6 +69,10 @@ function App() {
             <Route
               path="/curriculums/:currID/courses"
               element={<CurriculumCourseManagement />}
+            />
+            <Route
+              path="/curriculums/:currID/courses/:courseCode"
+              element={<PHSection />}
             />
             <Route
               path="/curriculums/:currID/courses/:courseID/program/:programID/profile"
