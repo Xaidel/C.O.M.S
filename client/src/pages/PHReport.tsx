@@ -13,6 +13,7 @@ export default function PHReport() {
   const { data: coaep, isLoading: fetchingCoaep, error: coaepError } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error: evalError } = useEvaluationByProgram(coaep?.coaep?.ID || 0, parsedProgramID)
   if (fetchingCoaep || fetchingEval) {
+    console.log(fetchingEval, fetchingCoaep)
     toast({
       title: "Loading",
       description: "Please Wait",

@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 export function useSectionsByCourseNo(currID: string, courseNo: string) {
   const query = useQuery<SectionResponse>({
     queryKey: [`${courseNo}-sections`],
-    queryFn: () => getSectionsByCourseNo(currID, courseNo)
+    queryFn: () => getSectionsByCourseNo(currID, courseNo),
+    enabled: !!currID && !!courseNo
   })
 
   return {
