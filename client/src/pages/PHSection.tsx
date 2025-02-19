@@ -52,7 +52,7 @@ export default function PHSection() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button onClick={() => navigate(`/courses/${section.Course.ID}/assessment-plan/section/${section.ID}`)}>
+                        <Button onClick={() => navigate(`/curriculums/${currID}/courses/${courseCode}/section/${section.ID}/profile`)}>
                           <ChevronRight />
                         </Button>
                       </TooltipTrigger>
