@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query"
 export function useCOAEPByCourse(courseID: number) {
   const query = useQuery<COAEPResponse>({
     queryKey: [`coaep-${courseID}`],
-    queryFn: () => getCOAEPByCourse(courseID)
+    queryFn: () => getCOAEPByCourse(courseID),
+    enabled: !!courseID
 
   })
   return {
