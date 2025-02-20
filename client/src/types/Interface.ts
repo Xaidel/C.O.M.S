@@ -89,6 +89,8 @@ interface RoleInfo {
   Sections: Section[];
   User: UserInfo;
   DepartmentID: number;
+  ProgramID: number,
+  UserID: string,
   ID: number;
 }
 

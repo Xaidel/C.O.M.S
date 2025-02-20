@@ -1,4 +1,4 @@
-import { LayoutDashboard, FileSpreadsheet, BookOpenText } from "lucide-react";
+import { LayoutDashboard, FileSpreadsheet, BookOpenText, ChartLine } from "lucide-react";
 
 export const DEAN_NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -32,4 +32,5 @@ export const FACULTY_NAV_ITEMS = [
 ];
 export const STUDENT_NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/performance-data", label: "Performance Data", icon: ChartLine },
 ];
