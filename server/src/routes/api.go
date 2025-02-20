@@ -65,6 +65,7 @@ func APIRoutes(router *gin.Engine) {
 			student.GET("", controllers.Student.GET)
 			student.GET("/:id", controllers.Student.GET)
 			student.GET("/program/:id", controllers.Student.GetByProgram)
+			student.GET("/enrolledCourses/:studentID", controllers.Student.GetEnrolledCourses)
 			student.GET("/programs/:programID/coaep/:coaepID", controllers.Student.GetByProgramAndEnrolledCourses)
 			student.GET("/course/:id", controllers.Student.GetByCourse)
 			student.POST("", controllers.Student.POST)

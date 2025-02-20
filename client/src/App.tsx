@@ -23,6 +23,8 @@ import EnrolledStudents from "./pages/EnrolledStudents.tsx";
 import PHTab from "./pages/PHTab.tsx";
 import PHSection from "./pages/PHSection.tsx";
 import PHCourseTab from "./pages/PHCourseTab.tsx";
+import PerformanceData from "./pages/PerformanceData.tsx";
+import StudentPerformance from "./pages/StudentPerformance.tsx";
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -86,7 +88,8 @@ function App() {
             <Route path="/curriculums/:currID/courses/:courseID/sections/:sectionID/coaep" element={<PHData />} />
             <Route path="/courses" element={<CourseSelection />} />
             <Route path="/courses/:courseID/assessment-plan/section/:sectionID" element={<AssessmentPlan />} />
-
+            <Route path="/performance-data" element={<PerformanceData />} />
+            <Route path="/performance-data/program/:programID/course/:courseID" element={<StudentPerformance />} />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
