@@ -19,7 +19,7 @@ import {
   PROGRAM_HEAD_NAV_ITEMS,
   STUDENT_NAV_ITEMS,
 } from "@/types/NavItems";
-import { useIsFetching, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useUser } from "@/features/auth/useUser";
 
 export function SidebarLayout() {
@@ -29,8 +29,6 @@ export function SidebarLayout() {
   let navItems;
   const queryClient = useQueryClient();
   const { currentUser } = useUser();
-  const isFetching = useIsFetching();
-  if (isFetching) return;
   if (!currentUser) return null;
   const { role } = currentUser;
   if (role === "Dean") navItems = DEAN_NAV_ITEMS;
