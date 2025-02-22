@@ -20,9 +20,9 @@ export default function LoadingState() {
   }, [])
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+    <div className="min-h-[43rem] flex flex-col items-center justify-center bg-transparent">
       <div className="w-64 text-center">
-      <p className="text-gray-600 font-medium mb-4">Loading...</p>
+        <p className="text-gray-600 font-medium mb-4">Loading...</p>
         <div className="mb-4">
           <div className="h-3 bg-gray-200 rounded-full">
             <div

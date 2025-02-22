@@ -1,9 +1,9 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useEvaluationByProgram } from "@/features/course-management/useEvaluationByProgram"
 import { useCOAEPByCourse } from "@/features/faculty/useCOAEPByCourse"
-import { toast } from "@/hooks/use-toast"
 import { useParams } from "react-router-dom"
 import { Fragment } from "react/jsx-runtime"
+import LoadingState from "./LoadingState"
 
 export default function PHReport() {
   const { courseID } = useParams<{ courseID: string }>()
@@ -12,14 +12,10 @@ export default function PHReport() {
   const parsedProgramID = parseInt(programID || "0", 10)
   const { data: coaep, isLoading: fetchingCoaep, error: coaepError } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error: evalError } = useEvaluationByProgram(coaep?.coaep?.ID || 0, parsedProgramID)
-  if (fetchingCoaep || fetchingEval) {
-    toast({
-      title: "Loading",
-      description: "Please Wait",
-      duration: 350
-    })
-  }
-  if (coaepError || evalError) return
+  if (fetchingCoaep || fetchingEval) return <LoadingState />
+  if (coaepError || evalError) return <div className="min-w-screen h-[40rem] flex items-center justify-center font-bold text-xl">
+    Course Outcome Assessment and Evaluation Plan data not found</div>
+
   return (
     <>
       <div className="bg-gray-main">

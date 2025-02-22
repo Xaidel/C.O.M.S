@@ -78,7 +78,7 @@ export default function ILOCriteria() {
             <TableHead rowSpan={2} className="border text-black">CO#</TableHead>
             <TableHead rowSpan={2} className="border text-black">Course Outcomes</TableHead>
             <TableHead rowSpan={2} className="border text-black">Intended Learning Outcomes</TableHead>
-            <TableHead rowSpan={2} className="border text-black">Criteria</TableHead>
+            <TableHead rowSpan={2} className="border text-black">Total Score</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="text-sm font-light">
