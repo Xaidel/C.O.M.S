@@ -5,6 +5,7 @@ import { usePerformanceDataByProgram } from "@/features/faculty/usePerformanceDa
 import { useStudentByProgramAndEnrolledCourses } from "@/features/faculty/useStudentByProgramAndEnrolledCourses";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import LoadingState from "./LoadingState";
 
 export default function Profile() {
   const { programID } = useParams<{ programID: string }>()
@@ -45,7 +46,7 @@ export default function Profile() {
     console.log("Performance Data:", performanceData);
   }, [coaep, classlist, performanceData]);
 
-  if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData) return
+  if (fetchingCoaep || fetchingClasslist || fetchingPerformanceData) return <LoadingState />
   if (fetchingCoaepError) return
   return (
     <>
