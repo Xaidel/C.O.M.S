@@ -13,6 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import Report from "./Report";
 import { useCriteria } from "./useCriteria";
+import LoadingState from "@/pages/LoadingState";
 
 interface Data {
   coaep: COAEP
@@ -120,127 +121,123 @@ export default function Coaep() {
   }
 
 
-  if (fetchingPerformanceData) {
-    toast({
-      title: "Loading...",
-      description: "Please Wait",
-      duration: 400
-    })
-  }
-  if (fetchingCoaep || fetchingClasslist || fetchingCriteria) return
-  if (fetchingCoaepError || fetchingCriteriaError) return <div>Error..</div>
+  if (fetchingCoaep || fetchingClasslist || fetchingCriteria || fetchingPerformanceData) return <LoadingState />
+  if (fetchingCoaepError || fetchingCriteriaError) return <div className="min-w-screen h-[40rem] flex items-center justify-center font-bold text-xl">
+    Course Outcome Assessment and Evaluation Plan data not found</div>
   return (
     <>
       <div className="mt-5">
-        {coaep?.coaep.CourseOutcomes ? (
-          <>
-            <Table>
-              <TableHeader className="bg-[#CBD2DB] hover:bg-[#CBD2DB]">
-                <TableRow className="font-bold hover:bg-[#CBD2DB]">
-                  <TableHead rowSpan={2} className="border text-black">Student Number</TableHead>
-                  <TableHead rowSpan={2} className="border text-black">Student Name</TableHead>
-                  {coaep?.coaep?.CourseOutcomes.map((co, index) => (
-                    <TableHead key={co.ID} className="text-center border text-black hover:bg-muted/50" colSpan={co.IntendedLearningOutcomes.length}>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <div>{`CO #${index + 1}`}</div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>{co.Statement}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </TableHead>
-                  ))}
-                </TableRow>
-                <TableRow className="font-bold hover:bg-[#CBD2DB]">
-                  {coaep?.coaep.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo, index) => (
-                    <TableHead key={`${co.ID}-${index}`} className="text-center border text-black hover:bg-muted/50">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <div>{`ILO #${index + 1}`}</div>
-                            <div className="text-sm font-light">
-                              {criteria?.criteria.find((crit) => crit.IntendedLearningOutcomeID === ilo.ID)?.Criteria ?? "No"} pts
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="max-w-[50rem]">
-                            <p >{ilo.Statement}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </TableHead>
-                  )))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {students.length ? (
-                  students.map((student) => (
-                    <TableRow key={student.UserID}>
-                      <TableCell className="border">{student.UserID}</TableCell>
-                      <TableCell className="border">{student.Fullname}</TableCell>
-                      {coaep.coaep?.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo) => {
-                        const score = scores.find((s) =>
-                          s.student_id === student.UserID && s.coaep_id === coDataID && s.ilo_id === ilo.ID
-                        )
-                        return (
-                          <TableCell className={`border p-0 ${score?.status === 1 ? "bg-green-200" : score?.status === 0 ? "bg-red-200" : ""}`} key={ilo.ID}>
-                            <div className="h-full w-full" key={ilo.ID}>
-                              <input
-                                key={ilo.ID}
-                                type="number"
-                                disabled={!criteria?.criteria.some((crit) => crit.IntendedLearningOutcomeID === ilo.ID)}
-                                min="0"
-                                max="100"
-                                className="bg-transparent focus:outline-none focus:ring-0 border-none w-full h-full text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
-                                value={score?.value === null ? "" : score?.value}
-                                onChange={(e) =>
-                                  handleScoreChange(
-                                    student.UserID,
-                                    coDataID,
-                                    ilo.ID,
-                                    parsedSectionID,
-                                    e.target.value === "" ? null : parseInt(e.target.value, 10) || 0
-                                  )
-                                }
-                              />
-                            </div>
-                          </TableCell>
-                        )
-                      }))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell className="border h-24 text-center" colSpan={50}>No Classlist Found</TableCell>
+        {
+          coaep?.coaep.CourseOutcomes ? (
+            <>
+              <Table>
+                <TableHeader className="bg-[#CBD2DB] hover:bg-[#CBD2DB]">
+                  <TableRow className="font-bold hover:bg-[#CBD2DB]">
+                    <TableHead rowSpan={2} className="border text-black">Student Number</TableHead>
+                    <TableHead rowSpan={2} className="border text-black">Student Name</TableHead>
+                    {coaep?.coaep?.CourseOutcomes.map((co, index) => (
+                      <TableHead key={co.ID} className="text-center border text-black hover:bg-muted/50" colSpan={co.IntendedLearningOutcomes.length}>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <div>{`CO #${index + 1}`}</div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{co.Statement}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableHead>
+                    ))}
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                  <TableRow className="font-bold hover:bg-[#CBD2DB]">
+                    {coaep?.coaep.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo, index) => (
+                      <TableHead key={`${co.ID}-${index}`} className="text-center border text-black hover:bg-muted/50">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <div>{`ILO #${index + 1}`}</div>
+                              <div className="text-sm font-light">
+                                {criteria?.criteria.find((crit) => crit.IntendedLearningOutcomeID === ilo.ID)?.Criteria ?? "No"} pts
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-[50rem]">
+                              <p >{ilo.Statement}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableHead>
+                    )))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {students.length ? (
+                    students.map((student) => (
+                      <TableRow key={student.UserID}>
+                        <TableCell className="border">{student.UserID}</TableCell>
+                        <TableCell className="border">{student.Fullname}</TableCell>
+                        {coaep.coaep?.CourseOutcomes.map((co) => co.IntendedLearningOutcomes.map((ilo) => {
+                          const score = scores.find((s) =>
+                            s.student_id === student.UserID && s.coaep_id === coDataID && s.ilo_id === ilo.ID
+                          )
+                          return (
+                            <TableCell className={`border p-0 ${score?.status === 1 ? "bg-green-200" : score?.status === 0 ? "bg-red-200" : ""}`} key={ilo.ID}>
+                              <div className="h-full w-full" key={ilo.ID}>
+                                <input
+                                  key={ilo.ID}
+                                  type="number"
+                                  disabled={!criteria?.criteria.some((crit) => crit.IntendedLearningOutcomeID === ilo.ID)}
+                                  min="0"
+                                  max="100"
+                                  className="bg-transparent focus:outline-none focus:ring-0 border-none w-full h-full text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none "
+                                  value={score?.value === null ? "" : score?.value}
+                                  onChange={(e) =>
+                                    handleScoreChange(
+                                      student.UserID,
+                                      coDataID,
+                                      ilo.ID,
+                                      parsedSectionID,
+                                      e.target.value === "" ? null : parseInt(e.target.value, 10) || 0
+                                    )
+                                  }
+                                />
+                              </div>
+                            </TableCell>
+                          )
+                        }))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell className="border h-24 text-center" colSpan={50}>No Classlist Found</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
 
-            <div className="mt-5 min-w-100 flex justify-end">
-              <Dialog open={reportModalOpen} onOpenChange={setReportModalOpen}>
-                <DialogTrigger asChild>
-                  <Button type="button" onClick={() => {
-                    fetchPerformanceData()
-                    setReportModalOpen(true)
-                  }
-                  }>Generate Report</Button>
-                </DialogTrigger>
-                <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl">COAEP Report</DialogTitle>
-                    <DialogDescription>Course Outcome Assessment and Evaluation Plan Report for <span className="font-bold">{``}</span></DialogDescription>
-                  </DialogHeader>
-                  <Report />
-                </DialogContent>
-              </Dialog>
-            </div>
-          </>
-        ) : (
-          <div>No COAEP Found</div>
-        )}
+              <div className="mt-5 min-w-100 flex justify-end">
+                <Dialog open={reportModalOpen} onOpenChange={setReportModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button type="button" onClick={() => {
+                      fetchPerformanceData()
+                      setReportModalOpen(true)
+                    }
+                    }>Generate Report</Button>
+                  </DialogTrigger>
+                  <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl">COAEP Report</DialogTitle>
+                      <DialogDescription>Course Outcome Assessment and Evaluation Plan Report for <span className="font-bold">{``}</span></DialogDescription>
+                    </DialogHeader>
+                    <Report />
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </>
+          ) : (
+            <div>No COAEP Found</div>
+          )
+        }
       </div >
     </>
   )
