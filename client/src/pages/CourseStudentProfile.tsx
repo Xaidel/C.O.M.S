@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useEffect, useState } from "react"
 import { usePerformanceData } from "@/features/faculty/usePerformanceData"
+import LoadingState from "./LoadingState"
 interface SectionCache {
   sections: Section[]
 }
@@ -53,8 +54,9 @@ export default function CourseStudentProfile() {
     }
   }, [classlist, performanceData]);
 
-  if (fetchingCoaep || fetchingClasslist || fetchingCriteria || fetchingPerformanceData) return
-  if (fetchingCoaepError || fetchingCriteriaError || fetchingClasslistError) return <div>Error..</div>
+  if (fetchingCoaep || fetchingClasslist || fetchingCriteria || fetchingPerformanceData) return <LoadingState />
+  if (fetchingCoaepError || fetchingCriteriaError || fetchingClasslistError) return <div className="min-w-screen h-[40rem] flex items-center justify-center font-bold text-xl">
+    Course Outcome Assessment and Evaluation Plan data not found</div>
   return (
     <>
       <div className="mt-5">

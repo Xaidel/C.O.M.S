@@ -12,6 +12,7 @@ export default function PHReport() {
   const parsedProgramID = parseInt(programID || "0", 10)
   const { data: coaep, isLoading: fetchingCoaep, error: coaepError } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error: evalError } = useEvaluationByProgram(coaep?.coaep?.ID || 0, parsedProgramID)
+
   if (fetchingCoaep || fetchingEval) return <LoadingState />
   if (coaepError || evalError) return <div className="min-w-screen h-[40rem] flex items-center justify-center font-bold text-xl">
     Course Outcome Assessment and Evaluation Plan data not found</div>
