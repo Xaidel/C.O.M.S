@@ -120,8 +120,15 @@ export default function Coaep() {
     ))
   }
 
+  if (fetchingPerformanceData) {
+    toast({
+      title: "Loading...",
+      description: "Please wait",
+      duration: 500
+    })
+  }
 
-  if (fetchingCoaep || fetchingClasslist || fetchingCriteria || fetchingPerformanceData) return <LoadingState />
+  if (fetchingCoaep || fetchingClasslist || fetchingCriteria) return <LoadingState />
   if (fetchingCoaepError || fetchingCriteriaError) return <div className="min-w-screen h-[40rem] flex items-center justify-center font-bold text-xl">
     Course Outcome Assessment and Evaluation Plan data not found</div>
   return (
