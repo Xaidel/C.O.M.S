@@ -7,6 +7,7 @@ import (
 	"github.com/Xaidel/server/src/models"
 	"github.com/Xaidel/server/src/types"
 	"github.com/gin-gonic/gin"
+	"github.com/gocarina/gocsv"
 )
 
 type CourseOutcomeController struct{}
@@ -29,6 +30,47 @@ func (CourseOutcomeController) GET(ctx *gin.Context) {
 		}
 		ctx.JSON(http.StatusOK, gin.H{"course_outcomes": cos})
 	}
+}
+
+func (CourseOutcomeController) BatchProcessCO(ctx *gin.Context) {
+	file, err := ctx.FormFile("file")
+	coaepID := ctx.Param("coaepID")
+
+	if coaepID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "COAEP ID not found"})
+		return
+	}
+	var coaep models.Coeap
+	if err := lib.Database.First(&coaep, coaepID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "COAEP not found"})
+		return
+	}
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File upload failed"})
+		return
+	}
+
+	uploadedFile, err := file.Open()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot open file"})
+		return
+	}
+
+	defer uploadedFile.Close()
+
+	var csvCO []*models.Coeap
+	if err := gocsv.Unmarshal(uploadedFile, &csvCO); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse CSV"})
+		return
+	}
+
+	if err := lib.Database.Create(&csvCO).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save Course Outcomes"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"CO": csvCO})
 }
 
 func (CourseOutcomeController) POST(ctx *gin.Context) {
