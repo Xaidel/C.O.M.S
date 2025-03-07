@@ -187,7 +187,7 @@ func main() {
 	if err := lib.Database.First(&course1, 1).Error; err != nil {
 		log.Printf("error: %v", err.Error())
 	}
-	if err := lib.Database.First(&course2, 54).Error; err != nil {
+	if err := lib.Database.First(&course2, 32).Error; err != nil {
 		log.Printf("error: %v", err.Error())
 	}
 	if err := lib.Database.Create(&AssessmentTools).Error; err != nil {
