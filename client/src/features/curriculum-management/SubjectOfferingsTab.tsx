@@ -7,8 +7,8 @@ export default function SubjectOfferingsTab() {
     <>
       <Tabs defaultValue="offerings">
         <TabsList className="grid w-[30rem] grid-cols-2">
-          <TabsTrigger value="prospectus">Offerings</TabsTrigger>
-          <TabsTrigger value="offerings">Sections</TabsTrigger>
+          <TabsTrigger value="prospectus">Curriculum Courses</TabsTrigger>
+          <TabsTrigger value="offerings">Course Offerings</TabsTrigger>
         </TabsList>
         <TabsContent value="prospectus">
           <Prospectus />
