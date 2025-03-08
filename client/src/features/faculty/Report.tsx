@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import RecommendationInput from "./RecommendationInput";
 import { useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 
 export default function Report() {
   const { courseID } = useParams<{ courseID: string }>()
@@ -152,6 +153,7 @@ export default function Report() {
             )}
           </TableBody>
         </Table>
+        <Button>Export as PDF</Button>
       </div >
     </>
   )

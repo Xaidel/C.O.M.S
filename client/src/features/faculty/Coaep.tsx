@@ -233,8 +233,16 @@ export default function Coaep() {
                   </DialogTrigger>
                   <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
                     <DialogHeader>
-                      <DialogTitle className="text-2xl">COAEP Report</DialogTitle>
+                      <div className="flex justify-between">
+                      <div>
+                      <DialogTitle className="text-3xl">COAEP Report</DialogTitle>
                       <DialogDescription>Course Outcome Assessment and Evaluation Plan Report for <span className="font-bold">{``}</span></DialogDescription>
+                      </div>
+                        <div>
+                        <h1 className="font-bold">Doc Control No.</h1>
+                          <p>UNC-FM-VPAA-02</p>
+                        </div>
+                      </div>
                     </DialogHeader>
                     <Report />
                   </DialogContent>
