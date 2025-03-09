@@ -111,7 +111,7 @@ export default function ProgramCurriculum() {
         <Button
           variant="ghost"
           onClick={() => {
-            navigate(-1)
+            navigate("/programs")
           }}
         >
           <CircleArrowLeft className="text-2xl" />
