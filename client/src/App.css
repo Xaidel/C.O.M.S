@@ -1,5 +1,8 @@
+html, body{
+  background-color: #F0F1F2;
+}
 body {
-  height: 100vh;
+  height: 100%;
   width: 100vw;
 }
 
