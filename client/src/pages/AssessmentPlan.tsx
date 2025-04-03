@@ -12,11 +12,11 @@ export default function AssessmentPlan() {
         <AppLabel currentPage="Course Outcome Assessment and Evaluation Plan" />
       </div>
 
-      <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
+      <div className="flex justify-start gap-1 items-center text-2xl font-bold text-[#1f2937] mb-6">
         <Button variant="ghost" onClick={() => navigate("/courses")}>
           <CircleArrowLeft />
         </Button>
-        COAEP Data
+        Course Outcomes Assessment and Evaluation Data
       </div>
       <FacultyTabs />
     </>
