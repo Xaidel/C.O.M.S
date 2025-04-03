@@ -36,8 +36,8 @@ const formSchema = z.object({
     .max(20, "Semester invalid"),
   effectivity_sy: z
     .string()
-    .min(4, "Year invalid use this format(2223 = 2022-2023)")
-    .max(4, "Year invalid use this format(2223 = 2022-2023)"),
+    .min(4, "Year invalid use this format(2022 = 2022-2023)")
+    .max(4, "Year invalid use this format(2022 = 2022-2023)"),
   cmo_reference: z
     .string()
     .min(2, "Please input the CMO Reference")
@@ -75,7 +75,9 @@ export default function ProgramCurriculum() {
   })
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    addCurriculum.mutate({ ...data, programID: parsedProgID }, {
+    const newYear = parseInt(data.effectivity_sy) + 1
+    const newData = { ...data, effectivity_sy: `${data.effectivity_sy}-${newYear}` }
+    addCurriculum.mutate({ ...newData, programID: parsedProgID }, {
       onSuccess: () => {
         toast({
           variant: "success",
@@ -248,7 +250,9 @@ export default function ProgramCurriculum() {
                   name="effectivity_sy"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Effectivity S/Y</FormLabel>
+                      <FormLabel>Effectivity S/Y
+                        <i className="font-light text-gray text-xs">(Current S/Y)</i>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter Effectivity S/Y"
