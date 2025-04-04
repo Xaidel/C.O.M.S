@@ -32,7 +32,8 @@ export default function CourseReport() {
             <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Course Outcome Statement</TableHead>
             <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Intended Learning Outcome Statement</TableHead>
             <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Assessment Tool</TableHead>
-            <TableHead colSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Performance Target </TableHead>
+            <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Performance Target</TableHead>
+            <TableHead colSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Performance Data</TableHead>
             <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Evaluation</TableHead>
             <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Recommendation</TableHead>
           </TableRow>
@@ -81,6 +82,9 @@ export default function CourseReport() {
                           < TableRow key={ilo.ID} >
                             <TableCell className="border">{ilo.Statement}</TableCell>
                             <TableCell className="border text-left">{ilo.AssessmentTool.Tool}</TableCell>
+                            <TableCell className="border text-left">{`
+At least ${ilo.AssessmentTool.TargetPopulation}% of enrolled students with a rating of at least ${ilo.AssessmentTool.TargetScore}% of the total score
+                        `}</TableCell>
                             <TableCell className="border text-center">
                               {`${data?.total_passed}/${data?.total_population}`}
                             </TableCell>
