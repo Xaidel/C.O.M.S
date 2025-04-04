@@ -25,6 +25,7 @@ import PHSection from "./pages/PHSection.tsx";
 import PHCourseTab from "./pages/PHCourseTab.tsx";
 import PerformanceData from "./pages/PerformanceData.tsx";
 import StudentPerformance from "./pages/StudentPerformance.tsx";
+import { PDF } from "./features/pdf/PDF.tsx";
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -84,6 +85,10 @@ function App() {
             <Route
               path="/curriculums/:currID/courses/:courseID/program/:programID/profile"
               element={<PHTab />}
+            />
+            <Route
+              path="/coaep"
+              element={<PDF />}
             />
             <Route path="/curriculums/:currID/courses/:courseID/sections/:sectionID/coaep" element={<PHData />} />
             <Route path="/courses" element={<CourseSelection />} />

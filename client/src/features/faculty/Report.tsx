@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import RecommendationInput from "./RecommendationInput";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import { PDF } from "../pdf/PDF";
 
 export default function Report() {
   const { courseID } = useParams<{ courseID: string }>()
@@ -160,7 +160,7 @@ At least ${ilo.AssessmentTool.TargetPopulation}% of enrolled students with a rat
             )}
           </TableBody>
         </Table>
-        <Button>Export as PDF</Button>
+        <PDF />
       </div >
     </>
   )
