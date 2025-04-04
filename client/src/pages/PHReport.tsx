@@ -27,7 +27,8 @@ export default function PHReport() {
               <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Course Outcome Statement</TableHead>
               <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Intended Learning Outcome Statement</TableHead>
               <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Assessment Tool</TableHead>
-              <TableHead colSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Performance Target</TableHead>
+              <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Performance Target</TableHead>
+              <TableHead colSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Performance Data</TableHead>
               <TableHead rowSpan={2} className="border text-black text-center hover:bg-[#CBD2DB]">Evaluations</TableHead>
             </TableRow>
             <TableRow>
@@ -70,6 +71,9 @@ export default function PHReport() {
                             <TableRow key={ilo.ID}>
                               <TableCell className="border">{ilo.Statement}</TableCell>
                               <TableCell className="border text-left">{ilo.AssessmentTool.Tool}</TableCell>
+                              <TableCell className="border text-left">{`
+At least 80% of enrolled students with a rating of at least 60% of the total score
+                        `}</TableCell>
                               <TableCell className="border text-center">
                                 {`${data?.total_passed}/${data?.total_population}`}
                               </TableCell>
