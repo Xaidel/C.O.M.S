@@ -231,6 +231,6 @@ func (StudentController) DELETE(ctx *gin.Context) {
 	}
 
 	lib.Database.Model(&student).Association("Sections").Delete(&section)
-
+	lib.Database.Where("section_id = ? AND student_id = ?", request.SectionID, request.UserID).Delete(&models.ILOScore{})
 	ctx.JSON(http.StatusNoContent, gin.H{})
 }
