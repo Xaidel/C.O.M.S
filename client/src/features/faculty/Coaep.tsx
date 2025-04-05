@@ -36,7 +36,7 @@ export default function Coaep() {
   const coData: COAEP = data?.coaep
   const coDataID = coData?.ID
   const { mutate: addPerformanceData, isCreating } = useAddPerformanceData()
-  const { data: performanceData, isLoading: fetchingPerformanceData, refetch: fetchPerformanceData } = usePerformanceData(coDataID, parsedSectionID)
+  const { data: performanceData, refetch: fetchPerformanceData } = usePerformanceData(coDataID, parsedSectionID)
   const [reportModalOpen, setReportModalOpen] = useState(false)
 
 
@@ -118,14 +118,6 @@ export default function Coaep() {
     setScores((prevScores) => prevScores.map((score) =>
       score.student_id === student_id && score.coaep_id === coaep_id && score.ilo_id === ilo_id ? { ...score, value, status: undefined } : score
     ))
-  }
-
-  if (fetchingPerformanceData) {
-    toast({
-      title: "Loading...",
-      description: "Please wait",
-      duration: 500
-    })
   }
 
   if (fetchingCoaep || fetchingClasslist || fetchingCriteria) return <LoadingState />
@@ -234,12 +226,12 @@ export default function Coaep() {
                   <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
                     <DialogHeader>
                       <div className="flex justify-between">
-                      <div>
-                      <DialogTitle className="text-3xl">COAEP Report</DialogTitle>
-                      <DialogDescription>Course Outcome Assessment and Evaluation Plan Report for <span className="font-bold">{``}</span></DialogDescription>
-                      </div>
                         <div>
-                        <h1 className="font-bold">Doc Control No.</h1>
+                          <DialogTitle className="text-3xl">COAEP Report</DialogTitle>
+                          <DialogDescription>Course Outcome Assessment and Evaluation Plan Report for <span className="font-bold">{``}</span></DialogDescription>
+                        </div>
+                        <div>
+                          <h1 className="font-bold">Doc Control No.</h1>
                           <p>UNC-FM-VPAA-02</p>
                         </div>
                       </div>

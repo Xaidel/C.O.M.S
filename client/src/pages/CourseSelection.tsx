@@ -70,7 +70,10 @@ export default function CourseSelection() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button onClick={() => navigate(`/courses/${section.Course.ID}/assessment-plan/section/${section.ID}`)}>
+                        <Button onClick={() => {
+                          sessionStorage.setItem("selectedCourse", JSON.stringify(section))
+                          navigate(`/courses/${section.Course.ID}/assessment-plan/section/${section.ID}`)
+                        }}>
                           <ChevronRight />
                         </Button>
                       </TooltipTrigger>

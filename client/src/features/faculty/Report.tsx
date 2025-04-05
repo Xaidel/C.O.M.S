@@ -93,7 +93,7 @@ export default function Report() {
                       <TableCell className="border">{co.IntendedLearningOutcomes[0].Statement}</TableCell>
                       <TableCell className="border text-left">{co.IntendedLearningOutcomes[0].AssessmentTool.Tool}</TableCell>
                       <TableCell className="border text-left">{`
-At least 80% of enrolled students with a rating of at least 60% of the total score
+                        At least 80% of enrolled students with a rating of at least 60% of the total score
                         `}</TableCell>
                       <TableCell className="border text-center text-neutral-400">
                         {(evaluations?.res[0]?.total_passed !== 0 && evaluations!.res[0]?.total_population > 0)
@@ -160,7 +160,7 @@ At least ${ilo.AssessmentTool.TargetPopulation}% of enrolled students with a rat
             )}
           </TableBody>
         </Table>
-        <PDF />
+        <PDF cos={coaep!.coaep!.CourseOutcomes} evaluations={evaluations!.res} />
       </div >
     </>
   )
