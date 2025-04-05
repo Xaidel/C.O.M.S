@@ -7,9 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function AssessmentPlan() {
   const navigate = useNavigate()
   const selectedCourse = sessionStorage.getItem("selectedCourse")
-
   const { Course } = selectedCourse ? JSON.parse(selectedCourse) : null
-  console.log(Course)
   return (
     <>
       <div>

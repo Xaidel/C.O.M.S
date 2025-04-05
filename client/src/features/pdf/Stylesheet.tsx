@@ -3,7 +3,7 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     width: "100%",
-    padding: "20px",
+    paddingBottom: "10px",
   },
   text: {
     flexDirection: "column",
@@ -65,6 +65,26 @@ export const tables = StyleSheet.create({
   tableCellHeader: {
     fontWeight: "bold",
     fontSize: 8,
+  },
+  coContainer: {
+    flexDirection: "row",
+  },
+  coCol: {
+    flexDirection: "row",
+    borderBottomColor: "#000",
+    width: "23.35%",
+    borderRightWidth: 1,
+    textAlign: "left"
+  },
+  coCell: {
+    fontSize: 8,
+    padding: 5,
+    margin: "auto"
+  },
+  iloCOl: {
+    flexDirection: "column",
+    fontSize: 8,
+    padding: 5,
   },
 })
 
