@@ -30,16 +30,12 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     fontSize: "0.6rem",
-    paddingLeft: "25px",
-    paddingRight: "25px",
     marginBottom: "5px",
   }
 });
 
 export const tables = StyleSheet.create({
   table: {
-    marginLeft: 20,
-    marginRight: 20,
     display: "flex",
     width: "auto",
     borderStyle: "solid",
