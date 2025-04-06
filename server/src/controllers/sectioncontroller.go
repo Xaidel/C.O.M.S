@@ -44,7 +44,7 @@ func (SectionController) GetByFaculty(ctx *gin.Context) {
 	}
 
 	var sections []models.Section
-	if err := lib.Database.Preload("Course").Preload("Curriculum").Preload("Faculty.User").Find(&sections, "faculty_key = ?", id).Error; err != nil {
+	if err := lib.Database.Preload("Course").Preload("Curriculum.Program.ProgramHead.User").Preload("Faculty.User").Find(&sections, "faculty_key = ?", id).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find requested data"})
 		return
 	}

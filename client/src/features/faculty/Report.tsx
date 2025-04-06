@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { IntendedLearningOutcomes, Recommendation } from "@/types/Interface";
+import { IntendedLearningOutcomes, Period, Recommendation } from "@/types/Interface";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { Fragment } from "react/jsx-runtime";
@@ -10,7 +10,26 @@ import { toast } from "@/hooks/use-toast";
 import RecommendationInput from "./RecommendationInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { PDF } from "../pdf/PDF";
+import { useUser } from "../auth/useUser";
+import { useCurrentPeriod } from "../auth/useCurrentPeriod";
+import { Button } from "@/components/ui/button";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
+const formatYear = (current: Period) => {
+  return ` 20${current.School_Year.slice(0, 2)}-20${current.School_Year.slice(2)}`;
+};
+
+const formatSem = (current: Period) => {
+  let formattedSem;
+  if (current.Semester === 1) {
+    formattedSem = `${current?.Semester}st Semester`;
+  } else if (current.Semester === 2) {
+    formattedSem = `${current?.Semester}nd Semester`;
+  } else {
+    formattedSem = `Summer Semester`;
+  }
+  return formattedSem
+}
 export default function Report() {
   const { courseID } = useParams<{ courseID: string }>()
   const [recommendationInput, setRecommendationInput] = useState<Recommendation | null>(null)
@@ -21,6 +40,29 @@ export default function Report() {
   const { data: coaep, isLoading: fetchingCoaep } = useCOAEPByCourse(parsedCourseID)
   const { data: evaluations, isLoading: fetchingEval, error } = useEvaluation(coaep?.coaep.ID || 0, parsedSectionID || 0)
   const { mutate: addRecommendation, isCreating } = useAddRecommendation(parsedSectionID)
+  const selectedCourse = sessionStorage.getItem("selectedCourse")
+  const selectedCourseObj = selectedCourse ? JSON.parse(selectedCourse) : null
+  let phName;
+  if (selectedCourse) {
+    const { User } = selectedCourseObj.Curriculum.Program.ProgramHead
+    const middleName: string = User.Middlename
+    const initial = middleName ? `${middleName.charAt(0)}.` : ""
+    phName = `${User.Firstname} ${initial} ${User.Lastname}`
+  }
+  const { currentUser } = useUser()
+  const { User } = currentUser?.role_info
+  const middleInitial = User?.Middlename !== undefined ? `${User?.Middlename.charAt(0)}.` : ""
+  const fullname = `${User?.Firstname} ${middleInitial} ${User.Lastname}`
+  const selected = sessionStorage.getItem("selectedCourse")
+  const parsedSelected = selected ? JSON.parse(selected) : null
+  const { Course } = parsedSelected
+  const { response } = useCurrentPeriod()
+  let currentYear;
+  let currentSem
+  if (response?.current_period) {
+    currentYear = formatYear(response?.current_period)
+    currentSem = formatSem(response?.current_period)
+  }
   const queryClient = useQueryClient()
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -160,7 +202,26 @@ At least ${ilo.AssessmentTool.TargetPopulation}% of enrolled students with a rat
             )}
           </TableBody>
         </Table>
-        <PDF cos={coaep!.coaep!.CourseOutcomes} evaluations={evaluations!.res} />
+        <div className="w-full flex justify-end">
+          <PDFDownloadLink
+            document={
+              <PDF
+                cos={coaep!.coaep!.CourseOutcomes}
+                evaluations={evaluations!.res}
+                programHeadName={phName!}
+                currentYear={currentYear!}
+                currentSem={currentSem!}
+                fullname={fullname}
+                Course={Course}
+              />
+            }
+            fileName={`Course Outcome Assessment & Evaluation Plan ${Course.Course_Name} -- ${fullname}`}
+          >
+            {({ loading }) =>
+              loading ? "Loading Documents" : <Button >Download PDF</Button>
+            }
+          </PDFDownloadLink>
+        </div>
       </div >
     </>
   )
