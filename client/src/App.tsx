@@ -25,6 +25,8 @@ import PHSection from "./pages/PHSection.tsx";
 import PHCourseTab from "./pages/PHCourseTab.tsx";
 import PerformanceData from "./pages/PerformanceData.tsx";
 import StudentPerformance from "./pages/StudentPerformance.tsx";
+import Plan from "./features/faculty/Plan.tsx";
+import Coaep from "./pages/Coaep.tsx";
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -90,6 +92,7 @@ function App() {
             <Route path="/courses/:courseID/assessment-plan/section/:sectionID" element={<AssessmentPlan />} />
             <Route path="/performance-data" element={<PerformanceData />} />
             <Route path="/performance-data/program/:programID/course/:courseID" element={<StudentPerformance />} />
+            <Route path="/coaep" element={<Coaep />} />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="*" element={<NotFound />} />

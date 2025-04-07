@@ -24,7 +24,6 @@ export default function CoaepTabContent() {
     );
     setCourseName(selectedCourse?.Course_Name.toUpperCase() || "");
   }, [courseID, courses]);
-
   return (
     <>
       <TabsContent value="co">
