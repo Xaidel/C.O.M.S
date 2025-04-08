@@ -13,7 +13,8 @@ import { PDF } from "../pdf/PDF";
 import { useUser } from "../auth/useUser";
 import { useCurrentPeriod } from "../auth/useCurrentPeriod";
 import { Button } from "@/components/ui/button";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
+import { saveAs } from 'file-saver'
 
 const formatYear = (current: Period) => {
   return ` 20${current.School_Year.slice(0, 2)}-20${current.School_Year.slice(2)}`;
@@ -59,6 +60,27 @@ export default function Report() {
   const { response } = useCurrentPeriod()
   let currentYear;
   let currentSem
+  const handleDownload = async () => {
+    await queryClient.invalidateQueries({ queryKey: [`${parsedSectionID}-evaluation`] })
+
+    const doc = (
+      <PDF
+        cos={coaep!.coaep!.CourseOutcomes}
+        evaluations={evaluations!.res}
+        programHeadName={phName!}
+        currentYear={currentYear!}
+        currentSem={currentSem!}
+        fullname={fullname}
+        Course={Course}
+      />
+    )
+
+    const blob = await pdf(doc).toBlob()
+    console.log(blob)
+    saveAs(blob, `Course Outcome Assessment & Evaluation Plan ${Course.Course_Name} -- ${fullname}.pdf`)
+
+
+  }
   if (response?.current_period) {
     currentYear = formatYear(response?.current_period)
     currentSem = formatSem(response?.current_period)
@@ -91,7 +113,7 @@ export default function Report() {
             description: "Recommendation saved",
             duration: 1500
           })
-          queryClient.invalidateQueries({ queryKey: [`${parsedSectionID}-recoms`] })
+          queryClient.invalidateQueries({ queryKey: [`${parsedSectionID}-evaluation` || ""] })
         }
       })
     }
@@ -203,24 +225,11 @@ At least ${ilo.AssessmentTool.TargetPopulation}% of enrolled students with a rat
           </TableBody>
         </Table>
         <div className="w-full flex justify-end">
-          <PDFDownloadLink
-            document={
-              <PDF
-                cos={coaep!.coaep!.CourseOutcomes}
-                evaluations={evaluations!.res}
-                programHeadName={phName!}
-                currentYear={currentYear!}
-                currentSem={currentSem!}
-                fullname={fullname}
-                Course={Course}
-              />
-            }
-            fileName={`Course Outcome Assessment & Evaluation Plan ${Course.Course_Name} -- ${fullname}`}
+          <Button
+            onClick={handleDownload}
           >
-            {({ loading }) =>
-              loading ? "Loading Documents" : <Button >Download PDF</Button>
-            }
-          </PDFDownloadLink>
+            Download PDF
+          </Button>
         </div>
       </div >
     </>
