@@ -81,7 +81,7 @@ export default function COTab({ courseName, navigate }: TabProps) {
   return (
     <>
       <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
-        <Button variant="ghost" onClick={() => navigate("/courses")}>
+        <Button variant="ghost" onClick={() => navigate("/coaep/course")}>
           <CircleArrowLeft />
         </Button>
         {courseName}
@@ -140,8 +140,8 @@ export default function COTab({ courseName, navigate }: TabProps) {
                               >
                                 {field.value
                                   ? levels.find(
-                                      (level) => level.value === field.value,
-                                    )?.label
+                                    (level) => level.value === field.value,
+                                  )?.label
                                   : "Select CO level"}
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                               </Button>
