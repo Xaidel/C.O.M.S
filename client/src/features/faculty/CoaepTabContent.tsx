@@ -18,11 +18,9 @@ export default function CoaepTabContent() {
   const [courseName, setCourseName] = useState("");
 
   useEffect(() => {
-    const parsedCourseID = parseInt(courseID || "", 10);
-    const selectedCourse = courses?.find(
-      (course) => course.ID === parsedCourseID,
-    );
-    setCourseName(selectedCourse?.Course_Name.toUpperCase() || "");
+    const course = sessionStorage.getItem("selectedCourse")
+    const selectedCourse = course ? JSON.parse(course) : null
+    setCourseName(selectedCourse.Course.Course_Name.toUpperCase() || "");
   }, [courseID, courses]);
   return (
     <>

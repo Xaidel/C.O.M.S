@@ -8,7 +8,7 @@ export default function Coaep() {
   return (
     <>
       <div>
-        <AppLabel currentPage="Course Outcome Assessment and Evaluation Plan" />
+        <AppLabel currentPage="Course Outcome Statements" />
       </div>
       <Tabs defaultValue="co" className="w-full flex flex-col justify-center">
         <TabsList className="h-auto p-0 bg-transparent gap-8">
