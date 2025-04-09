@@ -64,8 +64,14 @@ func (COAEPController) POST(ctx *gin.Context) {
 		return
 	}
 	var course models.Course
-	if err := lib.Database.FirstOrCreate(&course, coaepRequest.CourseID).Error; err != nil {
+	if err := lib.Database.Preload("Coeaps", "period_id = ?", coaepRequest.PeriodID).
+		First(&course, coaepRequest.CourseID).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if len(course.Coeaps) > 0 {
+		ctx.JSON(http.StatusOK, gin.H{"coaep": course.Coeaps[0]})
 		return
 	}
 
@@ -73,9 +79,14 @@ func (COAEPController) POST(ctx *gin.Context) {
 		PeriodID: coaepRequest.PeriodID,
 	}
 
-	coaep.Courses = append(coaep.Courses, &course)
-	if err := lib.Database.FirstOrCreate(&coaep, models.Coeap{PeriodID: coaep.PeriodID}).Error; err != nil {
+	if err := lib.Database.Create(&coaep).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := lib.Database.Model(&coaep).Association("Courses").Append(&course)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create coaep"})
 		return
 	}
 	ctx.JSON(http.StatusCreated, gin.H{"coaep": coaep})
