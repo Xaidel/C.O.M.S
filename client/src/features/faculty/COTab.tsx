@@ -28,7 +28,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -43,7 +43,10 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Textarea } from "@/components/ui/textarea";
-
+import { useCOAEPByCourse } from "./useCOAEPByCourse";
+import { useAddCOAEP } from "./useAddCOAEP";
+import { useQueryClient } from "@tanstack/react-query";
+import { CurrentPeriodResponse, Period } from "@/types/Interface";
 interface TabProps {
   courseName: string;
   navigate: NavigateFunction;
@@ -66,7 +69,15 @@ const levels = [
 ];
 
 export default function COTab({ courseName, navigate }: TabProps) {
+  const queryClient = useQueryClient()
+  const currentPeriod: CurrentPeriodResponse | undefined = queryClient.getQueryData(["current-period"])
+  let periodID
   const [openLevel, setOpenLevel] = useState(false);
+  const selectedCourse = sessionStorage.getItem("selectedCourse")
+  const course = JSON.parse(selectedCourse || "")
+  const parsedCourseID = course.Course.ID
+  const { data: coaep, isLoading, error } = useCOAEPByCourse(parsedCourseID)
+  const { mutate: addCOAEP } = useAddCOAEP()
   const addCoForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -75,9 +86,28 @@ export default function COTab({ courseName, navigate }: TabProps) {
     },
   });
 
+  useEffect(() => {
+    if (!coaep) {
+      periodID = currentPeriod?.current_period ? currentPeriod.current_period?.ID : 0
+      console.log(currentPeriod)
+      addCOAEP({ courseID: parsedCourseID, periodID }, {
+        onError: () => {
+          console.log("Error")
+        },
+        onSuccess: () => {
+          console.log("Sucess")
+        }
+      })
+    } else {
+      console.log("Test")
+    }
+  }, [coaep, currentPeriod])
+
   function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
   }
+  if (isLoading) return
+  if (error) return
   return (
     <>
       <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
