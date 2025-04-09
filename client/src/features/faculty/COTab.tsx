@@ -46,7 +46,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { useAddCOAEP } from "./useAddCOAEP";
 import { useQueryClient } from "@tanstack/react-query";
-import { CurrentPeriodResponse, Period } from "@/types/Interface";
+import { CurrentPeriodResponse } from "@/types/Interface";
 interface TabProps {
   courseName: string;
   navigate: NavigateFunction;
