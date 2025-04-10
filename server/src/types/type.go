@@ -61,6 +61,7 @@ var CoaepRequest struct {
 }
 
 var CourseOutcomeRequest struct {
+	Level     string `json:"level" binding:"required"`
 	Statement string `json:"statement" binding:"required"`
 }
 var IntendedLearningOutcomeRequest struct {

@@ -47,6 +47,8 @@ import { useCOAEPByCourse } from "./useCOAEPByCourse";
 import { useAddCOAEP } from "./useAddCOAEP";
 import { useQueryClient } from "@tanstack/react-query";
 import { CurrentPeriodResponse } from "@/types/Interface";
+import { useAddCO } from "./useAddCO";
+
 interface TabProps {
   courseName: string;
   navigate: NavigateFunction;
@@ -78,6 +80,7 @@ export default function COTab({ courseName, navigate }: TabProps) {
   const parsedCourseID = course.Course.ID
   const { data: coaep, isLoading, error } = useCOAEPByCourse(parsedCourseID)
   const { mutate: addCOAEP, isCreating } = useAddCOAEP()
+  const { mutate: addCO } = useAddCO()
   const addCoForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -94,14 +97,21 @@ export default function COTab({ courseName, navigate }: TabProps) {
         console.log(e)
       },
       onSuccess: () => {
-        console.log("Sucess")
         queryClient.invalidateQueries({ queryKey: [`coaep-${parsedCourseID}`] })
       }
     })
   }
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+    const planID = coaep?.coaep?.ID || 0
+    addCO({ level: data.level, statement: data.statement, planID }, {
+      onError: (e) => {
+        console.log(e)
+      },
+      onSuccess: () => {
+        console.log("Success")
+      }
+    })
   }
   if (!coaep) return <div className="h-[40rem] w-full flex items-center justify-center">
     <Button onClick={handleGenerate}>
@@ -110,7 +120,6 @@ export default function COTab({ courseName, navigate }: TabProps) {
   </div>
   if (isLoading) return
   if (error) return
-  console.log(coaep)
   return (
     <>
       <div className="flex justify-between mb-6 items-center">
@@ -125,7 +134,7 @@ export default function COTab({ courseName, navigate }: TabProps) {
       <DataTable
         resource="Course Outcomes"
         columns={CoaepBaseColumn}
-        data={[]}
+        data={coaep.coaep.CourseOutcomes}
       />
       <div className="mt-4 flex justify-start gap-3">
         <Button variant="outline">

@@ -79,6 +79,7 @@ func (CourseOutcomeController) POST(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide the Course Outcome Assessment and Evaluation Plan"})
 		return
 	}
+
 	coRequest := types.CourseOutcomeRequest
 	if err := ctx.ShouldBindJSON(&coRequest); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -93,6 +94,7 @@ func (CourseOutcomeController) POST(ctx *gin.Context) {
 	}
 
 	co := models.CourseOutcome{
+		Level:     coRequest.Level,
 		Statement: coRequest.Statement,
 	}
 
