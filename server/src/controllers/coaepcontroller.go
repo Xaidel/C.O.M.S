@@ -63,33 +63,41 @@ func (COAEPController) POST(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	var course models.Course
-	if err := lib.Database.Preload("Coeaps", "period_id = ?", coaepRequest.PeriodID).
-		First(&course, coaepRequest.CourseID).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	if err := lib.Database.First(&course, coaepRequest.CourseID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
 		return
 	}
 
-	if len(course.Coeaps) > 0 {
-		ctx.JSON(http.StatusOK, gin.H{"coaep": course.Coeaps[0]})
+	var similarCourse models.Course
+
+	err := lib.Database.
+		Preload("Coeaps", "period_id = ?", coaepRequest.PeriodID).
+		Where("course_name = ?", coaepRequest.CourseName).First(&similarCourse).Error
+
+	if err == nil && len(similarCourse.Coeaps) > 0 {
+		similarCoaep := similarCourse.Coeaps[0]
+		if err := lib.Database.Model(&similarCoaep).Association("Courses").Append(&course); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"errpr": err.Error()})
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"coaep": similarCoaep})
 		return
 	}
 
-	coaep := models.Coeap{
+	newCoaep := models.Coeap{
 		PeriodID: coaepRequest.PeriodID,
 	}
-
-	if err := lib.Database.Create(&coaep).Error; err != nil {
+	if err := lib.Database.Create(&newCoaep).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create new Coaep"})
+		return
+	}
+	if err := lib.Database.Model(&newCoaep).Association("Courses").Append(&course); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	err := lib.Database.Model(&coaep).Association("Courses").Append(&course)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create coaep"})
-		return
-	}
-	ctx.JSON(http.StatusCreated, gin.H{"coaep": coaep})
+	ctx.JSON(http.StatusCreated, gin.H{"coaep": newCoaep})
 }
 
 func (COAEPController) DELETE(ctx *gin.Context) {

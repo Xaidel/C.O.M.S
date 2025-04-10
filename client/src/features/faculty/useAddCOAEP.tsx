@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 
 export function useAddCOAEP() {
   const mutation = useMutation({
-    mutationFn: ({ courseID, periodID }: { courseID: number, periodID: number }) => postCOAEP(courseID, periodID),
+    mutationFn: ({ courseID, periodID, courseName }: { courseID: number, periodID: number, courseName: string }) => postCOAEP(courseID, periodID, courseName),
   })
   return {
     ...mutation,

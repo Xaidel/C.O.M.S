@@ -55,8 +55,9 @@ var CourseRequest struct {
 }
 
 var CoaepRequest struct {
-	PeriodID uint `json:"period_id" binding:"required"`
-	CourseID uint `json:"course_id" binding:"required"`
+	PeriodID   uint   `json:"period_id" binding:"required"`
+	CourseName string `json:"course_name" binding:"required"`
+	CourseID   uint   `json:"course_id" binding:"required"`
 }
 
 var CourseOutcomeRequest struct {

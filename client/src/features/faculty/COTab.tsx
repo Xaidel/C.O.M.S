@@ -77,7 +77,7 @@ export default function COTab({ courseName, navigate }: TabProps) {
   const course = JSON.parse(selectedCourse || "")
   const parsedCourseID = course.Course.ID
   const { data: coaep, isLoading, error } = useCOAEPByCourse(parsedCourseID)
-  const { mutate: addCOAEP } = useAddCOAEP()
+  const { mutate: addCOAEP, isCreating } = useAddCOAEP()
   const addCoForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -86,35 +86,41 @@ export default function COTab({ courseName, navigate }: TabProps) {
     },
   });
 
-  useEffect(() => {
-    if (!coaep) {
-      periodID = currentPeriod?.current_period ? currentPeriod.current_period?.ID : 0
-      console.log(currentPeriod)
-      addCOAEP({ courseID: parsedCourseID, periodID }, {
-        onError: () => {
-          console.log("Error")
-        },
-        onSuccess: () => {
-          console.log("Sucess")
-        }
-      })
-    } else {
-      console.log("Test")
-    }
-  }, [coaep, currentPeriod])
+  const handleGenerate = async () => {
+    periodID = currentPeriod?.current_period ? currentPeriod.current_period?.ID : 0
+    const courseName = course.Course.Course_Name
+    addCOAEP({ courseID: parsedCourseID, periodID, courseName }, {
+      onError: (e) => {
+        console.log(e)
+      },
+      onSuccess: () => {
+        console.log("Sucess")
+        queryClient.invalidateQueries({ queryKey: [`coaep-${parsedCourseID}`] })
+      }
+    })
+  }
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
   }
+  if (!coaep) return <div className="h-[40rem] w-full flex items-center justify-center">
+    <Button onClick={handleGenerate}>
+      {(isCreating) ? "Generating COAEP" : "Generate COAEP"}
+    </Button>
+  </div>
   if (isLoading) return
   if (error) return
+  console.log(coaep)
   return (
     <>
-      <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
-        <Button variant="ghost" onClick={() => navigate("/coaep/course")}>
-          <CircleArrowLeft />
-        </Button>
-        {courseName}
+      <div className="flex justify-between mb-6 items-center">
+        <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937]">
+          <Button variant="ghost" onClick={() => navigate("/coaep/course")}>
+            <CircleArrowLeft />
+          </Button>
+          {courseName}
+        </div>
+        <Button>Available COAEP</Button>
       </div>
       <DataTable
         resource="Course Outcomes"
