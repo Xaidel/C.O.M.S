@@ -64,40 +64,31 @@ func (COAEPController) POST(ctx *gin.Context) {
 		return
 	}
 
-	var course models.Course
-	if err := lib.Database.First(&course, coaepRequest.CourseID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found"})
+	var courses []models.Course
+	if err := lib.Database.Where("course_name = ?", coaepRequest.CourseName).Find(&courses).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find courses"})
 		return
 	}
 
-	var similarCourse models.Course
-
-	err := lib.Database.
-		Preload("Coeaps", "period_id = ?", coaepRequest.PeriodID).
-		Where("course_name = ?", coaepRequest.CourseName).First(&similarCourse).Error
-
-	if err == nil && len(similarCourse.Coeaps) > 0 {
-		similarCoaep := similarCourse.Coeaps[0]
-		if err := lib.Database.Model(&similarCoaep).Association("Courses").Append(&course); err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"errpr": err.Error()})
-			return
-		}
-		ctx.JSON(http.StatusOK, gin.H{"coaep": similarCoaep})
+	if len(courses) == 0 {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "No courses found with that name"})
 		return
 	}
 
-	newCoaep := models.Coeap{
+	coaep := models.Coeap{
 		PeriodID: coaepRequest.PeriodID,
 	}
-	if err := lib.Database.Create(&newCoaep).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create new Coaep"})
+	if err := lib.Database.Create(&coaep).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate COAEP"})
 		return
 	}
-	if err := lib.Database.Model(&newCoaep).Association("Courses").Append(&course); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+
+	if err := lib.Database.Model(&coaep).Association("Courses").Append(&courses); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to attach coaep to courses"})
 		return
 	}
-	ctx.JSON(http.StatusCreated, gin.H{"coaep": newCoaep})
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Success"})
 }
 
 func (COAEPController) DELETE(ctx *gin.Context) {
