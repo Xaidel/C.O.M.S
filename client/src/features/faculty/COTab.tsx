@@ -110,6 +110,7 @@ export default function COTab({ courseName, navigate }: TabProps) {
       },
       onSuccess: () => {
         console.log("Success")
+        queryClient.invalidateQueries({ queryKey: [`coaep-${parsedCourseID}`] })
       }
     })
   }
@@ -133,7 +134,12 @@ export default function COTab({ courseName, navigate }: TabProps) {
       </div>
       <DataTable
         resource="Course Outcomes"
-        columns={CoaepBaseColumn}
+        columns={[{
+          header: "No.",
+          cell: ({ row }) => (
+            <div>{row.index + 1}</div>
+          )
+        }, ...CoaepBaseColumn]}
         data={coaep.coaep.CourseOutcomes}
       />
       <div className="mt-4 flex justify-start gap-3">
