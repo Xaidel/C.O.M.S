@@ -29,7 +29,7 @@ export default function CoaepTabContent() {
       </TabsContent>
       <TabsContent value="ilo">
         <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
-          <Button variant="ghost" onClick={() => navigate("/coaep/courses")}>
+          <Button variant="ghost" onClick={() => navigate("/coaep/course")}>
             <CircleArrowLeft />
           </Button>
           {courseName}
