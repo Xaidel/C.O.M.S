@@ -51,11 +51,6 @@ export interface Coaep {
   ID: number;
 }
 
-export interface CourseOutcome {
-  Statement: string;
-  ID: number;
-}
-
 export interface Faculty {
   ID: number;
   User?: UserInfo;
@@ -168,6 +163,7 @@ export interface UploadErrorResponse {
 
 export interface CourseOutcome {
   Statement: string,
+  Level: string,
   IntendedLearningOutcomes: IntendedLearningOutcomes[]
   ID: number
 }
