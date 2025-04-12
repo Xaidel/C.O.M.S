@@ -8,7 +8,6 @@ import {
   Upload,
 } from "lucide-react";
 import { NavigateFunction } from "react-router-dom";
-import { CoaepBaseColumn } from "./CoaepBaseColumn";
 import {
   Dialog,
   DialogClose,
@@ -48,6 +47,7 @@ import { useAddCOAEP } from "./useAddCOAEP";
 import { useQueryClient } from "@tanstack/react-query";
 import { CurrentPeriodResponse } from "@/types/Interface";
 import { useAddCO } from "./useAddCO";
+import { Badge } from "@/components/ui/badge";
 
 interface TabProps {
   courseName: string;
@@ -139,7 +139,33 @@ export default function COTab({ courseName, navigate }: TabProps) {
           cell: ({ row }) => (
             <div>{row.index + 1}</div>
           )
-        }, ...CoaepBaseColumn]}
+        }, {
+          header: "Statement",
+          cell: ({ row }) => {
+            const level = row.original.Level.charAt(0)
+            let color;
+            switch (level) {
+              case "I": {
+                color = "#C8D2DA"
+                break;
+              }
+              case "E": {
+                color = "#ACB9C3"
+                break
+              }
+              case "D": {
+                color = "#8E9CA7"
+                break
+              }
+            }
+            return (
+              <div className="flex gap-2">
+                <Badge className="text-white" style={{ backgroundColor: color }}>{level}</Badge>
+                <p>{row.original.Statement}</p>
+              </div >
+            )
+          }
+        }]}
         data={coaep.coaep.CourseOutcomes}
       />
       <div className="mt-4 flex justify-start gap-3">
