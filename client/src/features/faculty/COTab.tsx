@@ -130,7 +130,6 @@ export default function COTab({ courseName, navigate }: TabProps) {
           </Button>
           {courseName}
         </div>
-        <Button>Available COAEP</Button>
       </div>
       <DataTable
         resource="Course Outcomes"
