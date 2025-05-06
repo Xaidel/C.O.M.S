@@ -49,24 +49,30 @@ var AssessmentTools = []models.AssessmentTool{
 var CourseOutcomes = []models.CourseOutcome{
 	{
 		Statement: "Demonstrate how to  implement the key object-oriented programming (OOP) concepts,  principles, and features using OOP language",
+		Level:     "Introductory",
 	},
 	{
 		Statement: "Illustrate object-oriented models and prototype designs for program solutions by conducting simple object-oriented analysis",
+		Level:     "Demonstrative",
 	},
 	{
 		Statement: "Develop object-oriented and graphical user interface (GUI) applications integrated with relational databases",
+		Level:     "Enabling",
 	},
 }
 
 var CourseOutcomes1 = []models.CourseOutcome{
 	{
 		Statement: "Demonstrate how to  implement the key object-oriented programming (OOP) concepts,  principles, and features using OOP language",
+		Level:     "Introductory",
 	},
 	{
 		Statement: "Illustrate object-oriented models and prototype designs for program solutions by conducting simple object-oriented analysis",
+		Level:     "Demonstrative",
 	},
 	{
 		Statement: "Develop object-oriented and graphical user interface (GUI) applications integrated with relational databases",
+		Level:     "Enabling",
 	},
 }
 
