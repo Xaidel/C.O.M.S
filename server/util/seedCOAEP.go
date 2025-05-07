@@ -53,11 +53,15 @@ var CourseOutcomes = []models.CourseOutcome{
 	},
 	{
 		Statement: "Illustrate object-oriented models and prototype designs for program solutions by conducting simple object-oriented analysis",
+		Level:     "Enabling",
+	},
+	{
+		Statement: "Develop object-oriented and graphical user interface (GUI) applications integrated with relational databases",
 		Level:     "Demonstrative",
 	},
 	{
 		Statement: "Develop object-oriented and graphical user interface (GUI) applications integrated with relational databases",
-		Level:     "Enabling",
+		Level:     "Demonstrative",
 	},
 }
 
@@ -68,11 +72,15 @@ var CourseOutcomes1 = []models.CourseOutcome{
 	},
 	{
 		Statement: "Illustrate object-oriented models and prototype designs for program solutions by conducting simple object-oriented analysis",
+		Level:     "Enabling",
+	},
+	{
+		Statement: "Develop object-oriented and graphical user interface (GUI) applications integrated with relational databases",
 		Level:     "Demonstrative",
 	},
 	{
 		Statement: "Develop object-oriented and graphical user interface (GUI) applications integrated with relational databases",
-		Level:     "Enabling",
+		Level:     "Demonstrative",
 	},
 }
 
