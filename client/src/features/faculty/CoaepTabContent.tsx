@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { CoaepBaseColumn } from "./CoaepBaseColumn";
 import { DataTable } from "@/components/ui/datatable";
 import COTab from "./COTab";
+import ILOTab from "./ILOTab";
 
 export default function CoaepTabContent() {
   const navigate = useNavigate();
@@ -28,25 +29,7 @@ export default function CoaepTabContent() {
         <COTab courseName={courseName} navigate={navigate} />
       </TabsContent>
       <TabsContent value="ilo">
-        <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
-          <Button variant="ghost" onClick={() => navigate("/coaep/course")}>
-            <CircleArrowLeft />
-          </Button>
-          {courseName}
-        </div>
-        <DataTable
-          resource="Course Outcomes"
-          columns={[
-            ...CoaepBaseColumn,
-            {
-              header: "Blooms Taxonomy Level",
-            },
-            {
-              header: "Intended Learning Outcomes",
-            },
-          ]}
-          data={[]}
-        />
+        <ILOTab courseName={courseName} navigate={navigate} />
       </TabsContent>
       <TabsContent value="at">
         <div className="flex justify-start gap-1 items-center text-xl font-bold text-[#1f2937] mb-6">
