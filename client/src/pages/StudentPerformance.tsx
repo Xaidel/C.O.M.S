@@ -93,6 +93,29 @@ export default function StudentPerformance() {
 
   }, [coaep?.coaep?.CourseOutcomes])
 
+  const finalGrade = useMemo(() => {
+    if (!coaep?.coaep?.CourseOutcomes?.length) return 0;
+
+    return coaep.coaep.CourseOutcomes.reduce((acc, co) => {
+      const weight = courseOutcomeWeights[co.ID] || 0; // percentage, e.g., 40
+
+      const grades = co.IntendedLearningOutcomes.flatMap((ilo) => {
+        const score = scores.find((s) => s.ilo_id === ilo.ID);
+        return criteriaByILO[ilo.ID]?.map((crit) => {
+          const percent = ((score?.value || 0) / crit.Criteria) * 100;
+          return percent >= 60
+            ? ((percent - 60) / 1.6) + 75
+            : (percent / 4) + 60;
+        }) || [];
+      });
+
+      if (grades.length === 0) return acc;
+
+      const avgGrade = grades.reduce((a, b) => a + b, 0) / grades.length
+      return acc + (avgGrade * (weight / 100));
+    }, 0);
+  }, [coaep?.coaep?.CourseOutcomes, courseOutcomeWeights, scores, criteriaByILO]);
+
   if (fetchingCoaep || fetchingPerformanceData || fetchingClasslist) return
   if (fetchingCoaepError) return
   return (
@@ -112,12 +135,14 @@ export default function StudentPerformance() {
           <TableRow className="font-bold hover:bg-[CBD2DB] text-md">
             <TableHead className="text-[#1F2937]">Course Outcome</TableHead>
             <TableHead className="text-[#1F2937]">Weight</TableHead>
+            <TableHead className="text-[#1F2937]">GRADE</TableHead>
             <TableHead className="text-[#1F2937]">ILO</TableHead>
             <TableHead className="text-[#1F2937]">P.PER</TableHead>
             <TableHead className="text-[#1F2937]">T.SCORE</TableHead>
             <TableHead className="text-[#1F2937]">SCORE</TableHead>
             <TableHead className="text-[#1F2937]">GRADE</TableHead>
             <TableHead className="text-[#1F2937]">TRANSMUTED</TableHead>
+            <TableHead className="text-[#1F2937]">COMPUTED</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -136,9 +161,27 @@ export default function StudentPerformance() {
                       <TableCell rowSpan={co.IntendedLearningOutcomes.length} className="align-middle ">
                         {courseOutcomeWeights[co.ID]?.toFixed(0)}%
                       </TableCell>
+                      <TableCell rowSpan={co.IntendedLearningOutcomes.length} className="align-middle">
+                        {(() => {
+                          const computedGrades = co.IntendedLearningOutcomes.flatMap((ilo) => {
+                            const score = scores.find((sc) => sc.ilo_id === ilo.ID);
+                            return criteriaByILO[ilo.ID]?.map((crit) => {
+                              const grade = ((score?.value || 0) / crit.Criteria) * 100;
+                              return grade >= 60
+                                ? ((grade - 60) / 1.6) + 75
+                                : (grade / 4) + 60;
+                            }) || [];
+                          });
+
+                          const avg = computedGrades.reduce((a, b) => a + b, 0) / (computedGrades.length || 1);
+                          const color = avg >= 75 ? 'text-[#33D48F]' : 'text-red-400';
+
+                          return <span className={color}>{avg.toFixed(2)}</span>;
+                        })()}
+                      </TableCell>
                     </>
                   )}
-                  <TableCell className="">
+                  <TableCell>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div className="cursor-pointer">{`ILO ${index + 1}`}</div>
@@ -165,9 +208,7 @@ export default function StudentPerformance() {
                       const score = scores.find((sc) => sc.ilo_id === ilo.ID)
                       return (
                         <>
-                          <TableCell >
-                            {score ? `${score.value}` : <span className="text-gray-400 italic">No score </span>}
-                          </TableCell>
+                          {score ? `${score.value}` : <span className="text-gray-400 italic">No score </span>}
                         </>
                       )
                     })()}
@@ -197,13 +238,48 @@ export default function StudentPerformance() {
                         const finalGrade = grade >= 60
                           ? ((grade - 60) / 1.6) + 75
                           : (grade / 4) + 60
-                        return finalGrade.toFixed(0) // or `.toFixed(0)` if you want an integer
+                        return finalGrade.toFixed(0)
                       })
                       return (
                         <div>{gradeArray}%</div>
                       )
                     })()
                   }</TableCell>
+                  <TableCell className="">
+                    {(() => {
+                      const score = scores.find((sc) => sc.ilo_id === ilo.ID)
+                      const transmutedGrades = criteriaByILO[ilo.ID].map((crit) => {
+                        const grade = ((score?.value || 0) / crit.Criteria) * 100
+                        return grade >= 60
+                          ? ((grade - 60) / 1.6) + 75
+                          : (grade / 4) + 60
+                      })
+
+                      const avgTransmuted = (transmutedGrades.reduce((a, b) => a + b, 0) / (transmutedGrades.length || 1)).toFixed(0) as any
+                      const iloCount = co.IntendedLearningOutcomes.length
+                      let weight = 0
+
+                      if (iloCount === 1) {
+                        weight = 1
+                      } else if (iloCount === 2) {
+                        weight = index === 0 ? 0.5 : 0.5
+                      } else if (iloCount === 3) {
+                        weight = index === 0 ? 0.2 : index === 1 ? 0.3 : 0.5
+                      } else {
+                        if (index === 0) {
+                          weight = 0.2
+                        } else if (index === 1) {
+                          weight = 0.3
+                        } else {
+                          const rest = iloCount - 2
+                          weight = 0.5 / rest
+                        }
+                      }
+
+                      const computed = avgTransmuted * weight
+                      return <span>{computed.toFixed(2)}</span>
+                    })()}
+                  </TableCell>
                 </TableRow>
               ))}
             </Fragment>
@@ -212,7 +288,9 @@ export default function StudentPerformance() {
             <TableCell colSpan={2} className="text-right font-medium">
               Final Grade:
             </TableCell>
-            <TableCell className="text-center font-medium">Grade</TableCell>
+            <TableCell className="text-center font-medium">
+              <div className={finalGrade >= 75 ? "text-[#33D48F]" : "text-red-500"}>{finalGrade.toFixed(2)}</div>
+            </TableCell>
             <TableCell colSpan={8}></TableCell>
           </TableRow>
         </TableBody>
