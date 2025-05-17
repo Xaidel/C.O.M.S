@@ -162,6 +162,15 @@ export default function Coaep() {
                             </TooltipTrigger>
                             <TooltipContent className="max-w-[50rem]">
                               <p >{ilo.Statement}</p>
+                              <span className="font-bold">Performance Target: {" "}
+                                <span className="font-normal">
+                                  At least {" "}
+                                  <span className="font-bold">{ilo.AssessmentTool.TargetPopulation}%</span>
+                                  {" "}of enrolled students with a rating of at least {" "}
+                                  <span className="font-bold">{ilo.AssessmentTool.TargetScore}%</span>
+                                  {" "}of the total score.
+                                </span>
+                              </span>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
