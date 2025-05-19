@@ -1,7 +1,10 @@
-Course_Name,Statement,Level
-Introduction to Computing,This is the first CO,Introductory
-Introduction to Computing,This is the second CO,Enabling
-Introduction to Computing,This is the third CO,Demonstrative
-
-
-
+Course_Name,Course_Outcome_Statement,Intended_Learning_Outcome,Assessment_Tool,Target_Population,Target_Score,Level
+"Introduction to Computing","Identify the Java programming basics and fundamentals","Identify the basic program structure, elements, and control structures of a Java program","Objective Type Test",80,60,Introductory
+"Introduction to Computing","Identify the Java programming basics and fundamentals","Determine how to use pre-defined classes, string object, and wrapper classes","Objective Type Test",80,60,
+"Introduction to Computing","Identify the Java programming basics and fundamentals","Create program solutions using the java programming basics and fundamentals","OO-Programming Activity",80,50,
+"Introduction to Computing","Distinguish the basic concepts and principles of object-oriented programming and how these are implemented using Java","Identify the basic concepts and principles of object-oriented programming","Objective Type Test",80,60,Enabling
+"Introduction to Computing","Distinguish the basic concepts and principles of object-oriented programming and how these are implemented using Java","Determine the rules and procedures of implementing the basic concepts and principles of object-oriented programming in Java","Objective Type Test",80,60,
+"Introduction to Computing","Distinguish the basic concepts and principles of object-oriented programming and how these are implemented using Java","Create java program solutions applying the basic concepts and principles of object-oriented programming","OO-Programming Activity",80,50,
+"Introduction to Computing","Determine the basic operations on processing a collection of objects","Identify the basic concepts and operations of Java Array and ArrayList","Objective Type Test",80,60,Demonstrative
+"Introduction to Computing","Determine the basic operations on processing a collection of objects","Distinguish the different basic operations in creating and manipulating a collection of objects","Objective Type Test",80,60,
+"Introduction to Computing","Determine the basic operations on processing a collection of objects","Create a java program solution that process a collection of objects","OO-Programming Activity",80,50,

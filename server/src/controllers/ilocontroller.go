@@ -7,6 +7,7 @@ import (
 	"github.com/Xaidel/server/src/models"
 	"github.com/Xaidel/server/src/types"
 	"github.com/gin-gonic/gin"
+	"github.com/gocarina/gocsv"
 )
 
 type ILOController struct{}
@@ -79,4 +80,29 @@ func (ILOController) DELETE(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusNoContent, gin.H{})
+}
+
+func (ILOController) UploadILO(ctx *gin.Context) {
+	file, err := ctx.FormFile("file")
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File not found"})
+		return
+	}
+
+	var csvILO []struct {
+		Course_Name string `csv:"Course_Name"`
+		COStatement string `csv:"CO_Statement"`
+		Statement   string `csv:"Statement"`
+	}
+
+	uploadedFile, err := file.Open()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot open file"})
+		return
+	}
+
+	if err := gocsv.Unmarshal(uploadedFile, &csvILO); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse CSV"})
+		return
+	}
 }
