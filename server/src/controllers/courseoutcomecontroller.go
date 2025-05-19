@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/Xaidel/server/lib"
 	"github.com/Xaidel/server/src/models"
@@ -122,4 +124,85 @@ func (CourseOutcomeController) DELETE(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusNoContent, gin.H{})
+}
+
+func (CourseOutcomeController) UploadCO(ctx *gin.Context) {
+	file, err := ctx.FormFile("file")
+	periodID := ctx.Param("periodID")
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File not found"})
+		return
+	}
+	if periodID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide period ID"})
+		return
+	}
+
+	var csvCourses []struct {
+		Course_Name string `csv:"Course_Name"`
+		Statement   string `csv:"Statement"`
+		Level       string `csv:"Level"`
+	}
+	uploadedFile, err := file.Open()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot open file"})
+		return
+	}
+	if err := gocsv.Unmarshal(uploadedFile, &csvCourses); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse CSV"})
+		return
+	}
+
+	intPeriodID, err := strconv.ParseUint(periodID, 0, 64)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse period id"})
+		return
+	}
+
+	courseOutcomeMap := make(map[string][]models.CourseOutcome)
+
+	for _, row := range csvCourses {
+		outcome := models.CourseOutcome{
+			Statement: row.Statement,
+			Level:     row.Level,
+		}
+		courseOutcomeMap[row.Course_Name] = append(courseOutcomeMap[row.Course_Name], outcome)
+	}
+
+	for courseName, outcomes := range courseOutcomeMap {
+		var matchedCourses []*models.Course
+		if err := lib.Database.Where("course_name = ?", courseName).Find(&matchedCourses).Error; err != nil {
+			message := fmt.Sprintf("Failed to find courses named '%s'", courseName)
+			ctx.JSON(http.StatusNotFound, gin.H{"error": message})
+			return
+		}
+
+		if len(matchedCourses) == 0 {
+			message := fmt.Sprintf("No courses found with name '%s'", courseName)
+			ctx.JSON(http.StatusNotFound, gin.H{"error": message})
+			return
+		}
+
+		coeap := models.Coeap{
+			PeriodID: uint(intPeriodID),
+			Courses:  matchedCourses,
+		}
+
+		if err := lib.Database.Create(&coeap).Error; err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create COAEP"})
+			return
+		}
+
+		// Save each outcome with the CoeapID
+		for _, outcome := range outcomes {
+			outcome.CoeapID = &coeap.ID
+			if err := lib.Database.Create(&outcome).Error; err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save course outcome"})
+				return
+			}
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Course Outcomes uploaded successfully"})
 }

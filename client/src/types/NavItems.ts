@@ -19,16 +19,17 @@ export const ASSISTANT_DEAN_NAV_ITEMS = [
 ];
 export const PROGRAM_HEAD_NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/coaep/course", label: "Assessment Plan", icon: LayoutDashboard },
   {
     path: "/curriculums",
     subpaths: ["curriculums/:currID/courses"],
     label: "Curriculum Management",
     icon: FileSpreadsheet,
   },
+
 ];
 export const FACULTY_NAV_ITEMS = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { path: "/coaep/course", label: "Assessment Plan", icon: LayoutDashboard },
   { path: "/courses", label: "Reports", icon: BookOpenText },
 ];
 export const STUDENT_NAV_ITEMS = [

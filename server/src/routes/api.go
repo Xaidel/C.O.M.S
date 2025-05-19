@@ -109,7 +109,7 @@ func APIRoutes(router *gin.Engine) {
 			courseOutcome.GET("", controllers.CourseOutcome.GET)
 			courseOutcome.GET("/:id", controllers.CourseOutcome.GET)
 			courseOutcome.POST("/:planID", controllers.CourseOutcome.POST)
-			courseOutcome.POST("/upload/:planID", controllers.CourseOutcome.BatchProcessCO)
+			courseOutcome.POST("/upload/:periodID", controllers.CourseOutcome.UploadCO)
 			courseOutcome.DELETE("/:id", controllers.CourseOutcome.DELETE)
 		}
 		ilo := api.Group("/intended-learning-outcomes")
