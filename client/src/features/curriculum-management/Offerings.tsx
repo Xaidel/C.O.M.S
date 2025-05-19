@@ -1,12 +1,15 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import CurriculumFilter from "./CurriculumFilter";
 import UploadSections from "./UploadSections";
 import { useSections } from "./useSections";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import { Section } from "@/types/Interface";
+import { Button } from "@/components/ui/button";
+import { ChevronsRight } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 export default function Offerings() {
-
+  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const year = searchParams.get("year") || "1"
   const semester = searchParams.get("semester") || "1"
@@ -32,6 +35,7 @@ export default function Offerings() {
     }
   }, [sections?.sections])
 
+
   if (isLoading) return
   if (errorSections) return
   return (
@@ -52,6 +56,7 @@ export default function Offerings() {
             <TableHead className="text-black">Description</TableHead>
             <TableHead className="text-black">Unit</TableHead>
             <TableHead className="text-black">Assigned Faculty</TableHead>
+            <TableHead className="text-black"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -64,6 +69,20 @@ export default function Offerings() {
                 <TableCell>{section.Course.Course_Name}</TableCell>
                 <TableCell>{Number(section.Course.Lec_Unit) + Number(section.Course.Lab_Unit)}</TableCell>
                 <TableCell>{`${section.Faculty.User?.Lastname.toUpperCase()} ${section.Faculty.User?.Firstname.toUpperCase()}`}</TableCell>
+                <TableCell>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button onClick={() => navigate(`/curriculums/${currID}/courses/${section.Course.Course_No}/section/${section.ID}/profile`)}>
+                          <ChevronsRight />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View Report</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
               </TableRow>
             ))
           ) : (
