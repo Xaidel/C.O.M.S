@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -126,61 +125,47 @@ func (CourseOutcomeController) DELETE(ctx *gin.Context) {
 	ctx.JSON(http.StatusNoContent, gin.H{})
 }
 
+type CourseOutcomeCSVRow struct {
+	CourseName              string `csv:"Course_Name"`
+	CourseOutcomeStatement  string `csv:"Course_Outcome_Statement"`
+	IntendedLearningOutcome string `csv:"Intended_Learning_Outcome"`
+	AssessmentTool          string `csv:"Assessment_Tool"`
+	TargetPopulation        uint   `csv:"Target_Population"`
+	TargetScore             uint   `csv:"Target_Score"`
+	Level                   string `csv:"Level"`
+}
+
 func (CourseOutcomeController) UploadCO(ctx *gin.Context) {
 	file, err := ctx.FormFile("file")
 	periodID := ctx.Param("periodID")
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "File not found"})
-		return
-	}
-	if periodID == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Provide period ID"})
+	if err != nil || periodID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Missing file or period ID"})
 		return
 	}
 
-	var csvCourses []struct {
-		Course_Name string `csv:"Course_Name"`
-		Statement   string `csv:"Statement"`
-		Level       string `csv:"Level"`
-	}
-	uploadedFile, err := file.Open()
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot open file"})
-		return
-	}
-	if err := gocsv.Unmarshal(uploadedFile, &csvCourses); err != nil {
+	var rows []CourseOutcomeCSVRow
+	f, _ := file.Open()
+	defer f.Close()
+	if err := gocsv.Unmarshal(f, &rows); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse CSV"})
 		return
 	}
 
-	intPeriodID, err := strconv.ParseUint(periodID, 0, 64)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse period id"})
-		return
-	}
+	intPeriodID, _ := strconv.ParseUint(periodID, 10, 64)
 
-	courseOutcomeMap := make(map[string][]models.CourseOutcome)
-
-	for _, row := range csvCourses {
-		outcome := models.CourseOutcome{
-			Statement: row.Statement,
-			Level:     row.Level,
+	// Group: Course -> CourseOutcomeStatement -> Rows
+	grouped := make(map[string]map[string][]CourseOutcomeCSVRow)
+	for _, row := range rows {
+		if grouped[row.CourseName] == nil {
+			grouped[row.CourseName] = make(map[string][]CourseOutcomeCSVRow)
 		}
-		courseOutcomeMap[row.Course_Name] = append(courseOutcomeMap[row.Course_Name], outcome)
+		grouped[row.CourseName][row.CourseOutcomeStatement] = append(grouped[row.CourseName][row.CourseOutcomeStatement], row)
 	}
 
-	for courseName, outcomes := range courseOutcomeMap {
+	for courseName, coGroups := range grouped {
 		var matchedCourses []*models.Course
-		if err := lib.Database.Where("course_name = ?", courseName).Find(&matchedCourses).Error; err != nil {
-			message := fmt.Sprintf("Failed to find courses named '%s'", courseName)
-			ctx.JSON(http.StatusNotFound, gin.H{"error": message})
-			return
-		}
-
-		if len(matchedCourses) == 0 {
-			message := fmt.Sprintf("No courses found with name '%s'", courseName)
-			ctx.JSON(http.StatusNotFound, gin.H{"error": message})
+		if err := lib.Database.Where("course_name = ?", courseName).Find(&matchedCourses).Error; err != nil || len(matchedCourses) == 0 {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Course not found: " + courseName})
 			return
 		}
 
@@ -188,18 +173,42 @@ func (CourseOutcomeController) UploadCO(ctx *gin.Context) {
 			PeriodID: uint(intPeriodID),
 			Courses:  matchedCourses,
 		}
-
 		if err := lib.Database.Create(&coeap).Error; err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create COAEP"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create COEAP"})
 			return
 		}
 
-		// Save each outcome with the CoeapID
-		for _, outcome := range outcomes {
-			outcome.CoeapID = &coeap.ID
-			if err := lib.Database.Create(&outcome).Error; err != nil {
-				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save course outcome"})
+		for coStatement, groupedRows := range coGroups {
+			courseOutcome := models.CourseOutcome{
+				Statement: coStatement,
+				Level:     groupedRows[0].Level,
+				CoeapID:   &coeap.ID,
+			}
+			if err := lib.Database.Create(&courseOutcome).Error; err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save Course Outcome"})
 				return
+			}
+
+			for _, row := range groupedRows {
+				tool := models.AssessmentTool{
+					Tool:             row.AssessmentTool,
+					TargetPopulation: row.TargetPopulation,
+					TargetScore:      row.TargetScore,
+				}
+				if err := lib.Database.Create(&tool).Error; err != nil {
+					ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save Assessment Tool"})
+					return
+				}
+
+				ilo := models.IntendedLearningOutcome{
+					Statement:        row.IntendedLearningOutcome,
+					CourseOutcomeID:  courseOutcome.ID,
+					AssessmentToolID: tool.ID,
+				}
+				if err := lib.Database.Create(&ilo).Error; err != nil {
+					ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save Intended Learning Outcome"})
+					return
+				}
 			}
 		}
 	}

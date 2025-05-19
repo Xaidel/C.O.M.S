@@ -11,6 +11,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import UploadCO from "@/features/course-management/uploadCO";
+import UploadILO from "@/features/course-management/uploadILO";
 
 export default function AssessmentPlanCourseSelection() {
   const navigate = useNavigate()
