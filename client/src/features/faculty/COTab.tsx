@@ -144,15 +144,15 @@ export default function COTab({ courseName, navigate }: TabProps) {
             const level = row.original.Level.charAt(0)
             let color;
             switch (level) {
-              case "I": {
+              case "Introductory": {
                 color = "#C8D2DA"
                 break;
               }
-              case "E": {
+              case "Enabling": {
                 color = "#ACB9C3"
                 break
               }
-              case "D": {
+              case "Demonstrative": {
                 color = "#8E9CA7"
                 break
               }
