@@ -16,7 +16,9 @@ export default function StudentPerformance() {
   const { currentUser } = useUser()
   const studentID = currentUser?.role_info?.UserID
   const { courseID } = useParams<{ courseID: string }>()
+  const { sectionID } = useParams<{ sectionID: string }>()
   const parsedCourseID = parseInt(courseID || "")
+  const parsedSectionID = parseInt(sectionID || "")
   const { programID } = useParams<{ programID: string }>()
   const parsedProgramID = parseInt(programID || "")
   const { data: coaep, isLoading: fetchingCoaep, error: fetchingCoaepError } = useCOAEPByCourse(parsedCourseID)
@@ -25,8 +27,8 @@ export default function StudentPerformance() {
   const { data: performanceData, isLoading: fetchingPerformanceData } = usePerformanceDataByProgram(coaepID, parsedProgramID);
   const selectedCourse = localStorage.getItem("selectedCourse")
   const parsedSelectedCourse = JSON.parse(selectedCourse || "")
-  const { data: criteria } = useCriteria(parsedCourseID)
-
+  const { data: criteria } = useCriteria(parsedSectionID)
+  console.log(criteria)
   const student = useMemo(() => {
     if (!classlist?.classlist.length) return null
 
@@ -116,8 +118,8 @@ export default function StudentPerformance() {
     }, 0);
   }, [coaep?.coaep?.CourseOutcomes, courseOutcomeWeights, scores, criteriaByILO]);
 
-  if (fetchingCoaep || fetchingPerformanceData || fetchingClasslist) return
-  if (fetchingCoaepError) return
+  if (fetchingCoaep || fetchingPerformanceData || fetchingClasslist) return <div>Loading</div>
+  if (fetchingCoaepError) return <div>Error</div>
   return (
     <>
       <AppLabel currentPage="Performance Data" />

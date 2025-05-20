@@ -47,7 +47,7 @@ export default function PerformanceData() {
                   <TooltipTrigger asChild>
                     <Button onClick={() => {
                       localStorage.setItem("selectedCourse", JSON.stringify(row.original.Course))
-                      navigate(`/performance-data/program/${programID}/course/${row?.original?.Course.ID}`)
+                      navigate(`/performance-data/program/${programID}/course/${row?.original?.Course.ID}/section/${row?.original?.ID}`)
                     }}>
                       <BookOpen />
                     </Button>

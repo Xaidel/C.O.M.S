@@ -7,7 +7,7 @@ export function usePerformanceDataByProgram(coaepID: number, programID: number) 
     queryKey: [`${programID}-performance_data`],
     queryFn: () => getPerformanceDataByProgram(coaepID, programID),
     staleTime: 3000,
-    enabled: !!coaepID
+    enabled: !!coaepID && !!programID
   })
 
   return {

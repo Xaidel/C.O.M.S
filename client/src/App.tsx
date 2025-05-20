@@ -91,7 +91,7 @@ function App() {
             <Route path="/courses" element={<CourseSelection />} />
             <Route path="/courses/:courseID/assessment-plan/section/:sectionID" element={<AssessmentPlan />} />
             <Route path="/performance-data" element={<PerformanceData />} />
-            <Route path="/performance-data/program/:programID/course/:courseID" element={<StudentPerformance />} />
+            <Route path="/performance-data/program/:programID/course/:courseID/section/:sectionID" element={<StudentPerformance />} />
             <Route path="/coaep/course" element={<AssessmentPlanCourseSelection />} />
             <Route path="/coaep/course/:courseID" element={<Coaep />} />
           </Route>
