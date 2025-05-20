@@ -14,6 +14,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import Report from "./Report";
 import { useCriteria } from "./useCriteria";
 import LoadingState from "@/pages/LoadingState";
+import { FileBarChart } from "lucide-react";
 
 interface Data {
   coaep: COAEP
@@ -230,7 +231,7 @@ export default function Coaep() {
                       fetchPerformanceData()
                       setReportModalOpen(true)
                     }
-                    }>Generate Report</Button>
+                    }><FileBarChart size={20} className="mr-1" />Generate Report</Button>
                   </DialogTrigger>
                   <DialogContent className="min-w-[90%] min-h-[85%] max-h-[80%] overflow-y-scroll">
                     <DialogHeader>

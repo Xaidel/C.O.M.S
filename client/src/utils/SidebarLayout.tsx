@@ -77,7 +77,7 @@ export function SidebarLayout() {
               >
                 <SidebarMenuButton
                   asChild
-                  className={`${state === "collapsed" ? "flex justify-center items-center" : "ml-3"} `}
+                  className={`${state === "collapsed" ? "flex justify-center items-center" : "ml-3"}  `}
                   size="lg"
                   isActive={isActive(currentPath, item.path)}
                 >

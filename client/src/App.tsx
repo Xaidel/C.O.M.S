@@ -27,6 +27,7 @@ import PerformanceData from "./pages/PerformanceData.tsx";
 import StudentPerformance from "./pages/StudentPerformance.tsx";
 import AssessmentPlanCourseSelection from "./pages/AssessmentPlanCourseSelection.tsx";
 import Coaep from "./pages/Coaep.tsx";
+import Plan from "./pages/Plan.tsx";
 function App() {
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {
@@ -93,6 +94,7 @@ function App() {
             <Route path="/performance-data" element={<PerformanceData />} />
             <Route path="/performance-data/program/:programID/course/:courseID/section/:sectionID" element={<StudentPerformance />} />
             <Route path="/coaep/course" element={<AssessmentPlanCourseSelection />} />
+            <Route path="/coaep/course/plan" element={<Plan />} />
             <Route path="/coaep/course/:courseID" element={<Coaep />} />
           </Route>
           <Route path="login" element={<Login />} />

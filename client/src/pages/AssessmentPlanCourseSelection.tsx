@@ -73,7 +73,7 @@ export default function AssessmentPlanCourseSelection() {
                       <TooltipTrigger asChild>
                         <Button onClick={() => {
                           sessionStorage.setItem("selectedCourse", JSON.stringify(section))
-                          navigate(`/coaep/course/${section.ID}`)
+                          navigate(`/coaep/course/plan`)
                         }}>
                           <ChevronRight />
                         </Button>

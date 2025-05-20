@@ -166,7 +166,7 @@ export default function Report() {
                         }
                       </TableCell>
                       <TableCell className="border text-center">{evaluations?.res[0].total_percentage}</TableCell>
-                      <TableCell className="border text-center text-red-400">
+                      <TableCell className="border text-center text-red-400 font-bold">
                         {
                           (evaluations?.res[0]?.total_percentage !== undefined && evaluations?.res[0]?.total_percentage >= co.IntendedLearningOutcomes[0].AssessmentTool.TargetPopulation)
                             ? (<p className="text-green-400 text-center">S</p>) : (<p className="text-red-400 text-center">NS</p>)
@@ -194,7 +194,7 @@ At least ${ilo.AssessmentTool.TargetPopulation}% of enrolled students with a rat
                                 {`${data?.total_passed}/${data?.total_population}`}
                               </TableCell>
                               <TableCell className="border text-center">{`${data?.total_percentage}%`}</TableCell>
-                              <TableCell className="border">
+                              <TableCell className="border font-bold text-lg">
                                 {
                                   data?.total_percentage === 0 && data?.total_failed === 0
                                     ? <p className="text-center text-gray-500">No Data</p>
