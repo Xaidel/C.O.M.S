@@ -1,18 +1,15 @@
 import { useCOAEPByCourse } from "@/features/faculty/useCOAEPByCourse"
 import { useEvaluation } from "@/features/faculty/useEvaluation"
-import { Section } from "@/types/Interface"
-import { useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Fragment } from "react/jsx-runtime";
 import LoadingState from "./LoadingState"
-interface SectionCache {
-  sections: Section[]
-}
+import { useSectionsByCourseNo } from "@/features/curriculum-management/useSectionsByCourseNo"
+
 export default function CourseReport() {
-  const queryClient = useQueryClient()
+  const { currID } = useParams<{ currID: string }>()
   const { courseCode } = useParams<{ courseCode: string }>()
-  const sections = queryClient.getQueryData<SectionCache>([`${courseCode}-sections`])
+  const { data: sections } = useSectionsByCourseNo(currID || "", courseCode || "");
   const courseID = sections?.sections[0]?.Course.ID
   const { sectionID } = useParams<{ sectionID: string }>()
   const parsedSectionID = parseInt(sectionID || "", 10)

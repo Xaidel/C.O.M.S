@@ -7,7 +7,7 @@ export function useStudentByProgramAndEnrolledCourses(coaepID: number, programID
     queryKey: [`${programID}-students`],
     queryFn: () => getStudentByProgramAndEnrolledCourses(programID, coaepID),
     staleTime: 3000,
-    enabled: !!coaepID
+    enabled: coaepID > 0 && !!programID
   })
 
   return {

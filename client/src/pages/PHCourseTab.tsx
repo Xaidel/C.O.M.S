@@ -8,6 +8,7 @@ import CourseStudentProfile from "./CourseStudentProfile";
 
 export default function PHCourseTab() {
   const navigate = useNavigate()
+
   return (
     <>
       <div>
