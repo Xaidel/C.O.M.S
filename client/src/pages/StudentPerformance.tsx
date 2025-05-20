@@ -28,7 +28,6 @@ export default function StudentPerformance() {
   const selectedCourse = localStorage.getItem("selectedCourse")
   const parsedSelectedCourse = JSON.parse(selectedCourse || "")
   const { data: criteria } = useCriteria(parsedSectionID)
-  console.log(criteria)
   const student = useMemo(() => {
     if (!classlist?.classlist.length) return null
 

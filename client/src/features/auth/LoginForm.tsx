@@ -150,7 +150,7 @@ export default function LoginForm() {
                             role="combobox"
                             {...field}
                             className={cn(
-                              "min-w-full min-h-12 justify-between font-sans",
+                              "min-w-full min-h-12 justify-between font-sans border-[#9EA9B8]",
                               !field.value && "text-muted-foreground",
                             )}
                           >
@@ -211,7 +211,7 @@ export default function LoginForm() {
                     <FormControl>
                       <Input
                         placeholder="Enter your User ID"
-                        className="font-sans min-h-12"
+                        className="font-sans min-h-12 border-[#9EA9B8]"
                         {...field}
                       />
                     </FormControl>
@@ -234,7 +234,7 @@ export default function LoginForm() {
                     <FormControl>
                       <div className="relative">
                         <Input
-                          className="font-sans min-h-12"
+                          className="font-sans min-h-12 border-[#9EA9B8]"
                           autoComplete="on"
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your Password"
